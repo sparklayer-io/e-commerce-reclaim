@@ -16,10 +16,16 @@
     "@remix-run/node": "^2.12.0",
     "@remix-run/react": "^2.12.0",
     "@remix-run/serve": "^2.12.0",
-    "isbot": "^4.1.0"
+    "@wix/ecom": "^1.0.727",
+    "@wix/redirects": "^1.0.55",
+    "@wix/sdk": "^1.12.12",
+    "@wix/stores": "^1.0.213",
+    "isbot": "^4.1.0",
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.12.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
