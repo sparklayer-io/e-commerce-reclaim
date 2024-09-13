@@ -1,11 +1,12 @@
 import { type LoaderFunctionArgs, redirect, json } from '@remix-run/node';
-import { Link, NavLink, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { getEcomApi } from '~/api/ecom-api';
 import { ROUTES } from '~/router/config';
 import styles from './products.module.scss';
 import { ProductCard } from '~/components/product-card/product-card';
 import { collections } from '@wix/stores';
 import classNames from 'classnames';
+import { CategoryLink } from '~/components/category-link/category-link';
 
 export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) => {
     const api = getEcomApi();
@@ -46,16 +47,15 @@ export default function ProductsPage() {
                 <ul>
                     {allCategories.map((category) => (
                         <li key={category._id} className={styles.categoryListItem}>
-                            <NavLink
-                                to={ROUTES.products.to(category.slug!)}
+                            <CategoryLink
+                                title={category.name}
+                                categorySlug={category.slug!}
                                 className={({ isActive }) =>
                                     classNames(styles.categoryLink, {
                                         [styles.categoryLinkActive]: isActive,
                                     })
                                 }
-                            >
-                                {category.name}
-                            </NavLink>
+                            />
                         </li>
                     ))}
                 </ul>

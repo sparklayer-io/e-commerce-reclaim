@@ -2,6 +2,7 @@ import { Link, NavLink } from '@remix-run/react';
 import styles from './footer.module.scss';
 import classNames from 'classnames';
 import { ROUTES } from '~/router/config';
+import { CategoryLink } from '../category-link/category-link';
 
 export interface FooterProps {
     className?: string;
@@ -19,43 +20,46 @@ export const Footer = ({ className }: FooterProps) => {
                 <nav>
                     <ul>
                         <li>
-                            <NavLink
-                                to={ROUTES.products.to('all-products')}
+                            <CategoryLink
+                                title="Shop All"
+                                categorySlug="all-products"
                                 className={navItemStyle}
-                            >
-                                Shop All
-                            </NavLink>
+                            />
                         </li>
                         <li>
-                            <NavLink
-                                to={ROUTES.products.to('kitchen-essentials')}
+                            <CategoryLink
+                                title="Kitchen"
+                                categorySlug="kitchen-essentials"
                                 className={navItemStyle}
-                            >
-                                Kitchen
-                            </NavLink>
+                            />
                         </li>
                         <li>
-                            <NavLink to={ROUTES.products.to('bath')} className={navItemStyle}>
-                                Bath
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={ROUTES.products.to('on-the-go')} className={navItemStyle}>
-                                On the Go
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={ROUTES.products.to('new-in')} className={navItemStyle}>
-                                New In
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to={ROUTES.products.to('best-sellers')}
+                            <CategoryLink
+                                title="Bath"
+                                categorySlug="bath"
                                 className={navItemStyle}
-                            >
-                                Best Sellers
-                            </NavLink>
+                            />
+                        </li>
+                        <li>
+                            <CategoryLink
+                                title="On the Go"
+                                categorySlug="on-the-go"
+                                className={navItemStyle}
+                            />
+                        </li>
+                        <li>
+                            <CategoryLink
+                                title="New In"
+                                categorySlug="new-in"
+                                className={navItemStyle}
+                            />
+                        </li>
+                        <li>
+                            <CategoryLink
+                                title="Best Sellers"
+                                categorySlug="best-sellers"
+                                className={navItemStyle}
+                            />
                         </li>
                         <li>
                             <NavLink to={ROUTES.aboutUs.to()} className={navItemStyle}>
