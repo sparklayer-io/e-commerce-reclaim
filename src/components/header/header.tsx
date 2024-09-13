@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from '@remix-run/react';
+import { Link, NavLink } from '@remix-run/react';
 import classNames from 'classnames';
 import { ROUTES } from '~/router/config';
 import styles from './header.module.scss';
@@ -10,8 +10,6 @@ export interface HeaderProps {
 }
 
 export const Header = ({ className }: HeaderProps) => {
-    const navigate = useNavigate();
-
     const menuItemStyle = ({ isActive }: { isActive: boolean }) =>
         classNames(styles.menuItem, {
             [styles.active]: isActive,

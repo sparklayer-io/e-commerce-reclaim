@@ -1,0 +1,41 @@
+.imageWrapper {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 239, 199);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagePlaceholderIcon {
+    width: 60%;
+    max-width: 100px;
+    min-width: 50px;
+    color: rgb(118, 113, 101);
+}
+
+.ribbon {
+    position: absolute;
+    top: 4%;
+    left: 4%;
+    padding: 2px 12px;
+    border-radius: 40px;
+    background-color: rgba(245, 254, 210);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.name {
+    margin-top: 16px;
+    font: 16px / 20px 'Marcellus', serif;
+}
+
+.price {
+    margin-top: 4px;
+}
