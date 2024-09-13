@@ -1,4 +1,6 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import '~/styles/index.scss';
+import { Header } from '~/components/header/header';
 
 export default function App() {
     return (
@@ -10,6 +12,7 @@ export default function App() {
                 <Links />
             </head>
             <body>
+                <Header />
                 <Outlet />
                 <ScrollRestoration />
                 <Scripts />
