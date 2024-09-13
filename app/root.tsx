@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { Footer } from '~/components/footer/footer';
 import '~/styles/index.scss';
 import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
 
