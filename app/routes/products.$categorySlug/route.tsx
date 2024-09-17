@@ -48,14 +48,15 @@ export default function ProductsPage() {
                     {allCategories.map((category) => (
                         <li key={category._id} className={styles.categoryListItem}>
                             <CategoryLink
-                                title={category.name}
                                 categorySlug={category.slug!}
                                 className={({ isActive }) =>
                                     classNames(styles.categoryLink, {
                                         [styles.categoryLinkActive]: isActive,
                                     })
                                 }
-                            />
+                            >
+                                {category.name}
+                            </CategoryLink>
                         </li>
                     ))}
                 </ul>

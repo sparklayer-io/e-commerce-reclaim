@@ -20,46 +20,37 @@ export const Footer = ({ className }: FooterProps) => {
                 <nav>
                     <ul>
                         <li>
-                            <CategoryLink
-                                title="Shop All"
-                                categorySlug="all-products"
-                                className={navItemStyle}
-                            />
+                            <CategoryLink categorySlug="all-products" className={navItemStyle}>
+                                Shop All
+                            </CategoryLink>
                         </li>
                         <li>
                             <CategoryLink
-                                title="Kitchen"
                                 categorySlug="kitchen-essentials"
                                 className={navItemStyle}
-                            />
+                            >
+                                Kitchen
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="Bath"
-                                categorySlug="bath"
-                                className={navItemStyle}
-                            />
+                            <CategoryLink categorySlug="bath" className={navItemStyle}>
+                                Bath
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="On the Go"
-                                categorySlug="on-the-go"
-                                className={navItemStyle}
-                            />
+                            <CategoryLink categorySlug="on-the-go" className={navItemStyle}>
+                                On the Go
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="New In"
-                                categorySlug="new-in"
-                                className={navItemStyle}
-                            />
+                            <CategoryLink categorySlug="new-in" className={navItemStyle}>
+                                New In
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="Best Sellers"
-                                categorySlug="best-sellers"
-                                className={navItemStyle}
-                            />
+                            <CategoryLink categorySlug="best-sellers" className={navItemStyle}>
+                                Best Sellers
+                            </CategoryLink>
                         </li>
                         <li>
                             <NavLink to={ROUTES.aboutUs.to()} className={navItemStyle}>
@@ -92,17 +83,29 @@ export const Footer = ({ className }: FooterProps) => {
                 </ul>
                 <ul>
                     <li>
-                        <Link to={ROUTES.home.to()} className={styles.navItem}>
+                        <Link
+                            to="https://www.facebook.com/WixStudio"
+                            className={styles.navItem}
+                            target="_blank"
+                        >
                             Facebook
                         </Link>
                     </li>
                     <li>
-                        <Link to={ROUTES.home.to()} className={styles.navItem}>
+                        <Link
+                            to="https://www.instagram.com/wixstudio"
+                            className={styles.navItem}
+                            target="_blank"
+                        >
                             Instagram
                         </Link>
                     </li>
                     <li>
-                        <Link to={ROUTES.home.to()} className={styles.navItem}>
+                        <Link
+                            to="https://www.pinterest.com/wixcom"
+                            className={styles.navItem}
+                            target="_blank"
+                        >
                             Pinterest
                         </Link>
                     </li>

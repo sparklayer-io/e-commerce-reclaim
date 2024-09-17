@@ -1,16 +1,17 @@
 import { NavLink, NavLinkProps } from '@remix-run/react';
+import React from 'react';
 import { ROUTES } from '~/router/config';
 
 export interface CategoryLinkProps {
     categorySlug: string;
-    title: string;
+    children: React.ReactNode;
     className?: string | NavLinkProps['className'];
 }
 
-export const CategoryLink = ({ categorySlug, title, className }: CategoryLinkProps) => {
+export const CategoryLink = ({ categorySlug, children, className }: CategoryLinkProps) => {
     return (
         <NavLink to={ROUTES.products.to(categorySlug)} className={className}>
-            {title}
+            {children}
         </NavLink>
     );
 };

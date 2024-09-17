@@ -34,32 +34,27 @@ export const Header = ({ className }: HeaderProps) => {
                 <nav className={styles.menu}>
                     <ul>
                         <li>
-                            <CategoryLink
-                                title="Shop All"
-                                categorySlug="all-products"
-                                className={menuItemStyle}
-                            />
+                            <CategoryLink categorySlug="all-products" className={menuItemStyle}>
+                                Shop All
+                            </CategoryLink>
                         </li>
                         <li>
                             <CategoryLink
-                                title="Kitchen"
                                 categorySlug="kitchen-essentials"
                                 className={menuItemStyle}
-                            />
+                            >
+                                Kitchen
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="Bath"
-                                categorySlug="bath"
-                                className={menuItemStyle}
-                            />
+                            <CategoryLink categorySlug="bath" className={menuItemStyle}>
+                                Bath
+                            </CategoryLink>
                         </li>
                         <li>
-                            <CategoryLink
-                                title="On the Go"
-                                categorySlug="on-the-go"
-                                className={menuItemStyle}
-                            />
+                            <CategoryLink categorySlug="on-the-go" className={menuItemStyle}>
+                                On the Go
+                            </CategoryLink>
                         </li>
                         <li>
                             <NavLink to={ROUTES.aboutUs.to()} className={menuItemStyle}>
