@@ -1,8 +1,12 @@
 .page {
+    padding-bottom: 3%;
+}
+
+.content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 32px;
-    padding: 3% 0;
+    margin-top: 36px;
 }
 
 .productName {

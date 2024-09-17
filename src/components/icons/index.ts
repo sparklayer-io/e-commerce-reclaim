@@ -1,3 +1,4 @@
+export { ArrowRightIcon } from './arrow-right';
 export { FacebookIcon } from './facebook';
 export { ImagePlaceholderIcon } from './image-placeholder-icon';
 export { MinusIcon } from './minus-icon';

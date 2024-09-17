@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, redirect, json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { getEcomApi } from '~/api/ecom-api';
 import { ROUTES } from '~/router/config';
 import styles from './products.module.scss';
@@ -7,6 +7,9 @@ import { ProductCard } from '~/components/product-card/product-card';
 import { collections } from '@wix/stores';
 import classNames from 'classnames';
 import { CategoryLink } from '~/components/category-link/category-link';
+import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
+import { RouteHandle } from '~/router/types';
+import { ProductLink } from '~/components/product-link/product-link';
 
 export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) => {
     const api = getEcomApi();
@@ -37,53 +40,74 @@ export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) =
     return json({ category, categoryProducts, allCategories });
 };
 
+export const handle: RouteHandle<typeof loader> = {
+    breadcrumb: (match) => (
+        <CategoryLink categorySlug={match.data.category.slug!}>
+            {match.data.category.name!}
+        </CategoryLink>
+    ),
+};
+
 export default function ProductsPage() {
     const { category, categoryProducts, allCategories } = useLoaderData<typeof loader>();
 
     return (
         <div className={styles.page}>
-            <nav className={styles.navigation}>
-                <h2 className={styles.navigationTitle}>Browse by</h2>
-                <ul>
-                    {allCategories.map((category) => (
-                        <li key={category._id} className={styles.categoryListItem}>
-                            <CategoryLink
-                                categorySlug={category.slug!}
-                                className={({ isActive }) =>
-                                    classNames(styles.categoryLink, {
-                                        [styles.categoryLinkActive]: isActive,
-                                    })
-                                }
+            <Breadcrumbs />
+
+            <div className={styles.content}>
+                <nav className={styles.navigation}>
+                    <h2 className={styles.navigationTitle}>Browse by</h2>
+                    <ul>
+                        {allCategories.map((category) => (
+                            <li key={category._id} className={styles.categoryListItem}>
+                                <CategoryLink
+                                    categorySlug={category.slug!}
+                                    className={({ isActive }) =>
+                                        classNames(styles.categoryLink, {
+                                            [styles.categoryLinkActive]: isActive,
+                                        })
+                                    }
+                                >
+                                    {category.name}
+                                </CategoryLink>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+
+                <div>
+                    <h1 className={styles.categoryName}>{category.name}</h1>
+                    {category.description && (
+                        <p className={styles.categoryDescription}>{category.description}</p>
+                    )}
+
+                    <p className={styles.productsCount}>
+                        {category.numberOfProducts}{' '}
+                        {category.numberOfProducts === 1 ? 'product' : 'products'}
+                    </p>
+
+                    <div className={styles.productsList}>
+                        {categoryProducts.map((product) => (
+                            <ProductLink
+                                key={product._id}
+                                productSlug={product.slug!}
+                                state={{
+                                    fromCategory: {
+                                        name: category.name,
+                                        slug: category.slug,
+                                    },
+                                }}
                             >
-                                {category.name}
-                            </CategoryLink>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-
-            <div>
-                <h1 className={styles.categoryName}>{category.name}</h1>
-                {category.description && (
-                    <p className={styles.categoryDescription}>{category.description}</p>
-                )}
-
-                <p className={styles.productsCount}>
-                    {category.numberOfProducts}{' '}
-                    {category.numberOfProducts === 1 ? 'product' : 'products'}
-                </p>
-
-                <div className={styles.productsList}>
-                    {categoryProducts.map((product) => (
-                        <Link key={product._id} to={ROUTES.productDetails.to(product.slug!)}>
-                            <ProductCard
-                                name={product.name!}
-                                imageUrl={product.media?.mainMedia?.image?.url}
-                                priceData={product.priceData}
-                                ribbon={product.ribbon ?? undefined}
-                            />
-                        </Link>
-                    ))}
+                                <ProductCard
+                                    name={product.name!}
+                                    imageUrl={product.media?.mainMedia?.image?.url}
+                                    priceData={product.priceData}
+                                    ribbon={product.ribbon ?? undefined}
+                                />
+                            </ProductLink>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

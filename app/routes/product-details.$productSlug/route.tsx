@@ -10,6 +10,10 @@ import { ProductImages } from '~/components/product-images/product-images';
 import { Button } from '~/components/button/button';
 import { removeQueryStringFromUrl } from '~/utils';
 import { ShareProductLinks } from '~/components/share-product-links/share-product-links';
+import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
+import { RouteHandle } from '~/router/types';
+import { CategoryLink } from '~/components/category-link/category-link';
+import { ProductLink } from '~/components/product-link/product-link';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const productSlug = params.productSlug;
@@ -27,54 +31,91 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return json({ product, canonicalUrl });
 };
 
+interface ProductDetailsLocationState {
+    fromCategory?: {
+        name: string;
+        slug: string;
+    };
+}
+
+export const handle: RouteHandle<typeof loader, ProductDetailsLocationState> = {
+    breadcrumb: (match, location) => {
+        const fromCategory = location.state?.fromCategory;
+
+        const productLink = (
+            <ProductLink productSlug={match.data.product.slug!} state={{ fromCategory }}>
+                {match.data.product.name!}
+            </ProductLink>
+        );
+
+        if (fromCategory) {
+            const categoryLink = (
+                <CategoryLink categorySlug={fromCategory.slug}>{fromCategory.name}</CategoryLink>
+            );
+            return [categoryLink, productLink];
+        }
+
+        return productLink;
+    },
+};
+
 export default function ProductDetailsPage() {
     const { product, canonicalUrl } = useLoaderData<typeof loader>();
     const [quantity, setQuantity] = useState(1);
 
     return (
         <div className={styles.page}>
-            <ProductImages media={product.media} />
+            <Breadcrumbs />
 
-            <div>
-                <h1 className={styles.productName}>{product.name}</h1>
-                {product.sku && <p className={styles.sku}>SKU: {product.sku}</p>}
+            <div className={styles.content}>
+                <ProductImages media={product.media} />
 
-                {product.priceData && (
-                    <ProductPrice priceData={product.priceData} className={styles.price} />
-                )}
+                <div>
+                    <h1 className={styles.productName}>{product.name}</h1>
+                    {product.sku && <p className={styles.sku}>SKU: {product.sku}</p>}
 
-                {product.description && (
-                    <div
-                        className={styles.description}
-                        dangerouslySetInnerHTML={{ __html: product.description }}
+                    {product.priceData && (
+                        <ProductPrice priceData={product.priceData} className={styles.price} />
+                    )}
+
+                    {product.description && (
+                        <div
+                            className={styles.description}
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                        />
+                    )}
+
+                    <div className={styles.quantity}>
+                        <label htmlFor="quantity" className={styles.quantityLabel}>
+                            Quantity
+                        </label>
+                        <QuantityInput id="quantity" value={quantity} onChange={setQuantity} />
+                    </div>
+
+                    <Button className={styles.addToCartButton}>Add to Cart</Button>
+
+                    {product.additionalInfoSections &&
+                        product.additionalInfoSections.length > 0 && (
+                            <Accordion
+                                className={styles.additionalInfoSections}
+                                items={product.additionalInfoSections.map((section) => ({
+                                    title: section.title!,
+                                    content: section.description ? (
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: section.description,
+                                            }}
+                                        />
+                                    ) : null,
+                                }))}
+                            />
+                        )}
+
+                    <ShareProductLinks
+                        className={styles.socialLinks}
+                        productCanonicalUrl={canonicalUrl}
                     />
-                )}
-
-                <div className={styles.quantity}>
-                    <label htmlFor="quantity" className={styles.quantityLabel}>
-                        Quantity
-                    </label>
-                    <QuantityInput id="quantity" value={quantity} onChange={setQuantity} />
                 </div>
-
-                <Button className={styles.addToCartButton}>Add to Cart</Button>
-
-                {product.additionalInfoSections && product.additionalInfoSections.length > 0 && (
-                    <Accordion
-                        className={styles.additionalInfoSections}
-                        items={product.additionalInfoSections.map((section) => ({
-                            title: section.title!,
-                            content: section.description ? (
-                                <div dangerouslySetInnerHTML={{ __html: section.description }} />
-                            ) : null,
-                        }))}
-                    />
-                )}
-
-                <ShareProductLinks
-                    className={styles.socialLinks}
-                    productCanonicalUrl={canonicalUrl}
-                />
             </div>
         </div>
     );

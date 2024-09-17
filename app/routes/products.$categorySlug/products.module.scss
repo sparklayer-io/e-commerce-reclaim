@@ -1,7 +1,11 @@
 .page {
-    padding: 20px 0 3%;
+    padding-bottom: 3%;
+}
+
+.content {
     display: flex;
     gap: 40px;
+    margin-top: 36px;
 }
 
 .navigation {
