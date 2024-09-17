@@ -1,7 +1,7 @@
 import { products } from '@wix/stores';
 import styles from './product-card.module.scss';
 import { ProductPrice } from '../product-price/product-price';
-import { ImagePlaceholderIcon } from '../icons/image-placeholder-icon';
+import { ImagePlaceholderIcon } from '../icons';
 
 interface ProductCardProps {
     name: string;

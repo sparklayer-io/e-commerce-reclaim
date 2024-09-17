@@ -1,0 +1,27 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 1px solid #17110d;
+    background-color: #17110d;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fef9ec;
+    cursor: pointer;
+    transition: 200ms ease;
+}
+
+.button:hover:not(:disabled) {
+    color: #17110d;
+    background-color: transparent;
+}
+
+.button:focus {
+    box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #116dff;
+}
+
+.button:disabled {
+    background-color: #dad3c1;
+    cursor: default;
+}

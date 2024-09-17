@@ -1,0 +1,51 @@
+.page {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    padding: 3% 0;
+}
+
+.productName {
+    font: 34px / 1.2 'Marcellus', serif;
+}
+
+.sku {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1;
+    color: #767165;
+}
+
+.price {
+    margin-top: 16px;
+    font: 21px / 1.3 'Marcellus', serif;
+}
+
+.description {
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.quantity {
+    margin-top: 20px;
+}
+
+.quantityLabel {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.addToCartButton {
+    width: 260px;
+    margin-top: 28px;
+}
+
+.additionalInfoSections {
+    margin-top: 24px;
+}
+
+.socialLinks {
+    margin-top: 36px;
+}
