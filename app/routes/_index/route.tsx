@@ -8,11 +8,12 @@ export default function HomePage() {
             <div className={styles.heroBanner}>
                 <img
                     src="https://static.wixstatic.com/media/32aab9_2c3c65e142434906992aedb17db53566~mv2.jpg"
+                    className={styles.heroBannerImage}
                     alt=""
                 />
-                <div className={styles.overlay}>
-                    <div className={styles.subtitle}>ReClaim</div>
-                    <h1 className={styles.title}>Reuse. Repurpose. Relove.</h1>
+                <div className={styles.heroBannerOverlay}>
+                    <div className={styles.heroBannerSubtitle}>ReClaim</div>
+                    <h1 className={styles.heroBannerTitle}>Reuse. Repurpose. Relove.</h1>
                     <CategoryLink categorySlug="all-products">
                         <LabelWithArrow>Shop Collections</LabelWithArrow>
                     </CategoryLink>
