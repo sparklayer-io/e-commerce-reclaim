@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(255, 239, 199);
+    background-color: var(--colorA2);
 }
 
 .image {
@@ -17,7 +17,7 @@
     width: 60%;
     max-width: 100px;
     min-width: 50px;
-    color: rgb(118, 113, 101);
+    color: var(--colorA4);
 }
 
 .ribbon {
@@ -26,18 +26,19 @@
     left: 4%;
     padding: 2px 12px;
     border-radius: 40px;
-    background-color: rgba(245, 254, 210);
-    font-size: 14px;
-    line-height: 1.6;
+    background-color: var(--colorE1);
+    font: var(--paragraph3);
 }
 
 .name {
     margin-top: 16px;
-    font: 16px / 20px 'Marcellus', serif;
+    font-family: var(--heading-font);
+    font-size: 16px;
+    line-height: 20px;
 }
 
 .price {
     margin-top: 4px;
-    font-size: 15px;
+    font: var(--paragraph2);
     line-height: 1.5;
 }

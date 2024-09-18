@@ -17,7 +17,8 @@
 
 .logo {
     margin-right: auto;
-    font: var(--logoText);
+    font: var(--heading3);
+    font-size: 26px;
 }
 
 .advertisingText {
@@ -110,7 +111,7 @@
     white-space: nowrap;
     
     &:hover {
-        background-color: var(--nude1);
+        background-color: var(--colorA2);
         color: var(--black);
     }
 }

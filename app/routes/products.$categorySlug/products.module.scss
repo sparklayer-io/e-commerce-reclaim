@@ -16,7 +16,7 @@
     padding-bottom: 16px;
     border-bottom: 1px solid rgba(23, 17, 13, 0.2);
     margin-bottom: 16px;
-    font: 20px / 1.3 'Marcellus', serif;
+    font: var(--heading5);
 }
 
 .categoryListItem {
@@ -24,30 +24,27 @@
 }
 
 .categoryLink {
-    font-size: 14px;
-    line-height: 1.6;
+    font: var(--paragraph3);
 }
 
 .categoryLinkActive {
-    color: rgb(112, 115, 101);
+    color: var(--colorB3);
 }
 
 .categoryName {
-    font: 42px / 1.2 'Marcellus', serif;
+    font: var(--heading3);
 }
 
 .categoryDescription {
     max-width: 672px;
     margin-top: 4px;
-    font-size: 16px;
-    line-height: 1.5;
+    font: var(--paragraph1);
 }
 
 .productsCount {
     margin-top: 46px;
     margin-bottom: 8px;
-    font-size: 14px;
-    line-height: 1.6;
+    font: var(--paragraph3);
 }
 
 .productsList {

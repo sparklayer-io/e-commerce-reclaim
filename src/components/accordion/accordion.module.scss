@@ -15,7 +15,8 @@
 }
 
 .title {
-    font: 18px / 1.3 'Marcellus', serif;
+    font: var(--heading5);
+    font-size: 18px;
 }
 
 .toggleIcon {

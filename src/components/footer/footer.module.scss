@@ -1,6 +1,6 @@
 .root {
     padding: 50px 2% 30px;
-    background-color: var(--nude2);
+    background-color: var(--colorA3);
 }
 
 .navigation {
@@ -13,14 +13,14 @@
 
 .navItem {
     display: block;
-    font: var(--paragraph1);
-    font-family: var(--ff-decor);
+    font-family: var(--heading-font);
+    font-size: 16px;
     line-height: 2.2;
     white-space: nowrap;
 }
 
 .navItem.active {
-    color: var(--brown3);
+    color: var(--colorD4);
 }
 
 .bottomBar {

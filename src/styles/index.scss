@@ -5,13 +5,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
-@import './theme.module.scss';
-
 :root {
-    font-family: var(--ff-default);
-    color: var(--nude4);
-    line-height: 1.5;
-    font-weight: 400;
+    font: var(--paragraph1);
+    color: var(--colorA5);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -25,5 +21,5 @@ body {
     justify-content: center;
     min-width: 320px;
     min-height: 100vh;
-    background-color: var(--nude0);
+    background-color: var(--colorA1);
 }
