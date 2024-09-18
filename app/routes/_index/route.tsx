@@ -18,7 +18,16 @@ export default function HomePage() {
                     </CategoryLink>
                 </div>
             </div>
-            <p>Home page</p>
+
+            <div className="textBanner">
+                <div className="textBannerSubtitle">Products of the highest standards</div>
+                <div className="textBannerTitle">
+                    Essential home collections for sustainable living
+                </div>
+                <CategoryLink categorySlug="all-products">
+                    <LabelWithArrow>Shop Collections</LabelWithArrow>
+                </CategoryLink>
+            </div>
         </>
     );
 }

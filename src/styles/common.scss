@@ -33,3 +33,30 @@
 .paragraph3 {
     font: var(--paragraph3);
 }
+
+.textBanner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+    text-align: center;
+    padding: 0 2%;
+    height: 35vw;
+    padding: 0 14%;
+}
+
+.textBannerSubtitle {
+    font-family: var(--text-font);
+    line-height: 1.4;
+    font-size: 1.3vw;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-bottom: 1%;
+}
+
+.textBannerTitle {
+    font: var(--heading2);
+    font-size: 4.3vw;
+    line-height: 1.1em;
+    margin-bottom: 1%;
+}
