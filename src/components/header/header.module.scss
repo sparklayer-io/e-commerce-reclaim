@@ -1,3 +1,9 @@
+:root {
+    --headerTopBarHeight: 50px;
+    --headerNavigationHeight: 54px;
+    --headerHeight: 104px;
+}
+
 .root {
     padding: 0 2%;
 }
@@ -6,7 +12,7 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid var(--black);
-    height: 50px;
+    height: var(--headerTopBarHeight);
 }
 
 .logo {
@@ -23,7 +29,7 @@
 .navigation {
     display: flex;
     align-items: center;
-    height: 54px;
+    height: var(--headerNavigationHeight);
     gap: 1rem;
 }
 
@@ -52,9 +58,11 @@
 }
 
 .menuItem {
+    display: block;
     padding: 10px;
     margin: 4px 8px;
     font: var(--paragraph3);
+    line-height: 1;
     white-space: nowrap;
 }
 

@@ -1,0 +1,40 @@
+.heroBanner {
+    --marginBottom: 2vw;
+    --bannerHeight: calc(100vh - var(--headerHeight) - var(--marginBottom));
+    margin-bottom: var(--marginBottom);
+    height: var(--bannerHeight);
+    position: relative;
+    color: var(--colorA1);
+    background-color: var(--black);
+}
+
+.heroBanner .overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+}
+
+.heroBanner img {
+    opacity: 0.8;
+    object-fit: cover;
+    object-position: 50% 50%;
+    height: 100%;
+    width: 100%;
+}
+
+.heroBanner .subtitle {
+    width: 54%;
+    font: var(--paragraph1);
+    letter-spacing: 0.2em;
+}
+
+.heroBanner .title {
+    font: var(--heading1);
+    font-size: clamp(60px, 6vw, 110px);
+    text-transform: uppercase;
+}
