@@ -23,7 +23,7 @@ export const Drawer = ({ open, onClose, children }: DrawerProps) => {
     return (
         <div className={classNames(styles.root, { [styles.open]: open })} onClick={onClose}>
             {/* RemoveScroll disables scroll outside the drawer. */}
-            <RemoveScroll>
+            <RemoveScroll enabled={open}>
                 <div className={styles.drawer} onClick={(event) => event.stopPropagation()}>
                     {children}
                 </div>
