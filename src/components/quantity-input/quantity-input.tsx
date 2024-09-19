@@ -25,7 +25,7 @@ export const QuantityInput = ({ value, onChange, id, className }: QuantityInputP
     const decrement = () => onChange(Math.max(1, Math.ceil(value - 1)));
 
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, className)}>
             <button className={styles.button} onClick={decrement} disabled={value <= 1}>
                 <MinusIcon className={styles.icon} />
             </button>

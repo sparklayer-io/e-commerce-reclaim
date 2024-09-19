@@ -1,6 +1,8 @@
 export { ArrowRightIcon } from './arrow-right';
+export { CloseIcon } from './close';
 export { FacebookIcon } from './facebook';
 export { ImagePlaceholderIcon } from './image-placeholder-icon';
+export { LockIcon } from './lock';
 export { MinusIcon } from './minus-icon';
 export { PinterestIcon } from './pinterest';
 export { PlusIcon } from './plus-icon';

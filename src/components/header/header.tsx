@@ -5,12 +5,20 @@ import styles from './header.module.scss';
 import { CartIcon } from '../cart-icon/cart-icon';
 import loginIcon from '~/assets/svg/user.svg';
 import { CategoryLink } from '../category-link/category-link';
+import { useCartOpen } from '../cart/cart-open-context';
+import { useCart } from '~/api/api-hooks';
+import { calculateCartItemsCount } from '~/api/cart-helpers';
 
 export interface HeaderProps {
     className?: string;
 }
 
 export const Header = ({ className }: HeaderProps) => {
+    const cart = useCart();
+    const cartOpener = useCartOpen();
+
+    const cartItemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;
+
     const menuItemStyle = ({ isActive }: { isActive: boolean }) =>
         classNames(styles.menuItem, {
             [styles.active]: isActive,
@@ -68,7 +76,9 @@ export const Header = ({ className }: HeaderProps) => {
                         <img className={styles.loginIcon} src={loginIcon} alt="Login icon" />
                         <span>Log In</span>
                     </Link>
-                    <CartIcon className={styles.cart} count={0} />
+                    <button onClick={() => cartOpener.setIsOpen(true)}>
+                        <CartIcon className={styles.cart} count={cartItemsCount} />
+                    </button>
                 </div>
             </section>
         </header>
