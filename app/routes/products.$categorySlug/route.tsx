@@ -1,5 +1,5 @@
-import { type LoaderFunctionArgs, redirect, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { useLoaderData, redirect } from '@remix-run/react';
 import { getEcomApi } from '~/api/ecom-api';
 import { ROUTES } from '~/router/config';
 import styles from './products.module.scss';
@@ -37,7 +37,7 @@ export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) =
     const categoryProducts = await api.getProductsByCategory(categorySlug);
     const allCategories = await api.getAllCategories();
 
-    return json({ category, categoryProducts, allCategories });
+    return { category, categoryProducts, allCategories };
 };
 
 export const handle: RouteHandle<typeof loader> = {

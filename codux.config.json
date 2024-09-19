@@ -35,5 +35,9 @@
       "~/*": "./src/*"
     }
   },
-  "svgLoader": "both"
+  "svgLoader": "both",
+  "previewConfiguration": {
+    "environmentVariables": {},
+    "envFile": ".env"
+  }
 }

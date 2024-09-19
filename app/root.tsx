@@ -7,7 +7,6 @@ import {
     ScrollRestoration,
     useLoaderData,
 } from '@remix-run/react';
-import { json } from '@remix-run/node';
 import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
@@ -16,11 +15,11 @@ import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
 import '~/styles/index.scss';
 
 export async function loader() {
-    return json({
+    return {
         ENV: {
             WIX_CLIENT_ID: process?.env?.WIX_CLIENT_ID,
         },
-    });
+    };
 }
 
 export const handle: RouteHandle = {

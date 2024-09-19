@@ -1,6 +1,6 @@
 import { getEcomApi } from '~/api/ecom-api';
 import styles from './product-details.module.scss';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { ProductPrice } from '~/components/product-price/product-price';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
@@ -30,7 +30,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
     const canonicalUrl = removeQueryStringFromUrl(request.url);
 
-    return json({ product, canonicalUrl });
+    return { product, canonicalUrl };
 };
 
 interface ProductDetailsLocationState {
