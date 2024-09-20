@@ -1,24 +1,25 @@
 import {
-    Links,
+    isRouteErrorResponse,
     Link,
+    Links,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
     useLoaderData,
-    useRouteError,
     useNavigate,
-    isRouteErrorResponse,
+    useRouteError,
 } from '@remix-run/react';
+import { useEffect, useRef } from 'react';
+import { EcomAPIContextProvider } from '~/api/ecom-api-context-provider';
+import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
+import { ErrorComponent } from '~/components/error-component/error-component';
 import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
-import { EcomAPIContextProvider } from '~/api/ecom-api-context-provider';
-import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
+import { getErrorMessage } from '~/utils';
+
 import '~/styles/index.scss';
-import { useEffect, useRef } from 'react';
-import { ErrorComponent } from '~/components/error-component/error-component';
-import { toError } from '~/utils/common';
 
 export async function loader() {
     return {
@@ -101,7 +102,7 @@ export function ErrorBoundary() {
         <ContentWrapper>
             <ErrorComponent
                 title={isPageNotFoundError ? 'Page Not Found' : 'Oops, something went wrong'}
-                message={isPageNotFoundError ? undefined : toError(error).message}
+                message={isPageNotFoundError ? undefined : getErrorMessage(error)}
                 actionButtonText="Back to shopping"
                 onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
             />

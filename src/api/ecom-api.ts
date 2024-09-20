@@ -149,3 +149,24 @@ export function getEcomApi() {
 
     return api;
 }
+
+export type EcomSDKError = {
+    message: string;
+    details: {
+        applicationError: {
+            description: string;
+            code: number;
+        };
+    };
+};
+
+export function isEcomSDKError(error: unknown): error is EcomSDKError {
+    return (
+        error instanceof Object &&
+        'message' in error &&
+        'details' in error &&
+        error.details instanceof Object &&
+        'applicationError' in error.details &&
+        error.details.applicationError instanceof Object
+    );
+}
