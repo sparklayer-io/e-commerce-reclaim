@@ -1,0 +1,21 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.title {
+    font: var(--heading2);
+}
+
+.message {
+    margin-top: 12px;
+    font: var(--paragraph1);
+    max-width: 75vw;
+}
+
+.actionButton {
+    margin-top: 24px;
+}
