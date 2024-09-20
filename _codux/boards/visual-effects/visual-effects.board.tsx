@@ -1,5 +1,9 @@
 import { createBoard } from '@wixc3/react-board';
-import { FadeIn, Reveal, FloatIn, BackgroundParallax } from '~/components/visual-effects';
+import { BackgroundParallax } from '~/components/visual-effects/background-parallax';
+import { FadeIn } from '~/components/visual-effects/fade-in';
+import { FloatIn } from '~/components/visual-effects/float-in';
+import { Reveal } from '~/components/visual-effects/reveal';
+
 import styles from './visual-effects.board.module.scss';
 
 const image = 'https://wixplosives.github.io/codux-assets-storage/add-panel/image-placeholder.jpg';
