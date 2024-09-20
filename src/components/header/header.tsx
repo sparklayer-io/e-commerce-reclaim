@@ -2,7 +2,7 @@ import { Link, NavLink } from '@remix-run/react';
 import classNames from 'classnames';
 import { ROUTES } from '~/router/config';
 import styles from './header.module.scss';
-import { CartIcon } from '../cart-icon/cart-icon';
+import { CartIcon } from '~/components/icons';
 import loginIcon from '~/assets/svg/user.svg';
 import { CategoryLink } from '../category-link/category-link';
 import { useCartOpen } from '../cart/cart-open-context';
