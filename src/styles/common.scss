@@ -1,6 +1,10 @@
+/* Viewport Breakpoints *******************************************************/
+
 $mobile-width: 480px;
 $tablet-width: 768px;
 $desktop-width: 1024px;
+
+/* Headings *******************************************************************/
 
 .heading1 {
     font: var(--heading1);
@@ -26,6 +30,8 @@ $desktop-width: 1024px;
     font: var(--heading6);
 }
 
+/* Paragraphs *****************************************************************/
+
 .paragraph1 {
     font: var(--paragraph1);
 }
@@ -38,15 +44,20 @@ $desktop-width: 1024px;
     font: var(--paragraph3);
 }
 
+/* Text Banner ****************************************************************/
+
+.textBannerSection {
+    min-height: 35vw;
+    align-content: center;
+}
+
 .textBanner {
+    padding: 0 14%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     text-align: center;
-    padding: 0 2%;
-    height: 35vw;
-    padding: 0 14%;
 }
 
 .textBannerSubtitle {
@@ -65,15 +76,7 @@ $desktop-width: 1024px;
     margin-bottom: 1%;
 }
 
-.rowOfCards {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    gap: 4px;
-    width: 100%;
-    margin-bottom: 5%;
-    aspect-ratio: 2.26;
-}
+/* Link Card ******************************************************************/
 
 .linkCard {
     position: relative;
@@ -107,6 +110,8 @@ $desktop-width: 1024px;
     font: var(--heading4);
     text-align: center;
 }
+
+/* Floating Card **************************************************************/
 
 .floatingCard {
     width: 32%;
@@ -149,6 +154,18 @@ $desktop-width: 1024px;
     text-wrap: balance;
 }
 
+/* Miscellaneous **************************************************************/
+
 .alternateBackground {
     background-color: var(--colorA3);
+}
+
+.rowOfCards {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: 4px;
+    width: 100%;
+    margin-bottom: 5%;
+    aspect-ratio: 2.26;
 }

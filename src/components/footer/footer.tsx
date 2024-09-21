@@ -1,8 +1,10 @@
 import { Link, NavLink } from '@remix-run/react';
-import styles from './footer.module.scss';
 import classNames from 'classnames';
+import { CategoryLink } from '~/components/category-link/category-link';
+import { FadeIn } from '~/components/visual-effects';
 import { ROUTES } from '~/router/config';
-import { CategoryLink } from '../category-link/category-link';
+
+import styles from './footer.module.scss';
 
 export interface FooterProps {
     className?: string;
@@ -16,7 +18,7 @@ export const Footer = ({ className }: FooterProps) => {
 
     return (
         <footer className={classNames(styles.root, className)}>
-            <section className={styles.navigation}>
+            <FadeIn className={styles.navigation}>
                 <nav>
                     <ul>
                         <li>
@@ -110,8 +112,8 @@ export const Footer = ({ className }: FooterProps) => {
                         </Link>
                     </li>
                 </ul>
-            </section>
-            <section className={styles.bottomBar}>
+            </FadeIn>
+            <FadeIn className={styles.bottomBar}>
                 <Link to={ROUTES.home.to()} className={styles.logo}>
                     ReClaim
                 </Link>
@@ -121,7 +123,7 @@ export const Footer = ({ className }: FooterProps) => {
                         Codux™
                     </Link>
                 </div>
-            </section>
+            </FadeIn>
         </footer>
     );
 };

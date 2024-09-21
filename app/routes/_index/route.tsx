@@ -1,7 +1,8 @@
 import { CategoryLink } from '~/components/category-link/category-link';
-import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
 import { FeaturedProductsSection } from '~/components/featured-products-section/featured-products-section';
-import { BackgroundParallax } from '~/components/visual-effects';
+import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
+import { BackgroundParallax, FadeIn, FloatIn } from '~/components/visual-effects';
+
 import styles from './index.module.scss';
 
 export default function HomePage() {
@@ -22,14 +23,16 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className="textBanner">
-                <div className="textBannerSubtitle">Products of the highest standards</div>
-                <div className="textBannerTitle">
-                    Essential home collections for sustainable living
-                </div>
-                <CategoryLink categorySlug="all-products">
-                    <LabelWithArrow>Shop Collections</LabelWithArrow>
-                </CategoryLink>
+            <div className="textBannerSection">
+                <FadeIn className="textBanner">
+                    <div className="textBannerSubtitle">Products of the highest standards</div>
+                    <div className="textBannerTitle">
+                        Essential home collections for sustainable living
+                    </div>
+                    <CategoryLink categorySlug="all-products">
+                        <LabelWithArrow>Shop Collections</LabelWithArrow>
+                    </CategoryLink>
+                </FadeIn>
             </div>
 
             <div className="rowOfCards">
@@ -70,21 +73,23 @@ export default function HomePage() {
                 className={styles.floatingCardBackground}
                 backgroundImageUrl="https://static.wixstatic.com/media/c837a6_cae4dbe5a7ee4637b7d55d9bd5bd755d~mv2.png/v1/fill/w_1178,h_974,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/c837a6_cae4dbe5a7ee4637b7d55d9bd5bd755d~mv2.png"
             >
-                <div className="floatingCard">
-                    <div className="floatingCardHeader">Happy Holidays</div>
-                    <div className="floatingCardContent">
-                        <h2 className="floatingCardTitle">The holidays best sellers</h2>
-                        <div className="floatingCardDescription">
-                            Home essentials for
-                            <br /> sustainable living
+                <FloatIn direction="up">
+                    <div className="floatingCard">
+                        <div className="floatingCardHeader">Happy Holidays</div>
+                        <div className="floatingCardContent">
+                            <h2 className="floatingCardTitle">The holidays best sellers</h2>
+                            <div className="floatingCardDescription">
+                                Home essentials for
+                                <br /> sustainable living
+                            </div>
                         </div>
+                        <CategoryLink categorySlug="all-products">
+                            <LabelWithArrow className={styles.floatingCardLinkLabel}>
+                                Buy a gift
+                            </LabelWithArrow>
+                        </CategoryLink>
                     </div>
-                    <CategoryLink categorySlug="all-products">
-                        <LabelWithArrow className={styles.floatingCardLinkLabel}>
-                            Buy a gift
-                        </LabelWithArrow>
-                    </CategoryLink>
-                </div>
+                </FloatIn>
             </BackgroundParallax>
 
             <FeaturedProductsSection

@@ -1,11 +1,13 @@
-import { ProductCard } from '../product-card/product-card';
-import { ProductLink } from '../product-link/product-link';
-import styles from './featured-products-section.module.scss';
 import { collections } from '@wix/stores';
-import { getEcomApi, isEcomSDKError } from '~/api/ecom-api';
 import { Product } from '@wix/stores_products';
 import classNames from 'classnames';
 import useSWR from 'swr';
+import { getEcomApi, isEcomSDKError } from '~/api/ecom-api';
+import { ProductCard } from '~/components/product-card/product-card';
+import { ProductLink } from '~/components/product-link/product-link';
+import { FadeIn, Reveal } from '~/components/visual-effects';
+
+import styles from './featured-products-section.module.scss';
 
 interface FeaturedProductsData {
     category: collections.Collection;
@@ -53,14 +55,14 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
 
     return (
         <div className={classNames(styles.root, className)}>
-            <div className={styles.header}>
+            <FadeIn className={styles.header}>
                 <h1 className={styles.headerTitle}>{title ?? data?.category.name}</h1>
                 <div className={styles.headerDescription}>
                     {description ?? data?.category.description}
                 </div>
-            </div>
+            </FadeIn>
             {data && (
-                <div className={styles.productsRow}>
+                <Reveal direction="down" className={styles.productsRow}>
                     {data.products.map((product) => (
                         <ProductLink key={product._id} productSlug={product.slug!}>
                             <ProductCard
@@ -71,7 +73,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                             />
                         </ProductLink>
                     ))}
-                </div>
+                </Reveal>
             )}
         </div>
     );
