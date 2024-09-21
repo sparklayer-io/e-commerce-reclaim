@@ -108,6 +108,47 @@ $desktop-width: 1024px;
     text-align: center;
 }
 
+.floatingCard {
+    width: 32%;
+    aspect-ratio: 0.8;
+    padding: 22px;
+    background-color: var(--colorA2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.floatingCardHeader {
+    text-transform: uppercase;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--black);
+}
+
+.floatingCardContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+}
+
+.floatingCardTitle {
+    font-family: var(--heading-font);
+    line-height: 1.2;
+    font-size: 3.1vw;
+    text-transform: uppercase;
+    align-self: flex-end;
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+    margin: 2% 0;
+    text-wrap: balance;
+}
+
+.floatingCardDescription {
+    margin-bottom: 10%;
+    text-wrap: balance;
+}
+
 .alternateBackground {
     background-color: var(--colorA3);
 }
