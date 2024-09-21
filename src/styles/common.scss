@@ -47,47 +47,42 @@ $desktop-width: 1024px;
 /* Text Page ******************************************************************/
 
 .textPage {
-    width: 65%;
-    margin-block: 60px;
-    margin-inline: auto;
+    max-width: 60em;
+    margin: 48px auto;
     text-align: center;
+    font: var(--paragraph2);
 }
 
-.textPage > h1 {
+.textPage a {
+    text-decoration: underline;
+}
+
+.textPage h1 {
     font: var(--heading2);
-    margin-bottom: 40px;
 }
 
-.textPage > section {
-    margin-bottom: 40px;
-}
-
-.textPage > section > h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+.textPage h2 {
+    font-size: 24px;
     text-transform: uppercase;
+    margin: 36px 0 24px 0;
 }
 
-@media (max-width: $desktop-width) {
-    .textPage {
-        width: 80%;
-        margin-block: 40px;
-    }
+.textPage > div {
+    margin-top: 24px;
 }
 
 @media (max-width: $tablet-width) {
     .textPage {
-        width: auto;
-        margin-block: 20px;
+        margin-top: 24px;
         text-align: left;
     }
 
-    .textPage > h1 {
+    .textPage h1 {
         font: var(--heading3);
     }
 
-    .textPage > section {
-        margin-bottom: 30px;
+    .textPage h2 {
+        font-size: 20px;
     }
 }
 
