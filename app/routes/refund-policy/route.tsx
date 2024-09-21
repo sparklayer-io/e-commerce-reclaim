@@ -1,12 +1,12 @@
-import styles from './refund-policy.module.scss';
+import '~/styles/common.scss';
 
 export default function RefundPolicyPage() {
     return (
-        <div className={styles.root}>
-            <h1 className={styles.title}>Refund Policy</h1>
-            <div className={styles.section}>
-                <h2 className={styles.subtitle}>A LEGAL DISCLAIMER</h2>
-                <div className={styles.text}>
+        <main className="textPage">
+            <h1>Refund Policy</h1>
+            <section>
+                <h2>A Legal Disclaimer</h2>
+                <div>
                     The explanations and information provided on this page are only general and
                     high-level explanations and information on how to write your own document of a
                     Refund Policy. You should not rely on this article as legal advice or as
@@ -15,10 +15,10 @@ export default function RefundPolicyPage() {
                     your business and your customers. We recommend that you seek legal advice to
                     help you understand and to assist you in the creation of your own Refund Policy.
                 </div>
-            </div>
-            <div className={styles.section}>
-                <h2 className={styles.subtitle}>REFUND POLICY - THE BASICS</h2>
-                <div className={styles.text}>
+            </section>
+            <section>
+                <h2>Refund Policy - The Basics</h2>
+                <div>
                     Having said that, a Refund Policy is a legally binding document that is meant to
                     establish the legal relations between you and your customers regarding how and
                     if you will provide them with a refund. Online businesses selling products are
@@ -28,15 +28,15 @@ export default function RefundPolicyPage() {
                     legal claims from customers that are not satisfied with the products they
                     purchased.
                 </div>
-            </div>
-            <div className={styles.section}>
-                <h2 className={styles.subtitle}>WHAT TO INCLUDE IN THE REFUND POLICY</h2>
-                <div className={styles.text}>
+            </section>
+            <section>
+                <h2>What To Include in the Refund Policy</h2>
+                <div>
                     Generally speaking, a Refund Policy often addresses these types of issues: the
                     timeframe for asking for a refund; will the refund be full or partial; under
                     which conditions will the customer receive a refund; and much, much more.
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }

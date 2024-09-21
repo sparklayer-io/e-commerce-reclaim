@@ -44,6 +44,53 @@ $desktop-width: 1024px;
     font: var(--paragraph3);
 }
 
+/* Text Page ******************************************************************/
+
+.textPage {
+    width: 65%;
+    margin-block: 60px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.textPage > h1 {
+    font: var(--heading2);
+    margin-bottom: 40px;
+}
+
+.textPage > section {
+    margin-bottom: 40px;
+}
+
+.textPage > section > h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+@media (max-width: $desktop-width) {
+    .textPage {
+        width: 80%;
+        margin-block: 40px;
+    }
+}
+
+@media (max-width: $tablet-width) {
+    .textPage {
+        width: auto;
+        margin-block: 20px;
+        text-align: left;
+    }
+
+    .textPage > h1 {
+        font: var(--heading3);
+    }
+
+    .textPage > section {
+        margin-bottom: 30px;
+    }
+}
+
 /* Text Banner ****************************************************************/
 
 .textBannerSection {
