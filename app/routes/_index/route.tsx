@@ -59,7 +59,7 @@ export default function HomePage() {
             </div>
 
             <FeaturedProductsSection
-                className={styles.featuredProducts}
+                className="alternateBackground"
                 categorySlug="new-in"
                 title="New In"
                 description="Embrace a sustainable lifestyle with our newest drop-ins."
