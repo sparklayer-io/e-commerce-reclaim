@@ -13,7 +13,7 @@ import {
 import { useEffect, useRef } from 'react';
 import { EcomAPIContextProvider } from '~/api/ecom-api-context-provider';
 import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
-import { ErrorComponent } from '~/components/error-component/error-component';
+import { ErrorPage } from '~/components/error-page/error-page';
 import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
@@ -100,7 +100,7 @@ export function ErrorBoundary() {
 
     return (
         <ContentWrapper>
-            <ErrorComponent
+            <ErrorPage
                 title={isPageNotFoundError ? 'Page Not Found' : 'Oops, something went wrong'}
                 message={isPageNotFoundError ? undefined : getErrorMessage(error)}
                 actionButtonText="Back to shopping"

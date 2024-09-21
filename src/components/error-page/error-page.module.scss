@@ -1,10 +1,13 @@
 .root {
+    padding: 48px 0;
+    min-height: 50vh;
+    max-width: 40em;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
-    margin: 0 auto;
+    gap: 24px;
 }
 
 .title {
@@ -12,11 +15,5 @@
 }
 
 .message {
-    margin-top: 12px;
     font: var(--paragraph1);
-    max-width: 75vw;
-}
-
-.actionButton {
-    margin-top: 24px;
 }
