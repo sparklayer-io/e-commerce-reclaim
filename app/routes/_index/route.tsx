@@ -1,6 +1,7 @@
 import { CategoryLink } from '~/components/category-link/category-link';
 import styles from './index.module.scss';
 import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
+import { FeaturedProductsSection } from '~/components/featured-products-section/featured-products-section';
 
 export default function HomePage() {
     return (
@@ -56,6 +57,19 @@ export default function HomePage() {
                     <div className="linkCardTitle">On the Go</div>
                 </CategoryLink>
             </div>
+
+            <FeaturedProductsSection
+                className={styles.featuredProducts}
+                categorySlug="new-in"
+                title="New In"
+                description="Embrace a sustainable lifestyle with our newest drop-ins."
+            />
+
+            <FeaturedProductsSection
+                categorySlug="best-sellers"
+                title="Best Sellers"
+                description="When quality is eco-friendly. Explore our top picks."
+            />
         </>
     );
 }
