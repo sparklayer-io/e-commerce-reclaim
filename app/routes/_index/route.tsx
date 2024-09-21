@@ -84,9 +84,7 @@ export default function HomePage() {
                             </div>
                         </div>
                         <CategoryLink categorySlug="all-products">
-                            <LabelWithArrow className={styles.floatingCardLinkLabel}>
-                                Buy a gift
-                            </LabelWithArrow>
+                            <LabelWithArrow>Buy a gift</LabelWithArrow>
                         </CategoryLink>
                     </div>
                 </FloatIn>
