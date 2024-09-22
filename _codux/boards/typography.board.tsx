@@ -18,7 +18,7 @@ export default createBoard({
                 <h1 className="heading1">Heading 1</h1>
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
-                --heading1:<span className={styles.fontDetails}>Marcellus / 80px / 1</span>
+                --heading1: <span className={styles.fontDetails}>Marcellus / 80px / 1</span>
             </p>
             <hr className={styles.hrLight} />
             <h4 className={styles.sectionHeader}>HEADING</h4>
@@ -26,23 +26,59 @@ export default createBoard({
                 <h2 className="heading2">Heading 2</h2>
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
-                --heading1
-                <span className={styles.fontDetails}>Marcellus / 80px / 1</span>
+                --heading2: <span className={styles.fontDetails}> Marcellus / 55px / 1.1</span>
             </p>
             <Variant name="Heading3">
                 <h3 className="heading3">Heading 3</h3>
             </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --heading3: <span className={styles.fontDetails}>Marcellus / 42px / 1.2</span>
+            </p>
             <Variant name="Heading4">
                 <h4 className="heading4">Heading 4</h4>
             </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --heading4: <span className={styles.fontDetails}> Marcellus / 40px / 1.2</span>
+            </p>
             <Variant name="Heading5">
                 <h5 className="heading5">Heading 5</h5>
             </Variant>
-            <h6 className="heading6">Heading 6</h6>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --heading5: <span className={styles.fontDetails}> Marcellus / 20px / 1.3</span>
+            </p>
+            <Variant name="Heading6">
+                <h6 className="heading6">Heading 6</h6>
+            </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --heading6: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+            </p>
+            <hr className={styles.hrLight} />
+            <h4 className={styles.sectionHeader}>PARAGRAPH</h4>
 
-            <p className="paragraph1">Paragraph 1</p>
-            <p className="paragraph2">Paragraph 2</p>
-            <p className="paragraph3">Paragraph 3</p>
+            <Variant name="Paragraph1">
+                <p className="paragraph1">
+                    We ignite opportunity by setting the world in motion. 0123456789
+                </p>
+            </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --paragraph1: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+            </p>
+            <Variant name="Paragraph2">
+                <p className="paragraph2">
+                    We ignite opportunity by setting the world in motion. 0123456789
+                </p>
+            </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --paragraph2: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+            </p>
+            <Variant name="Paragraph3">
+                <p className="paragraph3">
+                    We ignite opportunity by setting the world in motion. 0123456789
+                </p>
+            </Variant>
+            <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
+                --paragraph3: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+            </p>
         </div>
     ),
     environmentProps: {
