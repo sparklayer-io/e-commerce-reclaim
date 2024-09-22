@@ -8,32 +8,39 @@ import { LabelWithArrow } from '../../src/components/label-with-arrow/label-with
 export default createBoard({
     name: 'UI-Kit Buttons',
     Board: () => (
-        <div>
+        <div className={styles.container}>
             <div>
-                <h2>Buttons</h2>
-                <div className={styles.primaryContainer}>
-                    <Variant name="Primary Button">
-                        <LabelWithArrow>Shop Collection </LabelWithArrow>
-                    </Variant>
-                    <p>Primary </p>
+                <span className={styles.uikit}>UI Kit</span>
+                <span className={styles.coreComponents}> | Core Components</span>
+                <hr className={styles.hrSolid} />
+                <h3 className={styles.sectionTitle}>Buttons</h3>
+            </div>
+            <LabelWithArrow>Shop Now</LabelWithArrow>
+            <h4 className={styles.sectionHeader}>THEMED</h4>
+            <div className={classNames(styles.buttonsContainer, styles.itemSpacing)}>
+                <div className={styles.buttonsContainer}>
+                    <Button>Add to Cart</Button>
+                    <span className={styles.buttonLabel}>Primary</span>
                 </div>
-                <div className={styles.secondaryContainer}>
-                    // Link for "Shop now goes here"
-                    <p>Secondary</p>
-                </div>
-                <div className={styles.addToCartContainer}>
-                    <Variant name="Add to Cart Button">
-                        <Button className={styles.fullWidth}>Add to Cart</Button>
-                    </Variant>
-                    <p>Add to Cart</p>
+                <div className={styles.buttonsContainer}>
+                    // Secondary button goes here
+                    <span className={styles.buttonLabel}>Secondary</span>
                 </div>
             </div>
-            <div>
-                <h2>Menus </h2>
-                <div />
-                // Menu Component goes here
-            </div>
+            <hr className={styles.hrLight} />
+            <h4 className={styles.sectionHeader}>MENU</h4>
+            <Variant name="Menu">// Menu component goes here</Variant>
+            <hr className={styles.hrLight} />
+            <h4 className={styles.sectionHeader}>ICONS</h4>
+            <Variant name="Icons">// Icons component goes here</Variant>
+            <hr className={styles.hrLight} />
+            <h4 className={styles.sectionHeader}>SOCIAL</h4>
+            <Variant name="Social">// Social media buttons go here</Variant>
+            <hr className={styles.hrLight} />
         </div>
     ),
     isSnippet: true,
+    environmentProps: {
+        windowWidth: 284,
+    },
 });

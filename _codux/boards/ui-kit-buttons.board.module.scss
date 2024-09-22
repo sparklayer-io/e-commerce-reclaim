@@ -1,5 +1,11 @@
 @import '@styles/typography.scss';
 
+.container {
+    font-family: Wix Madefor Text;
+    width: 284px;
+    padding: 16px;
+}
+
 .uikit {
     font-size: 10px;
     font-weight: 700;
@@ -67,4 +73,24 @@
 
 .fullWidth {
     width: 100%;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.buttonLabel {
+    font-size: 9px;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-around;
+}
+
+.iconsContainer {
+    display: flex;
+    justify-content: space-between;
 }
