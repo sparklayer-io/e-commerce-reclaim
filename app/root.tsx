@@ -3,6 +3,7 @@ import {
     Link,
     Links,
     Meta,
+    type MetaFunction,
     Outlet,
     Scripts,
     ScrollRestoration,
@@ -20,6 +21,10 @@ import { RouteHandle } from '~/router/types';
 import { getErrorMessage } from '~/utils';
 
 import '~/styles/index.scss';
+
+export const meta: MetaFunction = () => {
+    return [{ title: 'ReClaim: Home Goods Store' }];
+};
 
 export async function loader() {
     return {
