@@ -3,9 +3,9 @@ import { createBoard, Variant } from '@wixc3/react-board';
 import styles from './components.board.module.scss';
 import classNames from 'classnames';
 import styles0 from './components.board.module.scss';
-import { QuantityInput } from '../../src/components/quantity-input/quantity-input';
-import { Accordion } from '../../src/components/accordion/accordion';
-import { ProductCard } from '../../src/components/product-card/product-card';
+import { QuantityInput } from '../../../src/components/quantity-input/quantity-input';
+import { Accordion } from '../../../src/components/accordion/accordion';
+import { ProductCard } from '../../../src/components/product-card/product-card';
 
 export default createBoard({
     name: 'Components',

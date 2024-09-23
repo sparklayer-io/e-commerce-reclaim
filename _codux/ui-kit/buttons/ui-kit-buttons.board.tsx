@@ -2,8 +2,8 @@ import { createBoard, Variant } from '@wixc3/react-board';
 import '~/styles/common.scss';
 import classNames from 'classnames';
 import styles from './ui-kit-buttons.board.module.scss';
-import { Button } from '../../src/components/button/button';
-import { LabelWithArrow } from '../../src/components/label-with-arrow/label-with-arrow';
+import { Button } from '../../../src/components/button/button';
+import { LabelWithArrow } from '../../../src/components/label-with-arrow/label-with-arrow';
 
 export default createBoard({
     name: 'UI-Kit Buttons',
