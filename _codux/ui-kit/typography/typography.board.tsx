@@ -1,7 +1,7 @@
-import '~/styles/common.scss';
 import { createBoard, Variant } from '@wixc3/react-board';
-import styles from './typography.board.module.scss';
 import classNames from 'classnames';
+
+import styles from './typography.board.module.scss';
 
 export default createBoard({
     name: 'Typography',
@@ -9,7 +9,7 @@ export default createBoard({
         <div className={styles.container}>
             <div>
                 <span className={styles.uikit}>UI Kit</span>
-                <span className={styles.foundation}> | Foundation</span>
+                <span className={styles.foundation}> | Foundation</span>
                 <hr className={styles.hrSolid} />
                 <h3 className={styles.sectionTitle}>Typography</h3>
                 <h4 className={styles.sectionHeader}>DISPLAY</h4>
@@ -61,7 +61,7 @@ export default createBoard({
                 </p>
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
-                --paragraph1: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+                --paragraph1: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
             </p>
             <Variant name="Paragraph2">
                 <p className="paragraph2">
@@ -69,7 +69,7 @@ export default createBoard({
                 </p>
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
-                --paragraph2: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+                --paragraph2: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
             </p>
             <Variant name="Paragraph3">
                 <p className="paragraph3">
@@ -77,7 +77,7 @@ export default createBoard({
                 </p>
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}>
-                --paragraph3: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
+                --paragraph3: <span className={styles.fontDetails}>Figtree (400) / 20px / 1.4</span>
             </p>
         </div>
     ),

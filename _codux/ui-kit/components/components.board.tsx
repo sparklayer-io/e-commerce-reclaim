@@ -1,11 +1,10 @@
-import '~/styles/common.scss';
 import { createBoard, Variant } from '@wixc3/react-board';
-import styles from './components.board.module.scss';
 import classNames from 'classnames';
-import styles0 from './components.board.module.scss';
-import { QuantityInput } from '../../../src/components/quantity-input/quantity-input';
-import { Accordion } from '../../../src/components/accordion/accordion';
-import { ProductCard } from '../../../src/components/product-card/product-card';
+import { Accordion } from '~/components/accordion/accordion';
+import { ProductCard } from '~/components/product-card/product-card';
+import { QuantityInput } from '~/components/quantity-input/quantity-input';
+
+import styles from './components.board.module.scss';
 
 export default createBoard({
     name: 'Components',
@@ -13,13 +12,13 @@ export default createBoard({
         <div className={styles.container}>
             <div>
                 <span className={styles.uikit}>UI Kit</span>
-                <span className={styles.foundation}> | Core components</span>
+                <span className={styles.foundation}> | Core components</span>
                 <hr className={styles.hrSolid} />
                 <h3 className={styles.sectionTitle}>Components &amp; Elements</h3>
                 <h4 className={styles.sectionHeader}>INPUT</h4>
             </div>
-            <QuantityInput value={6} className={styles0.quantityInput1} />
-            <span className={styles0.fontDetails}>Number Input</span>
+            <QuantityInput value={6} className={styles.quantityInput1} onChange={() => {}} />
+            <span className={styles.fontDetails}>Number Input</span>
             <Variant name="Heading1">
                 <hr className={styles.hrLight} />
                 <h4 className={styles.sectionHeader}>ACCORDION</h4>
@@ -27,21 +26,24 @@ export default createBoard({
                     items={[
                         {
                             title: 'Product Info',
+                            content: 'Content',
                         },
                         {
                             title: 'Return & Refund Policy',
+                            content: 'Content',
                         },
                         {
                             title: 'Shipping Info ',
+                            content: 'Content',
                         },
                     ]}
-                    className={styles0.accordion}
+                    className={styles.accordion}
                 />
                 <hr className={styles.hrLight} />
             </Variant>
             <p className={classNames(styles.variantName, styles.headlinesSpacing)}></p>
             <h4 className={styles.sectionHeader}>LABELS</h4>
-            <h4>//Labels missing</h4>
+            <h4>Labels missing</h4>
             <hr className={styles.hrLight} />
             <h4 className={styles.sectionHeader}>CARDS</h4>
             <ProductCard
@@ -53,9 +55,9 @@ export default createBoard({
                     price: 5.5,
                 }}
             />
-            <span className={styles0.fontDetails}>Product Card</span>
-            <h4>//Product gallery missing</h4>
-            <span className={styles0.fontDetails}>Product Card</span>
+            <span className={styles.fontDetails}>Product Card</span>
+            <h4>Product gallery missing</h4>
+            <span className={styles.fontDetails}>Product Card</span>
         </div>
     ),
     environmentProps: {
