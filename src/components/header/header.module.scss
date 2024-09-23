@@ -35,9 +35,9 @@
 }
 
 .navigation .empty {
-   width: 160px;
-   flex-shrink: 1;
-   flex-grow: 0;
+    width: 160px;
+    flex-shrink: 1;
+    flex-grow: 0;
 }
 
 .navigation .menu {
@@ -109,7 +109,7 @@
     border: 1px solid var(--black);
     cursor: pointer;
     white-space: nowrap;
-    
+
     &:hover {
         background-color: var(--colorA2);
         color: var(--black);
