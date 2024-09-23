@@ -6,7 +6,8 @@ import { Reveal } from '~/components/visual-effects/reveal';
 
 import styles from './visual-effects.board.module.scss';
 
-const image = 'https://wixplosives.github.io/codux-assets-storage/add-panel/image-placeholder.jpg';
+const image =
+    'https://static.wixstatic.com/media/c837a6_a2f541f9274546a9b4b0a8dbd2cfa3e0~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85,enc_auto/11062b_4ba7b420d917404092175a564fa1358b~mv2-1_edited_edited.jpg';
 
 export default createBoard({
     name: 'Visual Effects',
