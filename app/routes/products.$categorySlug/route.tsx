@@ -10,6 +10,7 @@ import { CategoryLink } from '~/components/category-link/category-link';
 import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
 import { RouteHandle } from '~/router/types';
 import { ProductLink } from '~/components/product-link/product-link';
+import { FadeIn } from '~/components/visual-effects';
 
 export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) => {
     const api = getEcomApi();
@@ -89,23 +90,24 @@ export default function ProductsPage() {
 
                     <div className={styles.productsList}>
                         {categoryProducts.map((product) => (
-                            <ProductLink
-                                key={product._id}
-                                productSlug={product.slug!}
-                                state={{
-                                    fromCategory: {
-                                        name: category.name,
-                                        slug: category.slug,
-                                    },
-                                }}
-                            >
-                                <ProductCard
-                                    name={product.name!}
-                                    imageUrl={product.media?.mainMedia?.image?.url}
-                                    priceData={product.priceData}
-                                    ribbon={product.ribbon ?? undefined}
-                                />
-                            </ProductLink>
+                            <FadeIn key={product._id} duration={0.9}>
+                                <ProductLink
+                                    productSlug={product.slug!}
+                                    state={{
+                                        fromCategory: {
+                                            name: category.name,
+                                            slug: category.slug,
+                                        },
+                                    }}
+                                >
+                                    <ProductCard
+                                        name={product.name!}
+                                        imageUrl={product.media?.mainMedia?.image?.url}
+                                        priceData={product.priceData}
+                                        ribbon={product.ribbon ?? undefined}
+                                    />
+                                </ProductLink>
+                            </FadeIn>
                         ))}
                     </div>
                 </div>
