@@ -1,21 +1,22 @@
-import { getEcomApi } from '~/api/ecom-api';
-import styles from './product-details.module.scss';
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { useAddToCart } from '~/api/api-hooks';
+import { getEcomApi } from '~/api/ecom-api';
+import { Accordion } from '~/components/accordion/accordion';
+import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
+import { useCartOpen } from '~/components/cart/cart-open-context';
+import { CategoryLink } from '~/components/category-link/category-link';
+import { ProductImages } from '~/components/product-images/product-images';
+import { ProductLink } from '~/components/product-link/product-link';
 import { ProductPrice } from '~/components/product-price/product-price';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { useState } from 'react';
-import { Accordion } from '~/components/accordion/accordion';
-import { ProductImages } from '~/components/product-images/product-images';
-import { Button } from '~/components/button/button';
-import { removeQueryStringFromUrl } from '~/utils';
 import { ShareProductLinks } from '~/components/share-product-links/share-product-links';
-import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
 import { RouteHandle } from '~/router/types';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { ProductLink } from '~/components/product-link/product-link';
-import { useCartOpen } from '~/components/cart/cart-open-context';
-import { useAddToCart } from '~/api/api-hooks';
+import { removeQueryStringFromUrl } from '~/utils';
+
+import styles from './product-details.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const productSlug = params.productSlug;
@@ -110,13 +111,13 @@ export default function ProductDetailsPage() {
                         <QuantityInput id="quantity" value={quantity} onChange={setQuantity} />
                     </div>
 
-                    <Button
-                        className={styles.addToCartButton}
+                    <button
+                        className={classNames('button', 'primaryButton', styles.addToCartButton)}
                         onClick={handleAddToCartClick}
                         disabled={isAddingToCart}
                     >
                         Add to Cart
-                    </Button>
+                    </button>
 
                     {product.additionalInfoSections &&
                         product.additionalInfoSections.length > 0 && (

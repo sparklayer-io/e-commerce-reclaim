@@ -1,13 +1,14 @@
+import { cart } from '@wix/ecom';
+import classNames from 'classnames';
 import { useCart, useCartTotals } from '~/api/api-hooks';
+import { calculateCartItemsCount } from '~/api/cart-helpers';
 import { useEcomAPI } from '~/api/ecom-api-context-provider';
 import { Drawer } from '~/components/drawer/drawer';
+import { CloseIcon, LockIcon } from '~/components/icons';
 import { CartItem } from './cart-item/cart-item';
 import { useCartOpen } from './cart-open-context';
+
 import styles from './cart.module.scss';
-import { CloseIcon, LockIcon } from '../icons';
-import { Button } from '../button/button';
-import { cart } from '@wix/ecom';
-import { calculateCartItemsCount } from '~/api/cart-helpers';
 
 export const Cart = () => {
     const ecomAPI = useEcomAPI();
@@ -73,9 +74,16 @@ export const Cart = () => {
                                 </>
                             )}
 
-                            <Button className={styles.checkoutButton} onClick={handleCheckout}>
+                            <button
+                                className={classNames(
+                                    'button',
+                                    'mutedPrimaryButton',
+                                    styles.checkoutButton
+                                )}
+                                onClick={handleCheckout}
+                            >
                                 Checkout
-                            </Button>
+                            </button>
 
                             <div className={styles.secureCheckout}>
                                 <LockIcon width={11} />
