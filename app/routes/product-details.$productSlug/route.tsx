@@ -23,7 +23,7 @@ import { QuantityInput } from '~/components/quantity-input/quantity-input';
 import { ShareProductLinks } from '~/components/share-product-links/share-product-links';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
-import { removeQueryStringFromUrl } from '~/utils';
+import { getErrorMessage, removeQueryStringFromUrl } from '~/utils';
 
 import styles from './product-details.module.scss';
 
@@ -159,26 +159,22 @@ export function ErrorBoundary() {
     const error = useRouteError();
     const navigate = useNavigate();
 
-    if (isRouteErrorResponse(error)) {
-        let title: string;
-        let message: string | undefined;
-        if (error.data.code === EcomApiErrorCodes.ProductNotFound) {
-            title = 'Product Not Found';
-            message = "Unfortunately a product page you trying to open doesn't exist";
-        } else {
-            title = 'Error';
-            message = error.data.message;
-        }
-
-        return (
-            <ErrorPage
-                title={title}
-                message={message}
-                actionButtonText="Back to shopping"
-                onActionButtonClick={() => navigate(ROUTES.products.to('all-producs'))}
-            />
-        );
+    let title;
+    let message;
+    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.ProductNotFound) {
+        title = 'Product Not Found';
+        message = "Unfortunately, the product page you're trying to open does not exist";
+    } else {
+        title = 'Error';
+        message = getErrorMessage(error);
     }
 
-    throw error;
+    return (
+        <ErrorPage
+            title={title}
+            message={message}
+            actionButtonText="Back to shopping"
+            onActionButtonClick={() => navigate(ROUTES.products.to('all-producs'))}
+        />
+    );
 }
