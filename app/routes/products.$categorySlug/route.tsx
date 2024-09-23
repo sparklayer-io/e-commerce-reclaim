@@ -18,6 +18,7 @@ import { FadeIn } from '~/components/visual-effects';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import styles from './products.module.scss';
+import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const categorySlug = params.categorySlug;
@@ -50,19 +51,21 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export const handle: RouteHandle<typeof loader> = {
-    breadcrumb: (match) => (
-        <CategoryLink categorySlug={match.data.category.slug!}>
-            {match.data.category.name!}
-        </CategoryLink>
-    ),
+    breadcrumbs: (match) => [
+        {
+            title: match.data.category.name!,
+            to: ROUTES.products.to(match.data.category.slug!),
+        },
+    ],
 };
 
 export default function ProductsPage() {
     const { category, categoryProducts, allCategories } = useLoaderData<typeof loader>();
+    const breadcrumbs = useBreadcrumbs();
 
     return (
         <div className={styles.page}>
-            <Breadcrumbs />
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
 
             <div className={styles.content}>
                 <nav className={styles.navigation}>
