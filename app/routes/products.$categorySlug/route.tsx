@@ -17,7 +17,6 @@ import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn } from '~/components/visual-effects';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
-import { getErrorMessage } from '~/utils';
 import styles from './products.module.scss';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -129,22 +128,26 @@ export function ErrorBoundary() {
     const error = useRouteError();
     const navigate = useNavigate();
 
-    let title;
-    let message;
-    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.CategoryNotFound) {
-        title = 'Category Not Found';
-        message = "Unfortunately, the category page you're trying to open does not exist";
-    } else {
-        title = 'Error';
-        message = getErrorMessage(error);
+    if (isRouteErrorResponse(error)) {
+        let title: string;
+        let message: string | undefined;
+        if (error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+            title = 'Category Not Found';
+            message = "Unfortunately, the category page you're trying to open does not exist";
+        } else {
+            title = 'Error';
+            message = error.data.message;
+        }
+
+        return (
+            <ErrorPage
+                title={title}
+                message={message}
+                actionButtonText="Back to shopping"
+                onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+            />
+        );
     }
 
-    return (
-        <ErrorPage
-            title={title}
-            message={message}
-            actionButtonText="Back to shopping"
-            onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
-        />
-    );
+    throw error;
 }
