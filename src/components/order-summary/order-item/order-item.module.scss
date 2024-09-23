@@ -1,17 +1,16 @@
+@import '@styles/common.scss';
+
+$imageSize: 100px;
+
 .root {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr;
     gap: 24px;
 }
 
-.productInfo {
-    display: flex;
-    gap: 12px;
-}
-
 .imageWrapper {
-    width: 100px;
-    height: 100px;
+    width: $imageSize;
+    height: $imageSize;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,6 +29,12 @@
     color: var(--white);
 }
 
+.main {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 .productDetails {
     margin-top: 12px;
     font: var(--paragraph3);
@@ -37,6 +42,18 @@
 }
 
 .orderInfo {
+    width: calc((100% + $imageSize) / 2);
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
+}
+
+@media (max-width: $mobile-width) {
+    .main {
+        flex-direction: column;
+    }
+
+    .orderInfo {
+        width: 100%;
+    }
 }

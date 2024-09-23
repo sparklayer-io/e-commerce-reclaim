@@ -14,19 +14,19 @@ export const OrderItem = ({ item }: OrderItemProps) => {
 
     return (
         <div className={styles.root}>
-            <div className={styles.productInfo}>
-                <div className={styles.imageWrapper}>
-                    {image ? (
-                        <img
-                            className={styles.image}
-                            src={image.url}
-                            alt={image.altText ?? productName}
-                        />
-                    ) : (
-                        <ImagePlaceholderIcon className={styles.imagePlaceholderIcon} />
-                    )}
-                </div>
+            <div className={styles.imageWrapper}>
+                {image ? (
+                    <img
+                        className={styles.image}
+                        src={image.url}
+                        alt={image.altText ?? productName}
+                    />
+                ) : (
+                    <ImagePlaceholderIcon className={styles.imagePlaceholderIcon} />
+                )}
+            </div>
 
+            <div className={styles.main}>
                 <div>
                     <div>{productName}</div>
                     <div className={styles.productDetails}>
@@ -43,11 +43,11 @@ export const OrderItem = ({ item }: OrderItemProps) => {
                         })}
                     </div>
                 </div>
-            </div>
 
-            <div className={styles.orderInfo}>
-                <div>Qty: {item.quantity}</div>
-                <div>{item.totalPriceBeforeTax?.formattedAmount}</div>
+                <div className={styles.orderInfo}>
+                    <div>Qty: {item.quantity}</div>
+                    <div>{item.totalPriceBeforeTax?.formattedAmount}</div>
+                </div>
             </div>
         </div>
     );

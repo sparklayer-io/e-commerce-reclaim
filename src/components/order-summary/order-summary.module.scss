@@ -1,3 +1,5 @@
+@import '@styles/common.scss';
+
 .root {
     width: 100%;
     max-width: 800px;
@@ -65,4 +67,23 @@
 
 .deliveryTime {
     margin-top: 8px;
+}
+
+@media (max-width: $mobile-width) {
+    .section {
+        padding: 20px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    .priceSummary {
+        grid-column: auto;
+    }
+
+    .addressSection {
+        flex-direction: column;
+        gap: 24px;
+    }
 }
