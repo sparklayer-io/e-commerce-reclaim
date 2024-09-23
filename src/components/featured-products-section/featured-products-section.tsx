@@ -2,7 +2,8 @@ import { collections } from '@wix/stores';
 import { Product } from '@wix/stores_products';
 import classNames from 'classnames';
 import useSWR from 'swr';
-import { getEcomApi, isEcomSDKError } from '~/api/ecom-api';
+import { getEcomApi } from '~/api/ecom-api';
+import { CollectionDetails, isEcomSDKError } from '~/api/types';
 import { ProductCard } from '~/components/product-card/product-card';
 import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn, Reveal } from '~/components/visual-effects';
@@ -20,22 +21,27 @@ const getFeaturedProducts = async (
 ): Promise<FeaturedProductsData | null> => {
     const api = getEcomApi();
 
-    let category: collections.Collection | undefined;
-    try {
-        category =
-            (await api.getCategoryBySlug(categorySlug)) ||
-            (await api.getCategoryBySlug('all-products'));
-    } catch (error) {
+    let category: CollectionDetails | undefined;
+    const response = await api.getCategoryBySlug(categorySlug);
+    if (response.status === 'success') {
+        category = response.body;
+    } else {
+        const error = response.error;
         if (isEcomSDKError(error) && error.details.applicationError.code === 404) {
-            category = await api.getCategoryBySlug('all-products');
+            const response = await api.getCategoryBySlug('all-products');
+            if (response.status === 'success') {
+                category = response.body;
+            } else {
+                throw error;
+            }
         } else {
             throw error;
         }
     }
-    if (!category) throw new Error("Category 'all-products' not found");
 
-    const products = await api.getProductsByCategory(category.slug!, limit);
-    return { category, products };
+    const productsResponse = await api.getProductsByCategory(category.slug!, limit);
+    if (productsResponse.status === 'failure') throw productsResponse.error;
+    return { category, products: productsResponse.body };
 };
 
 interface FeaturedProductsSectionProps {

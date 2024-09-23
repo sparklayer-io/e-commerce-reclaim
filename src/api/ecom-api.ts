@@ -1,14 +1,22 @@
 import { currentCart, orders } from '@wix/ecom';
 import { redirects } from '@wix/redirects';
-import { OAuthStrategy, createClient } from '@wix/sdk';
-import { products, collections } from '@wix/stores';
+import { createClient, OAuthStrategy } from '@wix/sdk';
+import { collections, products } from '@wix/stores';
 import Cookies from 'js-cookie';
 import { ROUTES } from '~/router/config';
+import { getErrorMessage } from '~/utils';
 import {
     DEMO_STORE_WIX_CLIENT_ID,
     WIX_SESSION_TOKEN_COOKIE_KEY,
     WIX_STORES_APP_ID,
 } from './constants';
+import {
+    EcomAPI,
+    EcomApiErrorCodes,
+    EcomAPIFailureResponse,
+    EcomAPISuccessResponse,
+    isEcomSDKError,
+} from './types';
 
 function getWixClientId() {
     /**
@@ -47,68 +55,123 @@ function getWixClient() {
     });
 }
 
-function createApi() {
+function createApi(): EcomAPI {
     const wixClient = getWixClient();
 
     return {
-        getProductsByCategory: async (categorySlug: string, limit?: number) => {
-            const getCategoryResult = await wixClient.collections.getCollectionBySlug(categorySlug);
+        async getProductsByCategory(categorySlug: string, limit?: number) {
+            try {
+                const category = (await wixClient.collections.getCollectionBySlug(categorySlug))
+                    .collection;
+                if (!category) throw new Error('Category not found');
 
-            let query = wixClient.products
-                .queryProducts()
-                .hasSome('collectionIds', [getCategoryResult.collection?._id]);
+                const { items } = await wixClient.products
+                    .queryProducts()
+                    .hasSome('collectionIds', [category._id])
+                    .limit(limit ?? 100)
+                    .find();
 
-            if (limit) {
-                query = query.limit(limit);
+                return successResponse(items);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
             }
-
-            return (await query.find()).items;
         },
-        getProduct: async (slug: string | undefined) => {
-            return slug
-                ? (await wixClient.products.queryProducts().eq('slug', slug).limit(1).find())
-                      .items[0]
-                : undefined;
+        async getPromotedProducts() {
+            try {
+                const products = (await wixClient.products.queryProducts().limit(4).find()).items;
+                return successResponse(products);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
+            }
         },
-        getCart: () => {
-            return wixClient.currentCart.getCurrentCart();
+        async getProductBySlug(slug) {
+            try {
+                const product = (
+                    await wixClient.products.queryProducts().eq('slug', slug).limit(1).find()
+                ).items[0];
+                if (product === undefined) {
+                    return failureResponse(EcomApiErrorCodes.ProductNotFound);
+                }
+                return successResponse(product);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetProductFailure, getErrorMessage(e));
+            }
         },
-        getCartTotals: () => {
-            return wixClient.currentCart.estimateCurrentCartTotals();
+        async getCart() {
+            try {
+                const currentCart = await wixClient.currentCart.getCurrentCart();
+                return successResponse(currentCart);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetCartFailure, getErrorMessage(e));
+            }
         },
-        updateCartItemQuantity: async (id: string | undefined | null, quantity: number) => {
-            const result = await wixClient.currentCart.updateCurrentCartLineItemQuantity([
-                {
-                    _id: id || undefined,
-                    quantity,
-                },
-            ]);
-            return result.cart;
+        async getCartTotals() {
+            try {
+                const cartTotals = await wixClient.currentCart.estimateCurrentCartTotals();
+                return successResponse(cartTotals);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetCartTotalsFailure, getErrorMessage(e));
+            }
         },
-        removeItemFromCart: async (id: string) => {
-            const result = await wixClient.currentCart.removeLineItemsFromCurrentCart([id]);
-            return result.cart;
-        },
-        addToCart: async (id: string, quantity: number, options?: Record<string, string>) => {
-            const result = await wixClient.currentCart.addToCurrentCart({
-                lineItems: [
+        async updateCartItemQuantity(id, quantity) {
+            try {
+                const result = await wixClient.currentCart.updateCurrentCartLineItemQuantity([
                     {
-                        catalogReference: {
-                            catalogItemId: id,
-                            appId: WIX_STORES_APP_ID,
-                            options: { options: options },
-                        },
-                        quantity: quantity,
+                        _id: id || undefined,
+                        quantity,
                     },
-                ],
-            });
-            const tokens = wixClient.auth.getTokens();
-            Cookies.set(WIX_SESSION_TOKEN_COOKIE_KEY, JSON.stringify(tokens));
+                ]);
+                if (!result.cart) {
+                    throw new Error('Failed to update cart item quantity');
+                }
+                return successResponse(result.cart);
+            } catch (e) {
+                return failureResponse(
+                    EcomApiErrorCodes.UpdateCartItemQuantityFailure,
+                    getErrorMessage(e)
+                );
+            }
+        },
+        async removeItemFromCart(id) {
+            try {
+                const result = await wixClient.currentCart.removeLineItemsFromCurrentCart([id]);
+                if (!result.cart) {
+                    throw new Error('Failed to remove cart item');
+                }
+                return successResponse(result.cart);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.RemoveCartItemFailure, getErrorMessage(e));
+            }
+        },
+        async addToCart(id, quantity, options) {
+            try {
+                const result = await wixClient.currentCart.addToCurrentCart({
+                    lineItems: [
+                        {
+                            catalogReference: {
+                                catalogItemId: id,
+                                appId: WIX_STORES_APP_ID,
+                                options: { options: options },
+                            },
+                            quantity: quantity,
+                        },
+                    ],
+                });
 
-            return result.cart;
+                if (!result.cart) {
+                    throw new Error('Failed to add item to cart');
+                }
+
+                const tokens = wixClient.auth.getTokens();
+                Cookies.set(WIX_SESSION_TOKEN_COOKIE_KEY, JSON.stringify(tokens));
+
+                return successResponse(result.cart);
+            } catch {
+                return failureResponse(EcomApiErrorCodes.AddCartItemFailure);
+            }
         },
 
-        checkout: async () => {
+        async checkout() {
             let checkoutId;
             try {
                 const result = await wixClient.currentCart.createCheckoutFromCurrentCart({
@@ -116,30 +179,69 @@ function createApi() {
                 });
                 checkoutId = result.checkoutId;
             } catch (e) {
-                return { success: false, url: '' };
+                return failureResponse(EcomApiErrorCodes.CreateCheckoutFailure, getErrorMessage(e));
             }
-            const { redirectSession } = await wixClient.redirects.createRedirectSession({
-                ecomCheckout: { checkoutId },
-                callbacks: {
-                    postFlowUrl: window.location.origin,
-                    thankYouPageUrl: `${window.location.origin}${ROUTES.thankYou.path}`,
-                },
-            });
-            return { success: true, url: redirectSession?.fullUrl };
+
+            try {
+                const { redirectSession } = await wixClient.redirects.createRedirectSession({
+                    ecomCheckout: { checkoutId },
+                    callbacks: {
+                        postFlowUrl: window.location.origin,
+                        thankYouPageUrl: `${window.location.origin}${ROUTES.thankYou.path}`,
+                    },
+                });
+                if (!redirectSession?.fullUrl) {
+                    throw new Error('Missing redirect session url');
+                }
+                return successResponse({ checkoutUrl: redirectSession?.fullUrl });
+            } catch (e) {
+                return failureResponse(
+                    EcomApiErrorCodes.CreateCheckoutRedirectSessionFailure,
+                    getErrorMessage(e)
+                );
+            }
         },
-        getAllCategories: async () => {
-            return (await wixClient.collections.queryCollections().find()).items;
+        async getAllCategories() {
+            try {
+                const categories = (await wixClient.collections.queryCollections().find()).items;
+                return successResponse(categories);
+            } catch {
+                return failureResponse(EcomApiErrorCodes.GetAllCategoriesFailure);
+            }
         },
-        getCategoryBySlug: async (slug: string) => {
-            return (await wixClient.collections.getCollectionBySlug(slug)).collection;
+        async getCategoryBySlug(slug) {
+            try {
+                const category = (await wixClient.collections.getCollectionBySlug(slug)).collection;
+                if (!category) {
+                    return failureResponse(EcomApiErrorCodes.CategoryNotFound);
+                }
+
+                return successResponse(category);
+            } catch (e) {
+                if (isEcomSDKError(e) && e.details.applicationError.code === 404) {
+                    return failureResponse(EcomApiErrorCodes.CategoryNotFound);
+                }
+
+                return failureResponse(EcomApiErrorCodes.GetCategoryFailure, getErrorMessage(e));
+            }
         },
-        getOrder: async (id: string) => {
-            return await wixClient.orders.getOrder(id);
+        async getOrder(id) {
+            try {
+                const order = await wixClient.orders.getOrder(id);
+                if (!order) {
+                    return failureResponse(EcomApiErrorCodes.OrderNotFound);
+                }
+
+                return successResponse(order);
+            } catch (e) {
+                if (isEcomSDKError(e) && e.details.applicationError.code === 404) {
+                    return failureResponse(EcomApiErrorCodes.OrderNotFound);
+                }
+                return failureResponse(EcomApiErrorCodes.GetOrderFailure);
+            }
         },
     };
 }
-
-export type EcomAPI = ReturnType<typeof createApi>;
 
 let api: EcomAPI | undefined;
 export function getEcomApi() {
@@ -150,23 +252,16 @@ export function getEcomApi() {
     return api;
 }
 
-export type EcomSDKError = {
-    message: string;
-    details: {
-        applicationError: {
-            description: string;
-            code: number;
-        };
+function failureResponse(code: EcomApiErrorCodes, message?: string): EcomAPIFailureResponse {
+    return {
+        status: 'failure',
+        error: { code, message },
     };
-};
+}
 
-export function isEcomSDKError(error: unknown): error is EcomSDKError {
-    return (
-        error instanceof Object &&
-        'message' in error &&
-        'details' in error &&
-        error.details instanceof Object &&
-        'applicationError' in error.details &&
-        error.details.applicationError instanceof Object
-    );
+function successResponse<T>(body: T): EcomAPISuccessResponse<T> {
+    return {
+        status: 'success',
+        body,
+    };
 }

@@ -1,44 +1,52 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, redirect } from '@remix-run/react';
-import { getEcomApi } from '~/api/ecom-api';
-import { ROUTES } from '~/router/config';
-import styles from './products.module.scss';
-import { ProductCard } from '~/components/product-card/product-card';
-import { collections } from '@wix/stores';
+import {
+    isRouteErrorResponse,
+    json,
+    useLoaderData,
+    useNavigate,
+    useRouteError,
+} from '@remix-run/react';
 import classNames from 'classnames';
-import { CategoryLink } from '~/components/category-link/category-link';
+import { getEcomApi } from '~/api/ecom-api';
+import { EcomApiErrorCodes } from '~/api/types';
 import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
-import { RouteHandle } from '~/router/types';
+import { CategoryLink } from '~/components/category-link/category-link';
+import { ErrorPage } from '~/components/error-page/error-page';
+import { ProductCard } from '~/components/product-card/product-card';
 import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn } from '~/components/visual-effects';
+import { ROUTES } from '~/router/config';
+import { RouteHandle } from '~/router/types';
+import styles from './products.module.scss';
 
-export const loader = async ({ params: { categorySlug } }: LoaderFunctionArgs) => {
-    const api = getEcomApi();
-    const redirectToAllProducts = () => redirect(ROUTES.products.to('all-products'));
-
-    if (!categorySlug) return redirectToAllProducts();
-
-    let category: collections.Collection;
-
-    try {
-        const categoryDetails = await api.getCategoryBySlug(categorySlug);
-        // It throws if category doesn't exist, so this is just to please TS.
-        if (!categoryDetails) return redirectToAllProducts();
-        category = categoryDetails;
-    } catch (error) {
-        // Redirect to "All products" if the requested category doesn't exist.
-        // In case of another error throw it again and let the global error boundary handle it.
-        if ((error as any)?.details?.applicationError?.code === 404) {
-            return redirectToAllProducts();
-        } else {
-            throw error;
-        }
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+    const categorySlug = params.categorySlug;
+    if (!categorySlug) {
+        throw new Error('Missing category slug');
     }
 
-    const categoryProducts = await api.getProductsByCategory(categorySlug);
-    const allCategories = await api.getAllCategories();
+    const api = getEcomApi();
+    const [currentCategoryResponse, categoryProductsResponse, allCategoriesResponse] =
+        await Promise.all([
+            api.getCategoryBySlug(categorySlug),
+            api.getProductsByCategory(categorySlug),
+            api.getAllCategories(),
+        ]);
+    if (currentCategoryResponse.status === 'failure') {
+        throw json(currentCategoryResponse.error);
+    }
+    if (allCategoriesResponse.status === 'failure') {
+        throw json(allCategoriesResponse.error);
+    }
+    if (categoryProductsResponse.status === 'failure') {
+        throw json(categoryProductsResponse.error);
+    }
 
-    return { category, categoryProducts, allCategories };
+    return {
+        category: currentCategoryResponse.body,
+        categoryProducts: categoryProductsResponse.body,
+        allCategories: allCategoriesResponse.body,
+    };
 };
 
 export const handle: RouteHandle<typeof loader> = {
@@ -114,4 +122,32 @@ export default function ProductsPage() {
             </div>
         </div>
     );
+}
+
+export function ErrorBoundary() {
+    const error = useRouteError();
+    const navigate = useNavigate();
+
+    if (isRouteErrorResponse(error)) {
+        let title: string;
+        let message: string | undefined;
+        if (error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+            title = 'Category Not Found';
+            message = "Unfortunately, the category page you're trying to open does not exist";
+        } else {
+            title = 'Error';
+            message = error.data.message;
+        }
+
+        return (
+            <ErrorPage
+                title={title}
+                message={message}
+                actionButtonText="Back to shopping"
+                onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+            />
+        );
+    }
+
+    throw error;
 }

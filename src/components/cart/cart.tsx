@@ -17,9 +17,10 @@ export const Cart = () => {
     const cartTotals = useCartTotals();
 
     const handleCheckout = async () => {
-        const { success, url } = await ecomAPI.checkout();
-        if (success && url) {
-            window.location.href = url;
+        const checkoutResponse = await ecomAPI.checkout();
+
+        if (checkoutResponse.status === 'success') {
+            window.location.href = checkoutResponse.body.checkoutUrl;
         } else {
             alert('Checkout failed.');
         }
