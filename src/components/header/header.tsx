@@ -1,13 +1,14 @@
-import { Link, NavLink } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import classNames from 'classnames';
 import { ROUTES } from '~/router/config';
 import styles from './header.module.scss';
-import { CartIcon } from '~/components/icons';
-import loginIcon from '~/assets/svg/user.svg';
-import { CategoryLink } from '../category-link/category-link';
+import { CartIcon, MenuIcon } from '~/components/icons';
 import { useCartOpen } from '../cart/cart-open-context';
 import { useCart } from '~/api/api-hooks';
 import { calculateCartItemsCount } from '~/api/cart-helpers';
+import { useState } from 'react';
+import { NavigationMenu } from '../navigation-menu/navigation-menu';
+import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
 
 export interface HeaderProps {
     className?: string;
@@ -19,10 +20,7 @@ export const Header = ({ className }: HeaderProps) => {
 
     const cartItemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;
 
-    const menuItemStyle = ({ isActive }: { isActive: boolean }) =>
-        classNames(styles.menuItem, {
-            [styles.active]: isActive,
-        });
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
         <header className={classNames(styles.root, className)}>
@@ -30,57 +28,33 @@ export const Header = ({ className }: HeaderProps) => {
                 <Link to={ROUTES.home.to()} className={styles.logo}>
                     ReClaim
                 </Link>
-                <div className={styles.advertisingText}>
-                    Free shipping on all intl. orders over $35
+                <div>
+                    <div className={styles.advertisingText}>
+                        Free shipping on all intl. orders over $35
+                    </div>
+                    <Link className={styles.shopNow} to={ROUTES.products.to('all-products')}>
+                        Shop Now
+                    </Link>
                 </div>
-                <Link className={styles.shopNow} to={ROUTES.products.to('all-products')}>
-                    Shop Now
-                </Link>
             </section>
             <section className={styles.navigation}>
                 <div className={styles.empty} />
-                <nav className={styles.menu}>
-                    <ul>
-                        <li>
-                            <CategoryLink categorySlug="all-products" className={menuItemStyle}>
-                                Shop All
-                            </CategoryLink>
-                        </li>
-                        <li>
-                            <CategoryLink
-                                categorySlug="kitchen-essentials"
-                                className={menuItemStyle}
-                            >
-                                Kitchen
-                            </CategoryLink>
-                        </li>
-                        <li>
-                            <CategoryLink categorySlug="bath" className={menuItemStyle}>
-                                Bath
-                            </CategoryLink>
-                        </li>
-                        <li>
-                            <CategoryLink categorySlug="on-the-go" className={menuItemStyle}>
-                                On the Go
-                            </CategoryLink>
-                        </li>
-                        <li>
-                            <NavLink to={ROUTES.aboutUs.to()} className={menuItemStyle}>
-                                About Us
-                            </NavLink>
-                        </li>
-                    </ul>
-                </nav>
+                <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
-                    <Link to="/login" className={styles.logInLink}>
-                        <img className={styles.loginIcon} src={loginIcon} alt="Login icon" />
-                        <span>Log In</span>
-                    </Link>
                     <button onClick={() => cartOpener.setIsOpen(true)}>
                         <CartIcon className={styles.cart} count={cartItemsCount} />
                     </button>
+
+                    <button
+                        className={styles.openMenuButton}
+                        onClick={() => setIsSidebarOpen(true)}
+                    >
+                        <MenuIcon width={24} height={24} />
+                    </button>
                 </div>
             </section>
+
+            <SidebarNavigationMenu open={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         </header>
     );
 };

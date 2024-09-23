@@ -1,16 +1,11 @@
-.root {
-    display: none;
+.backdrop {
     position: fixed;
     inset: 0;
-    background-color: rgba(27, 17, 13, 0.3);
-}
-
-.open {
-    display: block;
+    background-color: rgba(27, 17, 13, 0.8);
 }
 
 .drawer {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     width: 100%;

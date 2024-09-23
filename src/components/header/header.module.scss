@@ -1,28 +1,33 @@
+@import '@styles/variables.scss';
+
 :root {
     --headerTopBarHeight: 50px;
     --headerNavigationHeight: 54px;
-    --headerHeight: 104px;
+    --headerHeight: calc(var(--headerTopBarHeight) + var(--headerNavigationHeight));
 }
 
 .root {
     padding: 0 2%;
+    height: var(--headerHeight);
 }
 
 .topBar {
+    height: var(--headerTopBarHeight);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     border-bottom: 1px solid var(--black);
-    height: var(--headerTopBarHeight);
 }
 
 .logo {
-    margin-right: auto;
     font: var(--heading3);
     font-size: 26px;
 }
 
 .advertisingText {
-    margin: 0 16px;
+    display: inline-block;
+    margin-right: 16px;
     font: var(--paragraph3);
     white-space: nowrap;
 }
@@ -30,6 +35,7 @@
 .navigation {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: var(--headerNavigationHeight);
     gap: 1rem;
 }
@@ -40,13 +46,8 @@
     flex-grow: 0;
 }
 
-.navigation .menu {
-    flex-grow: 1;
-}
-
-.navigation .menu ul {
-    display: flex;
-    justify-content: center;
+.menu {
+    font: var(--paragraph3);
 }
 
 .navigation .actions {
@@ -56,42 +57,6 @@
     justify-content: flex-end;
     align-items: center;
     padding: 0 8px;
-}
-
-.menuItem {
-    display: block;
-    padding: 10px;
-    margin: 4px 8px;
-    font: var(--paragraph3);
-    line-height: 1;
-    white-space: nowrap;
-}
-
-.menuItem:hover,
-.menuItem.active {
-    text-decoration: underline;
-}
-
-.logInLink {
-    display: none;
-    align-items: center;
-    padding: 6px 7px;
-    font: var(--paragraph3);
-    white-space: nowrap;
-}
-
-.logInLink span {
-    display: inline-block;
-    padding: 0 7px;
-}
-
-.logInLink:hover span {
-    opacity: 0.7;
-}
-
-.loginIcon {
-    width: 22px;
-    height: 22px;
 }
 
 .cart {
@@ -113,5 +78,41 @@
     &:hover {
         background-color: var(--colorA2);
         color: var(--black);
+    }
+}
+
+.openMenuButton {
+    display: none;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+@media (max-width: $desktop-width) {
+    .menu {
+        display: none;
+    }
+
+    .empty {
+        display: none;
+    }
+
+    .navigation {
+        justify-content: end;
+    }
+
+    .openMenuButton {
+        display: flex;
+    }
+}
+
+@media (max-width: $tablet-width) {
+    :root {
+        --headerTopBarHeight: 80px;
+    }
+
+    .topBar {
+        flex-direction: column-reverse;
+        align-items: start;
+        justify-content: center;
     }
 }

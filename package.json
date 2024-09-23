@@ -27,6 +27,7 @@
     "js-cookie": "^3.0.5",
     "lodash.debounce": "^4.0.8",
     "react-remove-scroll": "^2.6.0",
+    "remix-utils": "^7.7.0",
     "swr": "^2.2.5"
   },
   "devDependencies": {
