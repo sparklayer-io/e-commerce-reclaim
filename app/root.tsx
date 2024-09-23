@@ -20,6 +20,10 @@ import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import { getErrorMessage } from '~/utils';
 
+import '~/styles/reset.scss';
+import '~/styles/colors.scss';
+import '~/styles/typography.scss';
+import '~/styles/common.scss';
 import '~/styles/index.scss';
 
 export const meta: MetaFunction = () => {
