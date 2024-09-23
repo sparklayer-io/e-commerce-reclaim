@@ -9,4 +9,4 @@ export { MinusIcon } from './minus-icon';
 export { PinterestIcon } from './pinterest-icon';
 export { PlusIcon } from './plus-icon';
 export { TrashIcon } from './trash-icon';
-export { WhatsappIcon } from './whatsapp-icon';
+export { WhatsAppIcon } from './whatsapp-icon';

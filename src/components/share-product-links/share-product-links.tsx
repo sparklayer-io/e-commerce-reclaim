@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FacebookIcon, PinterestIcon, WhatsappIcon } from '../icons';
+import { FacebookIcon, PinterestIcon, WhatsAppIcon } from '../icons';
 import styles from './share-product-links.module.scss';
 
 interface ShareProductLinksProps {
@@ -16,7 +16,7 @@ export const ShareProductLinks = ({ productCanonicalUrl, className }: ShareProdu
                 target="_blank"
                 rel="noreferrer"
             >
-                <WhatsappIcon className={styles.icon} />
+                <WhatsAppIcon className={styles.icon} />
             </a>
 
             <a
