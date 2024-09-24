@@ -26,7 +26,7 @@ export const Accordion = ({ items, className }: AccordionProps) => {
                         <div
                             className={styles.header}
                             {...getClickableElementAttributes(() =>
-                                setOpenItemIndex(isOpen ? null : index)
+                                setOpenItemIndex(isOpen ? null : index),
                             )}
                         >
                             <p className={styles.title}>{item.title}</p>

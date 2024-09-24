@@ -57,7 +57,7 @@ export function isEcomSDKError(error: unknown): error is EcomSDKError {
 export type EcomAPI = {
     getProductsByCategory: (
         categorySlug: string,
-        limit?: number
+        limit?: number,
     ) => Promise<EcomAPIResponse<Product[]>>;
     getPromotedProducts: () => Promise<EcomAPIResponse<Product[]>>;
     getProductBySlug: (slug: string) => Promise<EcomAPIResponse<Product>>;
@@ -65,13 +65,13 @@ export type EcomAPI = {
     getCartTotals: () => Promise<EcomAPIResponse<CartTotals>>;
     updateCartItemQuantity: (
         id: string | undefined | null,
-        quantity: number
+        quantity: number,
     ) => Promise<EcomAPIResponse<Cart>>;
     removeItemFromCart: (id: string) => Promise<EcomAPIResponse<Cart>>;
     addToCart: (
         id: string,
         quantity: number,
-        options?: Record<string, string>
+        options?: Record<string, string>,
     ) => Promise<EcomAPIResponse<Cart>>;
     checkout: () => Promise<EcomAPIResponse<{ checkoutUrl: string }>>;
     getAllCategories: () => Promise<EcomAPIResponse<Collection[]>>;

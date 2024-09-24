@@ -28,7 +28,7 @@ export const Cart = () => {
 
     const findLineItemPriceBreakdown = (item: cart.LineItem) => {
         return cartTotals.data?.calculatedLineItems.find(
-            (calculatedItem) => calculatedItem.lineItemId === item._id
+            (calculatedItem) => calculatedItem.lineItemId === item._id,
         )?.pricesBreakdown;
     };
 
@@ -79,7 +79,7 @@ export const Cart = () => {
                                 className={classNames(
                                     'button',
                                     'mutedPrimaryButton',
-                                    styles.checkoutButton
+                                    styles.checkoutButton,
                                 )}
                                 onClick={handleCheckout}
                             >

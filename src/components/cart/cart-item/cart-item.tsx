@@ -25,7 +25,7 @@ export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
 
     const updateItemQuantityDebounced = useMemo(
         () => debounce(updateItemQuantity, 300),
-        [updateItemQuantity]
+        [updateItemQuantity],
     );
 
     const handleRemove = () => {

@@ -42,7 +42,10 @@
 }
 
 .thumbnail:focus-visible::after {
-    box-shadow: inset 0 0 1px 2px #3899ec, inset 0 0 7px 0 #fff, 0 0 10px -5px #3899ec;
+    box-shadow:
+        inset 0 0 1px 2px #3899ec,
+        inset 0 0 7px 0 #fff,
+        0 0 10px -5px #3899ec;
 }
 
 .thumbnail.selected::after {

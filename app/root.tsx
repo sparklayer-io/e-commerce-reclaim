@@ -85,7 +85,7 @@ export default function App() {
 
 export function ErrorBoundary() {
     const locationRef = useRef<string | undefined>(
-        typeof window !== 'undefined' ? window.location.href : undefined
+        typeof window !== 'undefined' ? window.location.href : undefined,
     );
 
     const error = useRouteError();

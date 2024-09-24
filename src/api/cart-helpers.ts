@@ -3,7 +3,7 @@ import ecom from '@wix/ecom';
 export function findItemIdInCart(
     cart: ecom.cart.Cart & ecom.cart.CartNonNullableFields,
     catalogItemId: string,
-    options?: Record<string, string>
+    options?: Record<string, string>,
 ) {
     return cart.lineItems.find((it) => {
         if (it.catalogReference?.catalogItemId !== catalogItemId) {

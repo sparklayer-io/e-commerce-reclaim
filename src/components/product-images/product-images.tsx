@@ -11,7 +11,7 @@ interface ProductImagesProps {
 
 export const ProductImages = ({ media }: ProductImagesProps) => {
     const [selectedImage, setSelectedImage] = useState<products.MediaItem | undefined>(
-        media?.mainMedia
+        media?.mainMedia,
     );
 
     const imageItems = media?.items?.filter((item) => item.image !== undefined);

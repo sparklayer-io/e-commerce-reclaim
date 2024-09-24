@@ -14,7 +14,7 @@ export type RouteHandle<Data = unknown, LocationState = unknown> =
     | {
           breadcrumbs?: (
               match: RouteMatch<Data>,
-              location: Location<LocationState>
+              location: Location<LocationState>,
           ) => BreadcrumbData[];
       }
     | undefined;

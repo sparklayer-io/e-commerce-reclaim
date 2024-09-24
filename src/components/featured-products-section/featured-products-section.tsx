@@ -17,7 +17,7 @@ interface FeaturedProductsData {
 
 const getFeaturedProducts = async (
     categorySlug: string,
-    limit: number
+    limit: number,
 ): Promise<FeaturedProductsData | null> => {
     const api = getEcomApi();
 
@@ -56,7 +56,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
     const { title, description, productCount = 4, categorySlug, className } = props;
 
     const { data } = useSWR(`/category/${categorySlug}/featured/limit/${productCount}`, () =>
-        getFeaturedProducts(categorySlug, productCount)
+        getFeaturedProducts(categorySlug, productCount),
     );
 
     return (

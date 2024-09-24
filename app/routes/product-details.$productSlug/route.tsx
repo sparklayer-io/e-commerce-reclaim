@@ -88,7 +88,7 @@ export default function ProductDetailsPage() {
             },
             {
                 onSuccess: () => cartOpener.setIsOpen(true),
-            }
+            },
         );
     };
 

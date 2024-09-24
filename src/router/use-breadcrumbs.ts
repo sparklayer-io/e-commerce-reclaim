@@ -8,6 +8,6 @@ export function useBreadcrumbs(): BreadcrumbData[] {
 
     return useMemo(
         () => matches.flatMap((match) => match.handle?.breadcrumbs?.(match, location) ?? []),
-        [matches, location]
+        [matches, location],
     );
 }

@@ -50,7 +50,7 @@ export const useAddToCart = () => {
             if (itemInCart) {
                 const updateCartItemQuantityResponse = await ecomApi.updateCartItemQuantity(
                     itemInCart._id,
-                    (itemInCart.quantity ?? 0) + arg.quantity
+                    (itemInCart.quantity ?? 0) + arg.quantity,
                 );
                 if (updateCartItemQuantityResponse.status === 'failure') {
                     throw updateCartItemQuantityResponse.error;
@@ -67,7 +67,7 @@ export const useAddToCart = () => {
         {
             revalidate: false,
             populateCache: true,
-        }
+        },
     );
 };
 
@@ -85,7 +85,7 @@ export const useUpdateCartItemQuantity = () => {
         {
             revalidate: false,
             populateCache: true,
-        }
+        },
     );
 };
 
@@ -103,6 +103,6 @@ export const useRemoveItemFromCart = () => {
         {
             revalidate: false,
             populateCache: true,
-        }
+        },
     );
 };

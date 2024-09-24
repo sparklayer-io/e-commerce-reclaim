@@ -29,8 +29,8 @@ function getWixClientId() {
         typeof window !== 'undefined' && window.ENV
             ? window.ENV
             : typeof process !== 'undefined'
-            ? process.env
-            : {};
+              ? process.env
+              : {};
 
     return env.WIX_CLIENT_ID ?? DEMO_STORE_WIX_CLIENT_ID;
 }
@@ -145,7 +145,7 @@ function createApi(): EcomAPI {
             } catch (e) {
                 return failureResponse(
                     EcomApiErrorCodes.UpdateCartItemQuantityFailure,
-                    getErrorMessage(e)
+                    getErrorMessage(e),
                 );
             }
         },
@@ -214,7 +214,7 @@ function createApi(): EcomAPI {
             } catch (e) {
                 return failureResponse(
                     EcomApiErrorCodes.CreateCheckoutRedirectSessionFailure,
-                    getErrorMessage(e)
+                    getErrorMessage(e),
                 );
             }
         },
