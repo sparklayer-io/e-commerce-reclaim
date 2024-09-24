@@ -6,6 +6,7 @@ import {
     useNavigate,
     useRouteError,
 } from '@remix-run/react';
+import { products } from '@wix/stores';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useAddToCart } from '~/api/api-hooks';
@@ -92,6 +93,8 @@ export default function ProductDetailsPage() {
         );
     };
 
+    const isOutOfStock = product.stock?.inventoryStatus === products.InventoryStatus.OUT_OF_STOCK;
+
     return (
         <div className={styles.page}>
             <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -124,9 +127,9 @@ export default function ProductDetailsPage() {
                     <button
                         className={classNames('button', 'primaryButton', styles.addToCartButton)}
                         onClick={handleAddToCartClick}
-                        disabled={isAddingToCart}
+                        disabled={isOutOfStock || isAddingToCart}
                     >
-                        Add to Cart
+                        {isOutOfStock ? 'Out of stock' : 'Add to Cart'}
                     </button>
 
                     {product.additionalInfoSections &&

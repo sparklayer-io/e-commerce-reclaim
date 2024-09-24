@@ -8,9 +8,16 @@ interface ProductCardProps {
     imageUrl?: string;
     priceData?: products.PriceData;
     ribbon?: string;
+    inventoryStatus?: products.InventoryStatus;
 }
 
-export const ProductCard = ({ name, imageUrl, priceData, ribbon }: ProductCardProps) => {
+export const ProductCard = ({
+    name,
+    imageUrl,
+    priceData,
+    ribbon,
+    inventoryStatus,
+}: ProductCardProps) => {
     return (
         <div>
             <div className={styles.imageWrapper}>
@@ -23,8 +30,13 @@ export const ProductCard = ({ name, imageUrl, priceData, ribbon }: ProductCardPr
                 {ribbon && <span className={styles.ribbon}>{ribbon}</span>}
             </div>
 
-            <p className={styles.name}>{name}</p>
-            {priceData && <ProductPrice priceData={priceData} className={styles.price} />}
+            <div className={styles.name}>{name}</div>
+
+            {inventoryStatus === products.InventoryStatus.OUT_OF_STOCK ? (
+                <div className={styles.outOfStock}>Out of stock</div>
+            ) : (
+                priceData && <ProductPrice priceData={priceData} className={styles.price} />
+            )}
         </div>
     );
 };

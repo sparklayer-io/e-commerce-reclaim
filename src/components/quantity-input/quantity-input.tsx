@@ -8,9 +8,16 @@ type QuantityInputProps = {
     onChange: (value: number) => void;
     id?: string;
     className?: string;
+    disabled?: boolean;
 };
 
-export const QuantityInput = ({ value, onChange, id, className }: QuantityInputProps) => {
+export const QuantityInput = ({
+    value,
+    onChange,
+    id,
+    className,
+    disabled = false,
+}: QuantityInputProps) => {
     const [internalValue, setInternalValue] = useState<string | undefined>();
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -25,8 +32,8 @@ export const QuantityInput = ({ value, onChange, id, className }: QuantityInputP
     const decrement = () => onChange(Math.max(1, Math.ceil(value - 1)));
 
     return (
-        <div className={classNames(styles.root, className)}>
-            <button className={styles.button} onClick={decrement} disabled={value <= 1}>
+        <div className={classNames(styles.root, { [styles.disabled]: disabled }, className)}>
+            <button className={styles.button} onClick={decrement} disabled={value <= 1 || disabled}>
                 <MinusIcon className={styles.icon} />
             </button>
             <input
@@ -37,8 +44,9 @@ export const QuantityInput = ({ value, onChange, id, className }: QuantityInputP
                 value={internalValue ?? value}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                disabled={disabled}
             />
-            <button className={styles.button} onClick={increment}>
+            <button className={styles.button} onClick={increment} disabled={disabled}>
                 <PlusIcon className={styles.icon} />
             </button>
         </div>

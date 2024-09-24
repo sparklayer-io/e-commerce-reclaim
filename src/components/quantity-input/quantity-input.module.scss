@@ -36,3 +36,7 @@
     font-size: 14px;
     text-align: center;
 }
+
+.input:disabled {
+    color: var(--colorA3);
+}

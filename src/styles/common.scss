@@ -58,6 +58,7 @@
 }
 
 .button:disabled {
+    border-color: transparent;
     background-color: var(--colorA3);
     color: var(--colorA1);
     cursor: default;

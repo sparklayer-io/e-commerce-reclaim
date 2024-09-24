@@ -117,6 +117,7 @@ export default function ProductsPage() {
                                         imageUrl={product.media?.mainMedia?.image?.url}
                                         priceData={product.priceData}
                                         ribbon={product.ribbon ?? undefined}
+                                        inventoryStatus={product.stock?.inventoryStatus}
                                     />
                                 </ProductLink>
                             </FadeIn>
