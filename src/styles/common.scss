@@ -206,7 +206,7 @@
 .textBannerSubtitle {
     font-family: var(--text-font);
     line-height: 1.4;
-    font-size: 1.3vw;
+    font-size: max(1.3vw, 16px);
     text-transform: uppercase;
     white-space: nowrap;
     margin-bottom: 1%;
@@ -217,6 +217,37 @@
     font-size: 4.3vw;
     line-height: 1.1em;
     margin-bottom: 1%;
+}
+
+@media (max-width: $desktop-width) {
+    .textBanner {
+        padding: 70px 14%;
+    }
+
+    .textBannerSubtitle {
+        font-size: 1.8vw;
+        margin-bottom: 2%;
+    }
+}
+
+@media (max-width: $tablet-width) {
+    .textBanner {
+        padding: 70px 0;
+    }
+
+    .textBannerSubtitle {
+        font-size: 14px;
+    }
+
+    .textBannerTitle {
+        font-size: 6.3vw;
+    }
+}
+
+@media (max-width: $mobile-width) {
+    .textBannerTitle {
+        font-size: 30px;
+    }
 }
 
 /* Link Card ******************************************************************/
