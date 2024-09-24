@@ -36,7 +36,7 @@ export default function HomePage() {
             </div>
 
             <div className="rowOfCards">
-                <CategoryLink categorySlug="kitchen" className="linkCard">
+                <CategoryLink categorySlug="kitchen-essentials" className="linkCard">
                     <img
                         className="linkCardBackground"
                         src="https://static.wixstatic.com/media/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg/v1/fill/w_547,h_730,q_90/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg"
