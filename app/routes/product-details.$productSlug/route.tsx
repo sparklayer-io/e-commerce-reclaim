@@ -35,10 +35,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         throw json(productResponse.error);
     }
 
-    return json({
+    return {
         product: productResponse.body,
         canonicalUrl: removeQueryStringFromUrl(request.url),
-    });
+    };
 };
 
 interface ProductDetailsLocationState {
