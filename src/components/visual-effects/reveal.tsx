@@ -23,7 +23,11 @@ export const Reveal: FC<RevealProps> = ({ direction = 'down', duration = 1.4, ..
                 left: 'inset(0 0 0 100%)',
             }[direction],
         }}
-        whileInView={{ clipPath: 'none' }}
+        whileInView={{
+            clipPath: 'inset(0 0 0 0)',
+            // Prevent clipping outline and box-shadow after transition.
+            transitionEnd: { clipPath: '' },
+        }}
         viewport={{ once: true }}
         {...props}
     />
