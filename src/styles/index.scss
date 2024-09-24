@@ -20,3 +20,9 @@ body {
     min-height: 100vh;
     background-color: var(--colorA1);
 }
+
+:focus-visible {
+    box-shadow:
+        0 0 0 1px #ffffff,
+        0 0 0 3px #116dff;
+}
