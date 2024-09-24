@@ -144,6 +144,66 @@
     }
 }
 
+/* Hero Banner ****************************************************************/
+
+.heroBanner {
+    --marginBottom: 2vw;
+    --bannerHeight: calc(100vh - var(--headerHeight) - var(--marginBottom));
+    margin-bottom: var(--marginBottom);
+    height: var(--bannerHeight);
+    position: relative;
+    color: var(--colorA1);
+    background-color: var(--black);
+}
+
+.heroBannerOverlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+    padding: 40px;
+}
+
+.heroBannerImage {
+    opacity: 0.8;
+    object-fit: cover;
+    object-position: 50% 50%;
+    height: 100%;
+    width: 100%;
+}
+
+.heroBannerSubtitle {
+    width: 54%;
+    letter-spacing: 0.2em;
+    padding-bottom: 12px;
+}
+
+.heroBannerTitle {
+    font: var(--heading1);
+    font-size: 6vw;
+    text-transform: uppercase;
+}
+
+@media (max-width: $desktop-width) {
+    .heroBanner {
+        --marginBottom: 4vw;
+        margin-left: 2vw;
+        margin-right: 2vw;
+    }
+}
+
+@media (max-width: $tablet-width) {
+    .heroBanner {
+        --marginBottom: 8vw;
+        margin-left: 6vw;
+        margin-right: 6vw;
+    }
+}
+
 /* Text Banner ****************************************************************/
 
 .textBannerSection {

@@ -8,15 +8,15 @@ import styles from './index.module.scss';
 export default function HomePage() {
     return (
         <>
-            <div className={styles.heroBanner}>
+            <div className="heroBanner">
                 <img
                     src="https://static.wixstatic.com/media/32aab9_2c3c65e142434906992aedb17db53566~mv2.jpg"
-                    className={styles.heroBannerImage}
+                    className="heroBannerImage"
                     alt=""
                 />
-                <div className={styles.heroBannerOverlay}>
-                    <div className={styles.heroBannerSubtitle}>ReClaim</div>
-                    <h1 className={styles.heroBannerTitle}>Reuse. Repurpose. Relove.</h1>
+                <div className="heroBannerOverlay">
+                    <div className="heroBannerSubtitle">ReClaim</div>
+                    <h1 className="heroBannerTitle">Reuse. Repurpose. Relove.</h1>
                     <CategoryLink categorySlug="all-products">
                         <LabelWithArrow>Shop Collections</LabelWithArrow>
                     </CategoryLink>
