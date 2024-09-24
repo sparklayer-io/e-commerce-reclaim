@@ -39,7 +39,9 @@ export function getErrorMessage(value: unknown): string {
     }
 
     if (isRouteErrorResponse(value)) {
-        return value.data;
+        if (typeof value.data === 'string') return value.data;
+        else if (typeof value.data.message === 'string') return value.data.message;
+        else return String(value.data);
     }
 
     if (isEcomSDKError(value)) {
