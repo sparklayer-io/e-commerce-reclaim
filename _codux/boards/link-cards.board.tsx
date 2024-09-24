@@ -3,7 +3,7 @@ import { createBoard } from '@wixc3/react-board';
 export default createBoard({
     name: 'Link Cards',
     Board: () => (
-        <div className="rowOfCards">
+        <div className="cardGroup">
             <a className="linkCard" href="about:blank">
                 <img
                     className="linkCardBackground"

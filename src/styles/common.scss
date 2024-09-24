@@ -248,6 +248,7 @@
 /* Link Card ******************************************************************/
 
 .linkCard {
+    container-type: inline-size;
     position: relative;
     isolation: isolate;
     display: grid;
@@ -278,6 +279,12 @@
     color: var(--colorA1);
     font: var(--heading4);
     text-align: center;
+}
+
+@container (max-width: 300px) {
+    .linkCardTitle {
+        font-size: 30px;
+    }
 }
 
 /* Floating Card **************************************************************/
@@ -323,18 +330,32 @@
     text-wrap: balance;
 }
 
+/* Card Group *****************************************************************/
+
+.cardGroup {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 5%;
+}
+
+.cardGroup > * {
+    aspect-ratio: 0.75;
+    flex: 1 1 0;
+}
+
+@media (max-width: $tablet-width) {
+    .cardGroup {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cardGroup > * {
+        flex: 0;
+    }
+}
+
 /* Miscellaneous **************************************************************/
 
 .alternateBackground {
     background-color: var(--colorA3);
-}
-
-.rowOfCards {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    gap: 4px;
-    width: 100%;
-    margin-bottom: 5%;
-    aspect-ratio: 2.26;
 }
