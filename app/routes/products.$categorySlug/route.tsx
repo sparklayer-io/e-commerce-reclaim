@@ -19,6 +19,7 @@ import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import styles from './products.module.scss';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
+import { getErrorMessage } from '~/utils';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const categorySlug = params.categorySlug;
@@ -131,26 +132,20 @@ export function ErrorBoundary() {
     const error = useRouteError();
     const navigate = useNavigate();
 
-    if (isRouteErrorResponse(error)) {
-        let title: string;
-        let message: string | undefined;
-        if (error.data.code === EcomApiErrorCodes.CategoryNotFound) {
-            title = 'Category Not Found';
-            message = "Unfortunately, the category page you're trying to open does not exist";
-        } else {
-            title = 'Error';
-            message = error.data.message;
-        }
+    let title = 'Error';
+    let message = getErrorMessage(error);
 
-        return (
-            <ErrorPage
-                title={title}
-                message={message}
-                actionButtonText="Back to shopping"
-                onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
-            />
-        );
+    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+        title = 'Category Not Found';
+        message = "Unfortunately, the category page you're trying to open does not exist";
     }
 
-    throw error;
+    return (
+        <ErrorPage
+            title={title}
+            message={message}
+            actionButtonText="Back to shopping"
+            onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+        />
+    );
 }
