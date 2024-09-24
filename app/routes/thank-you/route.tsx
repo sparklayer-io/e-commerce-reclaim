@@ -6,8 +6,7 @@ import { CategoryLink } from '~/components/category-link/category-link';
 import { ErrorPage } from '~/components/error-page/error-page';
 import { OrderSummary } from '~/components/order-summary/order-summary';
 import { getErrorMessage } from '~/utils';
-
-import styles from './thank-you.module.scss';
+import styles from './route.module.scss';
 
 export const loader = async ({
     request,

@@ -22,8 +22,8 @@ import { ShareProductLinks } from '~/components/share-product-links/share-produc
 import { ROUTES } from '~/router/config';
 import { BreadcrumbData, RouteHandle } from '~/router/types';
 import { getErrorMessage, removeQueryStringFromUrl } from '~/utils';
-import styles from './product-details.module.scss';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
+import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const productSlug = params.productSlug;

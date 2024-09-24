@@ -17,9 +17,9 @@ import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn } from '~/components/visual-effects';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
-import styles from './products.module.scss';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 import { getErrorMessage } from '~/utils';
+import styles from './route.module.scss';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const categorySlug = params.categorySlug;

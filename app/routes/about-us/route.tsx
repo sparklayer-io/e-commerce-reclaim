@@ -1,5 +1,5 @@
 import { FadeIn, Reveal } from '~/components/visual-effects';
-import styles from './about-us.module.scss';
+import styles from './route.module.scss';
 
 export default function AboutUsPage() {
     return (

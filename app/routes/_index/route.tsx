@@ -3,7 +3,7 @@ import { FeaturedProductsSection } from '~/components/featured-products-section/
 import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
 import { BackgroundParallax, FadeIn, FloatIn } from '~/components/visual-effects';
 
-import styles from './index.module.scss';
+import styles from './route.module.scss';
 
 export default function HomePage() {
     return (
