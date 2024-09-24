@@ -1,8 +1,8 @@
 @import '@styles/variables.scss';
 
 .root {
-    margin: 0 -2%;
-    padding: 75px 2%;
+    margin: 0 calc(-1 * var(--pagePaddingHoriz));
+    padding: 75px var(--pagePaddingHoriz);
 }
 
 .header {
@@ -35,11 +35,6 @@
 }
 
 @media (max-width: $desktop-width) {
-    .root {
-        padding-left: 4%;
-        padding-right: 4%;
-    }
-
     .headerDescription {
         font-size: 16px;
     }

@@ -147,9 +147,8 @@
 /* Hero Banner ****************************************************************/
 
 .heroBanner {
-    --marginBottom: 2vw;
-    --bannerHeight: calc(100vh - var(--headerHeight) - var(--marginBottom));
-    margin-bottom: var(--marginBottom);
+    --bannerHeight: calc(100vh - var(--headerHeight) - var(--pagePaddingHoriz));
+    margin-bottom: var(--pagePaddingHoriz);
     height: var(--bannerHeight);
     position: relative;
     color: var(--colorA1);
@@ -186,22 +185,6 @@
     font: var(--heading1);
     font-size: 6vw;
     text-transform: uppercase;
-}
-
-@media (max-width: $desktop-width) {
-    .heroBanner {
-        --marginBottom: 4vw;
-        margin-left: 2vw;
-        margin-right: 2vw;
-    }
-}
-
-@media (max-width: $tablet-width) {
-    .heroBanner {
-        --marginBottom: 8vw;
-        margin-left: 6vw;
-        margin-right: 6vw;
-    }
 }
 
 /* Text Banner ****************************************************************/
