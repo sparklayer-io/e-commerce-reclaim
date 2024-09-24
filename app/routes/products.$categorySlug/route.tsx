@@ -19,6 +19,7 @@ import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 import { getErrorMessage } from '~/utils';
+
 import styles from './route.module.scss';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -104,6 +105,7 @@ export default function ProductsPage() {
                         {categoryProducts.map((product) => (
                             <FadeIn key={product._id} duration={0.9}>
                                 <ProductLink
+                                    className={styles.productLink}
                                     productSlug={product.slug!}
                                     state={{
                                         fromCategory: {

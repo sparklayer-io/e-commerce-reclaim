@@ -59,6 +59,10 @@
     gap: 20px 4px;
 }
 
+.productLink {
+    display: block;
+}
+
 @media (max-width: $desktop-width) {
     .productsList {
         --minCardSize: 250px;
