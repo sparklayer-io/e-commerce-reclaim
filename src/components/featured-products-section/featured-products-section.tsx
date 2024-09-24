@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import useSWR from 'swr';
 import { getEcomApi } from '~/api/ecom-api';
 import { CollectionDetails, isEcomSDKError } from '~/api/types';
-import { ProductCard } from '~/components/product-card/product-card';
+import { ProductCard, ProductCardSkeleton } from '~/components/product-card/product-card';
 import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn, Reveal } from '~/components/visual-effects';
 
@@ -67,20 +67,22 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                     {description ?? data?.category.description}
                 </div>
             </FadeIn>
-            {data && (
-                <Reveal direction="down" className={styles.productsRow}>
-                    {data.products.map((product) => (
-                        <ProductLink key={product._id} productSlug={product.slug!}>
-                            <ProductCard
-                                name={product.name!}
-                                imageUrl={product.media?.mainMedia?.image?.url}
-                                priceData={product.priceData}
-                                ribbon={product.ribbon ?? undefined}
-                            />
-                        </ProductLink>
-                    ))}
-                </Reveal>
-            )}
+            <Reveal direction="down" className={styles.productsRow}>
+                {data
+                    ? data.products.map((product) => (
+                          <ProductLink key={product._id} productSlug={product.slug!}>
+                              <ProductCard
+                                  name={product.name!}
+                                  imageUrl={product.media?.mainMedia?.image?.url}
+                                  priceData={product.priceData}
+                                  ribbon={product.ribbon ?? undefined}
+                              />
+                          </ProductLink>
+                      ))
+                    : Array.from({ length: productCount }).map((_, i) => (
+                          <ProductCardSkeleton key={i} />
+                      ))}
+            </Reveal>
         </div>
     );
 };
