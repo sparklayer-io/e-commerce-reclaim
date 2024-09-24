@@ -1,11 +1,13 @@
-import { useLoaderData, json, isRouteErrorResponse, useRouteError } from '@remix-run/react';
 import type { LoaderFunctionArgs } from '@remix-run/node';
+import { isRouteErrorResponse, json, useLoaderData, useRouteError } from '@remix-run/react';
 import { getEcomApi } from '~/api/ecom-api';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { OrderSummary } from '~/components/order-summary/order-summary';
-import styles from './thank-you.module.scss';
-import { ErrorPage } from '~/components/error-page/error-page';
 import { OrderDetails } from '~/api/types';
+import { CategoryLink } from '~/components/category-link/category-link';
+import { ErrorPage } from '~/components/error-page/error-page';
+import { OrderSummary } from '~/components/order-summary/order-summary';
+import { getErrorMessage } from '~/utils';
+
+import styles from './thank-you.module.scss';
 
 export const loader = async ({
     request,
@@ -44,6 +46,7 @@ export default function ThankYouPage() {
 
 export function ErrorBoundary() {
     const error = useRouteError();
-    if (!isRouteErrorResponse(error)) throw error;
-    return <ErrorPage title="Failed to load order details" message={error.data.message} />;
+    const title = isRouteErrorResponse(error) ? 'Failed to load order details' : 'Error';
+    const message = getErrorMessage(error);
+    return <ErrorPage title={title} message={message} />;
 }
