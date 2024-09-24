@@ -1,3 +1,5 @@
+@import '@styles/variables.scss';
+
 .root {
     margin: 0 -2%;
     padding: 75px 2%;
@@ -30,4 +32,43 @@
     grid-auto-flow: column;
     gap: 4px;
     width: 100%;
+}
+
+@media (max-width: $desktop-width) {
+    .root {
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .headerDescription {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: $tablet-width) {
+    .root {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .header {
+        display: block;
+        font-size: 30px;
+        margin-bottom: 40px;
+    }
+
+    .headerTitle {
+        font-size: 30px;
+        margin-bottom: 16px;
+    }
+
+    .headerDescription {
+        font-size: 14px;
+    }
+
+    .productsRow {
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+        grid-auto-flow: row;
+        gap: 26px 10px;
+    }
 }
