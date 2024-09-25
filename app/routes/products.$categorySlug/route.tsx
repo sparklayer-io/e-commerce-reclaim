@@ -117,7 +117,10 @@ export default function ProductsPage() {
                                     <ProductCard
                                         name={product.name!}
                                         imageUrl={product.media?.mainMedia?.image?.url}
-                                        priceData={product.priceData}
+                                        price={product.priceData?.formatted?.price}
+                                        discountedPrice={
+                                            product.priceData?.formatted?.discountedPrice
+                                        }
                                         ribbon={product.ribbon ?? undefined}
                                         inventoryStatus={product.stock?.inventoryStatus}
                                     />

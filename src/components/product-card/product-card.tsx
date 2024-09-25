@@ -6,7 +6,15 @@ import { ImagePlaceholderIcon } from '../icons';
 interface ProductCardProps {
     name: string;
     imageUrl?: string;
-    priceData?: products.PriceData;
+    /**
+     * Product price formatted with the currency.
+     */
+    price?: string;
+    /**
+     * Discounted product price formatted with the currency.
+     * It is displayed if it's not equal to the main price.
+     */
+    discountedPrice?: string;
     ribbon?: string;
     inventoryStatus?: products.InventoryStatus;
 }
@@ -14,7 +22,8 @@ interface ProductCardProps {
 export const ProductCard = ({
     name,
     imageUrl,
-    priceData,
+    price,
+    discountedPrice,
     ribbon,
     inventoryStatus,
 }: ProductCardProps) => {
@@ -35,7 +44,11 @@ export const ProductCard = ({
             {inventoryStatus === products.InventoryStatus.OUT_OF_STOCK ? (
                 <div className={styles.outOfStock}>Out of stock</div>
             ) : (
-                priceData && <ProductPrice priceData={priceData} className={styles.price} />
+                <ProductPrice
+                    className={styles.price}
+                    price={price}
+                    discountedPrice={discountedPrice}
+                />
             )}
         </div>
     );

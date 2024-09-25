@@ -52,10 +52,7 @@ export default createBoard({
                     name="Bamboo Toothbrush"
                     imageUrl="https://static.wixstatic.com/media/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg/v1/fill/w_824,h_1098,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg"
                     ribbon="NEW"
-                    priceData={{
-                        currency: '$',
-                        price: 5.5,
-                    }}
+                    price="$5.5"
                 />
                 <span className={styles.fontDetails}>Product Card</span>
                 <h4>Product gallery missing</h4>

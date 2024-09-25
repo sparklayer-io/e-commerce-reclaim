@@ -74,7 +74,8 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                               <ProductCard
                                   name={product.name!}
                                   imageUrl={product.media?.mainMedia?.image?.url}
-                                  priceData={product.priceData}
+                                  price={product.priceData?.formatted?.price}
+                                  discountedPrice={product.priceData?.formatted?.discountedPrice}
                                   ribbon={product.ribbon ?? undefined}
                               />
                           </ProductLink>

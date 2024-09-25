@@ -107,7 +107,11 @@ export default function ProductDetailsPage() {
                     {product.sku && <p className={styles.sku}>SKU: {product.sku}</p>}
 
                     {product.priceData && (
-                        <ProductPrice priceData={product.priceData} className={styles.price} />
+                        <ProductPrice
+                            className={styles.price}
+                            price={product.priceData.formatted?.price}
+                            discountedPrice={product.priceData.formatted?.discountedPrice}
+                        />
                     )}
 
                     {product.description && (
