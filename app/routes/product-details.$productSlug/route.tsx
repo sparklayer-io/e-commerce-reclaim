@@ -55,7 +55,7 @@ export const handle: RouteHandle<typeof loader, ProductDetailsLocationState> = {
 
         const breadcrumbs: BreadcrumbData[] = [
             {
-                title: match.data.product.slug!,
+                title: match.data.product.name!,
                 to: ROUTES.productDetails.to(match.data.product.slug!),
             },
         ];
