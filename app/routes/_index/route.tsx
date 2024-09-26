@@ -33,7 +33,7 @@ export default function HomePage() {
                 </FadeIn>
             </div>
 
-            <div className="cardGroup">
+            <div className="cardsSection">
                 <CategoryLink categorySlug="kitchen-essentials" className="linkCard">
                     <img
                         className="linkCardBackground"

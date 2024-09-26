@@ -3,7 +3,7 @@ import { createBoard } from '@wixc3/react-board';
 export default createBoard({
     name: 'Link Cards',
     Board: () => (
-        <div className="cardGroup">
+        <div className="cardsSection">
             <a className="linkCard" href="about:blank">
                 <img
                     className="linkCardBackground"
@@ -31,7 +31,7 @@ export default createBoard({
         </div>
     ),
     environmentProps: {
-        windowWidth: 600,
-        windowHeight: 270,
+        windowWidth: 800,
+        windowHeight: 390,
     },
 });

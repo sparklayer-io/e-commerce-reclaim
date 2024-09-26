@@ -336,26 +336,26 @@
     }
 }
 
-/* Card Group *****************************************************************/
+/* Cards Section **************************************************************/
 
-.cardGroup {
+.cardsSection {
     display: flex;
     gap: 4px;
     margin-bottom: 5%;
 }
 
-.cardGroup > * {
+.cardsSection > * {
     aspect-ratio: 0.75;
     flex: 1 1 0;
 }
 
 @media (max-width: $tablet-width) {
-    .cardGroup {
+    .cardsSection {
         flex-direction: column;
         gap: 8px;
     }
 
-    .cardGroup > * {
+    .cardsSection > * {
         flex: 0;
     }
 }
