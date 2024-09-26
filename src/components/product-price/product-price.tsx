@@ -8,7 +8,7 @@ interface ProductPriceProps {
 }
 
 export const ProductPrice = ({ price, discountedPrice, className }: ProductPriceProps) => {
-    const hasDiscount = price !== discountedPrice;
+    const hasDiscount = discountedPrice && price !== discountedPrice;
     return (
         <div className={classNames(styles.root, className)}>
             {hasDiscount && <span className={styles.beforeDiscount}>{price}</span>}
