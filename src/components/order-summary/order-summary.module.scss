@@ -7,12 +7,12 @@
 
 .section {
     padding: 40px;
-    border: 1px solid var(--colorA2);
+    border: 1px solid var(--primary2);
 }
 
 .divider {
     height: 1px;
-    background: var(--colorA2);
+    background: var(--primary2);
     border: none;
     margin: 20px 0;
 }
@@ -31,7 +31,7 @@
 
 .note {
     font: var(--paragraph3);
-    color: var(--colorB3);
+    color: var(--secondary3);
 }
 
 .priceSummary {

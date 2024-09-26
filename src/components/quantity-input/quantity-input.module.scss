@@ -8,7 +8,7 @@
 }
 
 .root:focus-within {
-    border-color: var(--colorA5);
+    border-color: var(--primary5);
 }
 
 .button {
@@ -21,7 +21,7 @@
 }
 
 .button:disabled {
-    color: var(--colorA3);
+    color: var(--primary3);
     cursor: default;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .input:disabled {
-    color: var(--colorA3);
+    color: var(--primary3);
 }
 
 .input:focus-visible {

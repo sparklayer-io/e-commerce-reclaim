@@ -1,6 +1,6 @@
 :root {
     font: var(--paragraph1);
-    color: var(--colorA5);
+    color: var(--primary5);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -15,7 +15,7 @@ body {
     justify-content: center;
     min-width: 320px;
     min-height: 100vh;
-    background-color: var(--colorA1);
+    background-color: var(--primary1);
 }
 
 :focus-visible {

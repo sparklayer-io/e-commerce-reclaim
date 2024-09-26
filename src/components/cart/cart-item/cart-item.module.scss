@@ -56,7 +56,7 @@
 .root .quantityInput {
     width: 96px;
     height: 32px;
-    border-color: var(--colorA5);
+    border-color: var(--primary5);
 }
 
 .root .quantityInput button {
@@ -64,7 +64,7 @@
 }
 
 .root .quantityInputDisabled {
-    border-color: var(--colorA3);
+    border-color: var(--primary3);
 }
 
 .root.loading {

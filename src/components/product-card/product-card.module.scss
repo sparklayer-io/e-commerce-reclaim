@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--colorA2);
+    background-color: var(--primary2);
 }
 
 .image {
@@ -17,7 +17,7 @@
     width: 60%;
     max-width: 100px;
     min-width: 50px;
-    color: var(--colorA4);
+    color: var(--primary4);
 }
 
 .ribbon {
@@ -26,7 +26,7 @@
     left: 4%;
     padding: 2px 12px;
     border-radius: 40px;
-    background-color: var(--colorA2);
+    background-color: var(--primary2);
     font: var(--paragraph3);
 }
 
@@ -44,7 +44,7 @@
 }
 
 .outOfStock {
-    color: var(--colorA4);
+    color: var(--primary4);
 }
 
 .skeleton > .imageWrapper {
