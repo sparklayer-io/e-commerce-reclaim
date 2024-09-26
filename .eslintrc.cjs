@@ -50,6 +50,10 @@ module.exports = {
             rules: {
                 'jsx-a11y/click-events-have-key-events': 'off',
                 'jsx-a11y/no-static-element-interactions': 'off',
+                'import/no-extraneous-dependencies': [
+                    'error',
+                    { devDependencies: ['_codux/**/*'] },
+                ],
             },
         },
 
@@ -77,6 +81,10 @@ module.exports = {
             rules: {
                 '@typescript-eslint/no-explicit-any': 'off',
                 'react/jsx-no-target-blank': 'off',
+                'import/no-extraneous-dependencies': [
+                    'error',
+                    { devDependencies: ['_codux/**/*', 'vite.config.ts'] },
+                ],
             },
         },
 
