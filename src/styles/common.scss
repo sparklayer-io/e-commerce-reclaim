@@ -365,3 +365,14 @@
 .alternateBackground {
     background-color: var(--primary3);
 }
+
+.ribbon {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2px 12px;
+    border-radius: 100px;
+    background-color: var(--primary2);
+    font: var(--paragraph3);
+    text-transform: uppercase;
+    white-space: nowrap;
+}

@@ -1,5 +1,3 @@
-@import '@styles/typography.scss';
-
 .container {
     width: 420px;
     padding: 16px;
@@ -46,50 +44,11 @@
 
 .variantName {
     font-size: 9px;
-    font-weight: 800;
-    line-height: 7px;
-}
-
-.fontDetails {
-    font-size: 9px;
     font-weight: 400;
     line-height: 8px;
     max-width: 244px;
 }
 
-.headlinesSpacing {
-    margin-top: 10px;
-}
-
-.paragraphSpacing {
-    margin-top: 14px;
-    margin-bottom: 30px;
-}
-
-.heading1 {
-    font: var(--heading1);
-    width: 110%;
-}
-
-.heading2 {
-    font: var(--heading2);
-}
-
-.paragraph1 {
-    font: var(--paragraph1);
-}
-
-.paragraph2 {
-    font: var(--paragraph2);
-    font-stretch: expanded;
-}
-
 .accordion {
     width: 70%;
-}
-.quantityInput {
-    background-color: var(--primary1);
-}
-.quantityInput1 {
-    background-color: var(--primary1);
 }
