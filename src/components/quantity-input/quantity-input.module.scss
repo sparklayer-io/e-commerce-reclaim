@@ -40,3 +40,7 @@
 .input:disabled {
     color: var(--colorA3);
 }
+
+.input:focus-visible {
+    box-shadow: none;
+}
