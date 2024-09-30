@@ -1,0 +1,94 @@
+.slidersContainer {
+    position: relative;
+    height: 12px;
+}
+
+.input {
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.trackInput::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        var(--secondary2) var(--start),
+        var(--primary5) var(--start),
+        var(--primary5) var(--end),
+        var(--secondary2) var(--end)
+    );
+}
+
+.trackInput::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        var(--secondary2) var(--start),
+        var(--primary5) var(--start),
+        var(--primary5) var(--end),
+        var(--secondary2) var(--end)
+    );
+}
+
+.trackInput::-webkit-slider-thumb {
+    visibility: hidden;
+}
+
+.trackInput::-moz-range-thumb {
+    visibility: hidden;
+}
+
+.thumbInput {
+    pointer-events: none;
+}
+
+.thumbInput::-webkit-slider-thumb {
+    appearance: none;
+    pointer-events: auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary5);
+    cursor: pointer;
+}
+
+.thumbInput::-moz-range-thumb {
+    appearance: none;
+    pointer-events: auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary5);
+    cursor: pointer;
+}
+
+.thumbInput:focus-visible {
+    box-shadow: none;
+}
+
+.thumbInput:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+        0 0 0 1px #ffffff,
+        0 0 0 3px #116dff;
+}
+
+.thumbInput:focus-visible::-moz-range-thumb {
+    box-shadow:
+        0 0 0 1px #ffffff,
+        0 0 0 3px #116dff;
+}
+
+.values {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}
