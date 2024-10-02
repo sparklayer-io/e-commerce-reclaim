@@ -1,3 +1,11 @@
+:where(.root) {
+    /* Default slider styles. Customize them by passing a className to the component. */
+    --track-color: #b2b2b2;
+    --selected-range-color: #0175ff;
+    --thumb-color: #0175ff;
+    --thumb-focus-ring-color: #0175ff;
+}
+
 .slidersContainer {
     position: relative;
     height: 12px;
@@ -18,10 +26,10 @@
     height: 2px;
     background: linear-gradient(
         to right,
-        var(--secondary2) var(--start),
-        var(--primary5) var(--start),
-        var(--primary5) var(--end),
-        var(--secondary2) var(--end)
+        var(--track-color) var(--start),
+        var(--selected-range-color) var(--start),
+        var(--selected-range-color) var(--end),
+        var(--track-color) var(--end)
     );
 }
 
@@ -30,10 +38,10 @@
     height: 2px;
     background: linear-gradient(
         to right,
-        var(--secondary2) var(--start),
-        var(--primary5) var(--start),
-        var(--primary5) var(--end),
-        var(--secondary2) var(--end)
+        var(--track-color) var(--start),
+        var(--selected-range-color) var(--start),
+        var(--selected-range-color) var(--end),
+        var(--track-color) var(--end)
     );
 }
 
@@ -56,7 +64,7 @@
     height: 12px;
     border-radius: 50%;
     border: none;
-    background: var(--primary5);
+    background: var(--thumb-color);
     cursor: pointer;
 }
 
@@ -67,7 +75,7 @@
     height: 12px;
     border-radius: 50%;
     border: none;
-    background: var(--primary5);
+    background: var(--thumb-color);
     cursor: pointer;
 }
 
@@ -78,13 +86,13 @@
 .thumbInput:focus-visible::-webkit-slider-thumb {
     box-shadow:
         0 0 0 1px #ffffff,
-        0 0 0 3px #116dff;
+        0 0 0 3px var(--thumb-focus-ring-color);
 }
 
 .thumbInput:focus-visible::-moz-range-thumb {
     box-shadow:
         0 0 0 1px #ffffff,
-        0 0 0 3px #116dff;
+        0 0 0 3px var(--thumb-focus-ring-color);
 }
 
 .values {

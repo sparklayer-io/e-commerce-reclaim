@@ -25,6 +25,7 @@ interface RangeSlider {
     formatValue?: (value: number) => string;
     startInputName?: string;
     endInputName?: string;
+    className?: string;
 }
 
 /**
@@ -41,6 +42,7 @@ export const RangeSlider = ({
     formatValue = (value) => value.toString(),
     startInputName,
     endInputName,
+    className,
 }: RangeSlider) => {
     const handleStartValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newStartValue = Number(event.target.value);
@@ -70,7 +72,7 @@ export const RangeSlider = ({
     };
 
     return (
-        <div>
+        <div className={classNames(styles.root, className)}>
             {/* The slider is implemented using three native <input type="range" />
                 elements stacked on top of each other.
             */}
@@ -121,8 +123,8 @@ export const RangeSlider = ({
             </div>
 
             <div className={styles.values}>
-                <span className="paragraph3">{formatValue(startValue)}</span>
-                <span className="paragraph3">{formatValue(endValue)}</span>
+                <span>{formatValue(startValue)}</span>
+                <span>{formatValue(endValue)}</span>
             </div>
         </div>
     );

@@ -13,6 +13,7 @@ export default createBoard({
         return (
             <div className={styles.container}>
                 <RangeSlider
+                    className="rangeSlider"
                     startValue={startValue}
                     endValue={endValue}
                     onStartValueChange={setStartValue}

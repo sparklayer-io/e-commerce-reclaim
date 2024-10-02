@@ -376,3 +376,11 @@
     text-transform: uppercase;
     white-space: nowrap;
 }
+
+.rangeSlider {
+    --track-color: var(--secondary2);
+    --selected-range-color: var(--primary5);
+    --thumb-color: var(--primary5);
+    --thumb-focus-ring-color: #116dff;
+    font: var(--paragraph3);
+}
