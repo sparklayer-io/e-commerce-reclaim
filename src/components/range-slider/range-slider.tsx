@@ -44,23 +44,21 @@ export const RangeSlider = ({
 }: RangeSlider) => {
     const handleStartValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newStartValue = Number(event.target.value);
-        if (newStartValue <= endValue) {
-            onStartValueChange(newStartValue);
-        }
+        onStartValueChange(Math.min(newStartValue, endValue));
     };
 
     const handleEndValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newEndValue = Number(event.target.value);
-        if (newEndValue >= startValue) {
-            onEndValueChange(newEndValue);
-        }
+        onEndValueChange(Math.max(newEndValue, startValue));
     };
 
     const handleChangeByClickingOnTrack = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = Number(event.target.value);
         // Change the start or end value
         // depending on which one is closer to the clicked value on the track.
-        if (Math.abs(value - startValue) < Math.abs(value - endValue)) {
+        const distToStart = Math.abs(value - startValue);
+        const distToEnd = Math.abs(value - endValue);
+        if (distToStart < distToEnd || (startValue === endValue && value < startValue)) {
             onStartValueChange(value);
         } else {
             onEndValueChange(value);
@@ -93,6 +91,7 @@ export const RangeSlider = ({
                     step={step}
                     min={minValue}
                     max={maxValue}
+                    value={startValue}
                     onChange={handleChangeByClickingOnTrack}
                 />
 
