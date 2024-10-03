@@ -31,13 +31,17 @@
     grid-template-rows: 1fr;
 }
 
-.contentInner {
+.contentExpander {
     overflow: auto;
     transition: overflow 0s allow-discrete;
 }
 
-.expanded .contentInner {
+.expanded .contentExpander {
     // Prevent clipping outline and box-shadow after transition.
     overflow: visible;
     transition-delay: var(--transitionDuration);
+}
+
+.contentInner {
+    padding-bottom: 25px;
 }

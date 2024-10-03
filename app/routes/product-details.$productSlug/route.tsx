@@ -144,7 +144,6 @@ export default function ProductDetailsPage() {
                                     title: section.title!,
                                     content: section.description ? (
                                         <div
-                                            className={styles.additionalInfoDescription}
                                             dangerouslySetInnerHTML={{
                                                 __html: section.description,
                                             }}
