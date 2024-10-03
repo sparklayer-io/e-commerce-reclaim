@@ -10,12 +10,6 @@
     cursor: pointer;
 }
 
-.header:focus-visible {
-    box-shadow:
-        0 0 0 1px #ffffff,
-        0 0 0 3px #116dff;
-}
-
 .title {
     font: var(--heading5);
     font-size: 18px;
@@ -27,17 +21,23 @@
 }
 
 .content {
+    --transitionDuration: 0.4s;
     display: grid;
     grid-template-rows: 0fr;
-    padding-bottom: 0;
-    transition: all 0.4s ease-in-out;
+    transition: grid-template-rows var(--transitionDuration) ease-in-out;
 }
 
-.contentVisible {
+.expanded {
     grid-template-rows: 1fr;
-    padding-bottom: 25px;
 }
 
 .contentInner {
-    overflow-y: auto;
+    overflow: auto;
+    transition: overflow 0s allow-discrete;
+}
+
+.expanded .contentInner {
+    // Prevent clipping outline and box-shadow after transition.
+    overflow: visible;
+    transition-delay: var(--transitionDuration);
 }
