@@ -21,7 +21,10 @@ function getEcomApi(settings?: Settings): EcomAPI {
 
     const api: EcomAPI = {
         getProductsByCategory: () => {
-            return Promise.resolve({ status: 'success', body: products });
+            return Promise.resolve({
+                status: 'success',
+                body: { items: products, totalCount: products.length },
+            });
         },
         getProductBySlug: async (slug: string | undefined) => {
             faker.seed(123);
@@ -86,6 +89,12 @@ function getEcomApi(settings?: Settings): EcomAPI {
             return Promise.resolve({
                 status: 'success',
                 body: createOrder(id),
+            });
+        },
+        getProductPriceBounds: () => {
+            return Promise.resolve({
+                status: 'success',
+                body: { lowest: 0, highest: 100 },
             });
         },
     };

@@ -45,3 +45,18 @@
 .contentInner {
     padding-bottom: 25px;
 }
+
+.small {
+    .title {
+        font: var(--paragraph3);
+    }
+
+    .toggleIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contentInner {
+        padding-bottom: 16px;
+    }
+}

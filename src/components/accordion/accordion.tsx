@@ -13,13 +13,14 @@ interface AccordionItem {
 interface AccordionProps {
     items: AccordionItem[];
     className?: string;
+    small?: boolean;
 }
 
-export const Accordion = ({ items, className }: AccordionProps) => {
+export const Accordion = ({ items, className, small = false }: AccordionProps) => {
     const [openItemIndex, setOpenItemIndex] = useState<number | null>(0);
 
     return (
-        <div className={className}>
+        <div className={classNames({ [styles.small]: small }, className)}>
             {items.map((item, index) => {
                 const isOpen = openItemIndex === index;
                 return (
