@@ -1,6 +1,9 @@
+@import '@styles/variables.scss';
+
 .root {
     position: relative;
     padding: 20px 0;
+    container-type: inline-size;
 }
 
 .itemContent {
@@ -32,25 +35,42 @@
     height: 37px;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 12px;
+.productInfo {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    grid-template-areas: 'productNameAndPrice  quantity priceBreakdown removeButton';
+    gap: 10px;
+}
+
+.productNameAndPrice {
+    grid-area: productNameAndPrice;
+}
+
+.productName {
+    margin-bottom: 10px;
+}
+
+.price {
+    grid-area: price;
+}
+
+.quantity {
+    grid-area: quantity;
+    justify-self: center;
+}
+
+.priceBreakdown {
+    grid-area: priceBreakdown;
+    justify-self: center;
 }
 
 .removeButton {
-    flex: none;
+    grid-area: removeButton;
+    justify-self: end;
     width: 24px;
     height: 24px;
     cursor: pointer;
-}
-
-.quantityAndPrice {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 8px;
 }
 
 .root .quantityInput {
@@ -94,4 +114,21 @@
     color: #df3131;
     width: 20px;
     height: 20px;
+}
+
+@container (max-width: #{$tablet-width}) {
+    .productInfo {
+        grid-template-columns: 3fr 3fr 1fr;
+        grid-template-areas:
+            'productNameAndPrice productNameAndPrice removeButton'
+            'quantity             priceBreakdown   priceBreakdown';
+    }
+
+    .quantity {
+        justify-self: start;
+    }
+
+    .priceBreakdown {
+        justify-self: end;
+    }
 }
