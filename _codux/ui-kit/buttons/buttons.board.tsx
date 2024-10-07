@@ -30,7 +30,7 @@ export default createBoard({
                 </Kit.Item>
                 <Kit.Item>
                     <Variant name="Secondary Button">
-                        <button className="button secondary">Add to Cart</button>
+                        <button className="button">Add to Cart</button>
                     </Variant>
                     <Kit.Description>Secondary Button</Kit.Description>
                 </Kit.Item>

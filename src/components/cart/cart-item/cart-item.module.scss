@@ -8,13 +8,13 @@
 
 .itemContent {
     display: grid;
-    grid-template-columns: 75px 1fr;
+    grid-template-columns: 100px 1fr;
     column-gap: 20px;
     align-items: start;
 }
 
 .root:not(:first-child) {
-    border-top: 1px solid rgba(23, 17, 13, 0.3);
+    border-top: 1px solid rgba(23, 17, 13, 0.2);
 }
 
 .imageWrapper {
@@ -38,6 +38,7 @@
 .productInfo {
     display: grid;
     width: 100%;
+    min-width: 200px;
     grid-template-columns: 2fr 1fr 1fr auto;
     grid-template-areas: 'productNameAndPrice  quantity priceBreakdown removeButton';
     gap: 10px;
@@ -116,7 +117,11 @@
     height: 20px;
 }
 
-@container (max-width: #{$tablet-width}) {
+@container (max-width: 600px) {
+    .itemContent {
+        grid-template-columns: 75px 1fr;
+    }
+
     .productInfo {
         grid-template-columns: 3fr 3fr 1fr;
         grid-template-areas:
