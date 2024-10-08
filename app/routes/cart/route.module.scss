@@ -1,0 +1,80 @@
+@import '@styles/variables.scss';
+
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 4%;
+    padding: 2%;
+}
+
+.cart {
+    flex: 1;
+}
+
+.summary {
+    width: 280px;
+}
+
+.cartHeader,
+.summaryHeader {
+    font: var(--heading5);
+    line-height: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(23, 17, 13, 0.2);
+}
+
+.summarySection {
+    padding: 14px 0;
+}
+
+.summarySection:not(:last-child) {
+    border-bottom: 1px solid rgba(23, 17, 13, 0.2);
+}
+
+.summaryRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.location {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.location:hover {
+    color: rgba(23, 17, 13, 0.6);
+}
+
+.summaryTotal {
+    font-size: 20px;
+    padding: 2px 0;
+}
+
+.checkoutButton {
+    width: 100%;
+    margin: 14px 0;
+}
+
+.secureCheckout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font: var(--paragraph3);
+}
+
+@media (max-width: $desktop-width) {
+    .summary {
+        width: 100%;
+    }
+
+    .summaryHeader {
+        display: none;
+    }
+
+    .summaryContent {
+        margin-top: 30px;
+    }
+}

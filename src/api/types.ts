@@ -54,11 +54,37 @@ export function isEcomSDKError(error: unknown): error is EcomSDKError {
     );
 }
 
+export enum ProductFilter {
+    minPrice = 'minPrice',
+    maxPrice = 'maxPrice',
+}
+
+export interface IProductFilters {
+    /**
+     * Only products with a price greater than or equal to this value will be included.
+     */
+    [ProductFilter.minPrice]?: number;
+    /**
+     * Only products with a price less than or equal to this value will be included.
+     */
+    [ProductFilter.maxPrice]?: number;
+}
+
+interface GetProductsByCategoryOptions {
+    limit?: number;
+    filters?: IProductFilters;
+}
+
 export type EcomAPI = {
     getProductsByCategory: (
         categorySlug: string,
-        limit?: number,
-    ) => Promise<EcomAPIResponse<Product[]>>;
+        options?: GetProductsByCategoryOptions,
+    ) => Promise<
+        EcomAPIResponse<{
+            items: Product[];
+            totalCount: number;
+        }>
+    >;
     getPromotedProducts: () => Promise<EcomAPIResponse<Product[]>>;
     getProductBySlug: (slug: string) => Promise<EcomAPIResponse<Product>>;
     getCart: () => Promise<EcomAPIResponse<Cart>>;
@@ -77,4 +103,10 @@ export type EcomAPI = {
     getAllCategories: () => Promise<EcomAPIResponse<Collection[]>>;
     getCategoryBySlug: (slug: string) => Promise<EcomAPIResponse<CollectionDetails>>;
     getOrder: (id: string) => Promise<EcomAPIResponse<OrderDetails>>;
+    /**
+     * Returns the lowest and the highest product price in the category.
+     */
+    getProductPriceBounds: (
+        categorySlug: string,
+    ) => Promise<EcomAPIResponse<{ lowest: number; highest: number }>>;
 };

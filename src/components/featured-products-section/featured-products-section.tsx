@@ -39,9 +39,9 @@ const getFeaturedProducts = async (
         }
     }
 
-    const productsResponse = await api.getProductsByCategory(category.slug!, limit);
+    const productsResponse = await api.getProductsByCategory(category.slug!, { limit });
     if (productsResponse.status === 'failure') throw productsResponse.error;
-    return { category, products: productsResponse.body };
+    return { category, products: productsResponse.body.items };
 };
 
 interface FeaturedProductsSectionProps {

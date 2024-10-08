@@ -3,6 +3,7 @@ import { generatePath } from '@remix-run/react';
 const HOME = '/';
 const PRODUCTS = '/products/:categorySlug';
 const PRODUCT_DETAILS = `/product-details/:productSlug`;
+const CART = '/cart';
 const ABOUT_US = '/about-us';
 const TERMS_AND_CONDITIONS = '/terms-and-conditions';
 const PRIVACY_POLICY = '/privacy-policy';
@@ -20,6 +21,7 @@ export const ROUTES = {
         path: PRODUCT_DETAILS,
         to: (productSlug: string) => generatePath(PRODUCT_DETAILS, { productSlug }),
     },
+    cart: { path: CART, to: () => CART },
     aboutUs: { path: ABOUT_US, to: () => ABOUT_US },
     termsAndConditions: { path: TERMS_AND_CONDITIONS, to: () => TERMS_AND_CONDITIONS },
     privacyPolicy: { path: PRIVACY_POLICY, to: () => PRIVACY_POLICY },
