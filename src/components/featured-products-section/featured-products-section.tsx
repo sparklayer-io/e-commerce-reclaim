@@ -62,7 +62,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
     return (
         <div className={classNames(styles.root, className)}>
             <FadeIn className={styles.header}>
-                <h1 className={styles.headerTitle}>{title ?? data?.category.name}</h1>
+                <h3 className={styles.headerTitle}>{title ?? data?.category.name}</h3>
                 <div className={styles.headerDescription}>
                     {description ?? data?.category.description}
                 </div>
