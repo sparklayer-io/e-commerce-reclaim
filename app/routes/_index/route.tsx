@@ -5,7 +5,7 @@ import { BackgroundParallax, FadeIn, FloatIn } from '~/components/visual-effects
 
 export default function HomePage() {
     return (
-        <>
+        <div>
             <div className="heroBanner">
                 <img
                     src="https://static.wixstatic.com/media/32aab9_2c3c65e142434906992aedb17db53566~mv2.jpg"
@@ -93,6 +93,6 @@ export default function HomePage() {
                 title="Best Sellers"
                 description="When quality is eco-friendly. Explore our top picks."
             />
-        </>
+        </div>
     );
 }
