@@ -61,13 +61,13 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
 
     return (
         <div className={classNames(styles.root, className)}>
-            <FadeIn className={styles.header}>
+            <FadeIn className={styles.header} duration={1.8}>
                 <h3 className={styles.headerTitle}>{title ?? data?.category.name}</h3>
                 <div className={styles.headerDescription}>
                     {description ?? data?.category.description}
                 </div>
             </FadeIn>
-            <Reveal direction="down" className={styles.productsRow}>
+            <Reveal className={styles.productsRow} direction="down" duration={1.4}>
                 {data
                     ? data.products.map((product) => (
                           <ProductLink key={product._id} productSlug={product.slug!}>

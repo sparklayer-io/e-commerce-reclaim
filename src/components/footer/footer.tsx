@@ -18,7 +18,7 @@ export const Footer = ({ className }: FooterProps) => {
 
     return (
         <footer className={classNames(styles.root, className)}>
-            <FadeIn className={styles.navigation}>
+            <FadeIn className={styles.navigation} duration={1.8}>
                 <nav>
                     <ul>
                         <li>
@@ -113,7 +113,7 @@ export const Footer = ({ className }: FooterProps) => {
                     </li>
                 </ul>
             </FadeIn>
-            <FadeIn className={styles.bottomBar}>
+            <FadeIn className={styles.bottomBar} duration={1.8}>
                 <Link to={ROUTES.home.to()} className={styles.logo}>
                     ReClaim
                 </Link>

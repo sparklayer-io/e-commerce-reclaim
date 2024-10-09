@@ -4,7 +4,7 @@ import styles from './route.module.scss';
 export default function AboutUsPage() {
     return (
         <div className={styles.root}>
-            <Reveal direction="up" duration={3} className={styles.aboutSection}>
+            <Reveal className={styles.aboutSection} direction="up" duration={3}>
                 <h1 className={styles.title}>We are ReClaim</h1>
                 <div className={styles.subtitle}>A women-owned local business</div>
                 <div className={styles.description}>
