@@ -2,6 +2,7 @@ import { createBoard, Variant } from '@wixc3/react-board';
 import { Accordion } from '~/components/accordion/accordion';
 import { ProductCard } from '~/components/product-card/product-card';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
+import { Select, SelectItem } from '~/components/select/select';
 import classNames from 'classnames';
 import { CategoryLink } from '~/components/category-link/category-link';
 import ComponentWrapper from '_codux/board-wrappers/component-wrapper';
@@ -14,12 +15,23 @@ export default createBoard({
     Board: () => (
         <ComponentWrapper>
             <Kit category="Core Components" title="Components & Elements">
-                <Kit.Section title="Input">
+                <Kit.Section title="Inputs">
                     <Kit.Item>
                         <Variant name="Number Input">
                             <QuantityInput value={6} onChange={() => {}} />
                         </Variant>
                         <Kit.Description>Number Input</Kit.Description>
+                    </Kit.Item>
+
+                    <Kit.Item>
+                        <Variant name="Select">
+                            <Select value="" onValueChange={() => {}} placeholder="Select value">
+                                <SelectItem value="option-1">Option 1</SelectItem>
+                                <SelectItem value="option-2">Option 2</SelectItem>
+                                <SelectItem value="option-3">Option 3</SelectItem>
+                            </Select>
+                        </Variant>
+                        <Kit.Description>Select</Kit.Description>
                     </Kit.Item>
                 </Kit.Section>
 
