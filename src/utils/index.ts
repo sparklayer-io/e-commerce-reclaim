@@ -1,4 +1,4 @@
-import { isRouteErrorResponse } from '@remix-run/react';
+import { isRouteErrorResponse, Location } from '@remix-run/react';
 import { isEcomSDKError } from '~/api/types';
 
 /**
@@ -75,4 +75,14 @@ export function formatPrice(price: number, currency: string): string {
     });
 
     return formatter.format(price);
+}
+
+/**
+ * Converts Remix Location object into a standard URL object.
+ */
+export function routeLocationToUrl(location: Location, origin: string): URL {
+    const url = new URL(location.pathname, origin);
+    url.search = location.search;
+    url.hash = location.hash;
+    return url;
 }

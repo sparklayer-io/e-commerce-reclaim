@@ -8,16 +8,17 @@ import {
     ScrollRestoration,
     useLoaderData,
     useNavigate,
+    useNavigation,
     useRouteError,
 } from '@remix-run/react';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { EcomAPIContextProvider } from '~/api/ecom-api-context-provider';
 import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
 import { ErrorPage } from '~/components/error-page/error-page';
 import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
-import { getErrorMessage } from '~/utils';
+import { getErrorMessage, routeLocationToUrl } from '~/utils';
 
 import '~/styles/reset.scss';
 import '~/styles/colors.scss';
@@ -84,23 +85,17 @@ export default function App() {
 }
 
 export function ErrorBoundary() {
-    const locationRef = useRef<string | undefined>(
-        typeof window !== 'undefined' ? window.location.href : undefined,
-    );
-
     const error = useRouteError();
+    const navigation = useNavigation();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (window.location.href !== locationRef.current) {
-                locationRef.current = window.location.href;
-                clearInterval(interval);
-                // force full page reload after navigating from error boundary
-                // to fix remix issue with style tags disappearing
-                window.location.reload();
-            }
-        }, 100);
-    }, []);
+        if (navigation.state === 'loading') {
+            const url = routeLocationToUrl(navigation.location, window.location.origin);
+            // force full page reload after navigating from error boundary
+            // to fix remix issue with style tags disappearing
+            window.location.assign(url);
+        }
+    }, [navigation]);
 
     const navigate = useNavigate();
 
