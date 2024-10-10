@@ -49,7 +49,7 @@
     padding: 12px 16px;
     border: 1px solid var(--primary5);
     font: var(--paragraph1);
-    background-color: transparent;
+    background: transparent;
     color: var(--primary5);
     cursor: pointer;
     white-space: nowrap;
@@ -59,34 +59,34 @@
 
 .button:disabled {
     border-color: transparent;
-    background-color: var(--primary3);
+    background: var(--primary3);
     color: var(--primary1);
     cursor: default;
 }
 
 .button:not(:disabled):hover {
-    background-color: var(--primary5);
+    background: var(--primary5);
     color: var(--primary1);
 }
 
 .primaryButton {
-    background-color: var(--primary5);
+    background: var(--primary5);
     color: var(--primary1);
 }
 
 .primaryButton:not(:disabled):hover {
-    background-color: transparent;
+    background: transparent;
     color: var(--primary5);
 }
 
 .mutedPrimaryButton {
     border-color: transparent;
-    background-color: var(--secondary3);
+    background: var(--secondary3);
     color: var(--primary1);
 }
 
 .mutedPrimaryButton:not(:disabled):hover {
-    background-color: rgba(112, 115, 101, 0.7);
+    background: rgba(112, 115, 101, 0.7);
     color: var(--primary1);
 }
 
@@ -147,7 +147,7 @@
     height: var(--bannerHeight);
     position: relative;
     color: var(--primary1);
-    background-color: var(--black);
+    background: var(--black);
 }
 
 .heroBannerOverlay {
@@ -224,7 +224,7 @@
     display: grid;
     place-content: center;
     overflow: hidden;
-    background-color: var(--black);
+    background: var(--black);
 }
 
 .linkCardBackground {
@@ -263,7 +263,7 @@
     width: 32%;
     aspect-ratio: 0.8;
     padding: 22px;
-    background-color: var(--primary2);
+    background: var(--primary2);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -363,7 +363,7 @@
 /* Miscellaneous **************************************************************/
 
 .alternateBackground {
-    background-color: var(--primary3);
+    background: var(--primary3);
 }
 
 .ribbon {
@@ -371,7 +371,7 @@
     vertical-align: middle;
     padding: 2px 12px;
     border-radius: 100px;
-    background-color: var(--primary2);
+    background: var(--primary2);
     font: var(--paragraph3);
     text-transform: uppercase;
     white-space: nowrap;
