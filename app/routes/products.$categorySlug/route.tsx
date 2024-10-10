@@ -205,6 +205,8 @@ export default function ProductsPage() {
                             onClearFilters={clearFilters}
                             onClearAllFilters={clearAllFilters}
                             currency={currency}
+                            minPriceInCategory={productPriceBounds.lowest}
+                            maxPriceInCategory={productPriceBounds.highest}
                         />
                     )}
 
