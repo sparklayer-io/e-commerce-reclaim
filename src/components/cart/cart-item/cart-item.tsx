@@ -1,52 +1,51 @@
 import { cart } from '@wix/ecom';
+import { useRemoveItemFromCart, useUpdateCartItemQuantity } from '~/api/api-hooks';
 import { media } from '@wix/sdk';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
 import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/components/icons';
+import { Spinner } from '~/components/spinner/spinner';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
-import { useMemo, useState } from 'react';
-import { Price } from '~/components/price/price';
-
 import styles from './cart-item.module.scss';
-import { Spinner } from '~/components/spinner/spinner';
+import { useMemo, useState } from 'react';
 
 export interface CartItemProps {
     item: cart.LineItem;
     priceBreakdown?: cart.LineItemPricesData;
-    isUpdating?: boolean;
-    onRemove: () => void;
-    onQuantityChange: (newQuantity: number) => void;
 }
 
-export const CartItem = ({
-    item,
-    priceBreakdown,
-    isUpdating = false,
-    onRemove,
-    onQuantityChange,
-}: CartItemProps) => {
+export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
     const productName = item.productName?.translated ?? '';
+
+    const { trigger: removeItem, isMutating: isRemovingItem } = useRemoveItemFromCart();
+    const { trigger: updateItemQuantity, isMutating: isUpdatingItemQuantity } =
+        useUpdateCartItemQuantity();
 
     const [quantity, setQuantity] = useState(item.quantity!);
 
     const updateItemQuantityDebounced = useMemo(
-        () => debounce(onQuantityChange, 300),
-        [onQuantityChange],
+        () => debounce(updateItemQuantity, 300),
+        [updateItemQuantity],
     );
+
+    const handleRemove = () => {
+        removeItem(item._id!);
+    };
 
     const handleQuantityChange = (value: number) => {
         setQuantity(value);
         if (value > 0) {
-            updateItemQuantityDebounced(value);
+            updateItemQuantityDebounced({ id: item._id!, quantity: value });
         }
     };
 
     const image = item.image ? media.getImageUrl(item.image) : undefined;
+    const isUpdatingItem = isRemovingItem || isUpdatingItemQuantity;
 
     const isUnavailable = item.availability?.status === cart.ItemAvailabilityStatus.NOT_AVAILABLE;
 
     return (
-        <div className={classNames(styles.root, { [styles.loading]: isUpdating })}>
+        <div className={classNames(styles.root, { [styles.loading]: isUpdatingItem })}>
             <div className={styles.itemContent}>
                 {image ? (
                     <div className={styles.imageWrapper}>
@@ -61,11 +60,8 @@ export const CartItem = ({
                 <div className={styles.productInfo}>
                     <div className={styles.productNameAndPrice}>
                         <div className={styles.productName}>{productName}</div>
-                        {item.fullPrice?.formattedConvertedAmount && (
-                            <Price
-                                fullPrice={item.fullPrice?.formattedConvertedAmount}
-                                discountedPrice={item.price?.formattedConvertedAmount}
-                            />
+                        {item.price && (
+                            <div className="paragraph3">{item.price.formattedConvertedAmount}</div>
                         )}
                     </div>
 
@@ -82,7 +78,7 @@ export const CartItem = ({
                     <div className={styles.priceBreakdown}>
                         {priceBreakdown?.lineItemPrice?.formattedConvertedAmount}
                     </div>
-                    <button className={styles.removeButton} onClick={onRemove}>
+                    <button className={styles.removeButton} onClick={handleRemove}>
                         <TrashIcon />
                     </button>
                 </div>
@@ -95,7 +91,7 @@ export const CartItem = ({
                 </div>
             )}
 
-            {isUpdating && (
+            {isUpdatingItem && (
                 <div className={styles.spinner}>
                     <Spinner size={50} />
                 </div>

@@ -4,7 +4,7 @@ import useSWRMutation from 'swr/mutation';
 import { findItemIdInCart } from './cart-helpers';
 import { useEcomAPI } from './ecom-api-context-provider';
 
-export const useCartData = () => {
+export const useCart = () => {
     const ecomApi = useEcomAPI();
     return useSwr('cart', async () => {
         const response = await ecomApi.getCart();
@@ -18,7 +18,7 @@ export const useCartData = () => {
 
 export const useCartTotals = () => {
     const ecomApi = useEcomAPI();
-    const { data } = useCartData();
+    const { data } = useCart();
 
     const cartTotals = useSwr('cart-totals', async () => {
         const response = await ecomApi.getCartTotals();
@@ -41,7 +41,7 @@ type Args = { id: string; quantity: number };
 
 export const useAddToCart = () => {
     const ecomApi = useEcomAPI();
-    const { data: cart } = useCartData();
+    const { data: cart } = useCart();
     return useSWRMutation(
         'cart',
         async (_key: Key, { arg }: { arg: Args & { options?: Record<string, string> } }) => {
