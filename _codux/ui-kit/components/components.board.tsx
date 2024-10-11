@@ -5,6 +5,7 @@ import { QuantityInput } from '~/components/quantity-input/quantity-input';
 import { Select, SelectItem } from '~/components/select/select';
 import classNames from 'classnames';
 import { CategoryLink } from '~/components/category-link/category-link';
+import { ColorSelect } from '~/components/color-select/color-select';
 import ComponentWrapper from '_codux/board-wrappers/component-wrapper';
 import { Kit } from '../ui-kit-utils/kit';
 
@@ -22,7 +23,9 @@ export default createBoard({
                         </Variant>
                         <Kit.Description>Number Input</Kit.Description>
                     </Kit.Item>
+                </Kit.Section>
 
+                <Kit.Section title="Selects">
                     <Kit.Item>
                         <Variant name="Select">
                             <Select value="" onValueChange={() => {}} placeholder="Select value">
@@ -32,6 +35,24 @@ export default createBoard({
                             </Select>
                         </Variant>
                         <Kit.Description>Select</Kit.Description>
+                    </Kit.Item>
+
+                    <Kit.Item>
+                        <Variant name="Color Select">
+                            <ColorSelect
+                                className="colorSelect"
+                                selectedId="color2"
+                                onChange={() => {}}
+                                options={[
+                                    { id: 'color1', color: 'white' },
+                                    { id: 'color2', color: 'black' },
+                                    { id: 'color3', color: '#00a400' },
+                                    { id: 'color4', color: 'rgb(214, 122, 127)' },
+                                    { id: 'color5', color: 'hsl(30deg 82% 43%)' },
+                                ]}
+                            />
+                        </Variant>
+                        <Kit.Description>Color Select</Kit.Description>
                     </Kit.Item>
                 </Kit.Section>
 

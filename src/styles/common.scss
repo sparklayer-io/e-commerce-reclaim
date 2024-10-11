@@ -384,3 +384,11 @@
     --thumb-focus-ring-color: #116dff;
     font: var(--paragraph3);
 }
+
+.colorSelect {
+    --option-size: 20px;
+    --border-color: var(--primary3);
+    --border-color-hover: var(--primary5);
+    --border-color-selected: var(--primary4);
+    --border-color-error: #de3130;
+}
