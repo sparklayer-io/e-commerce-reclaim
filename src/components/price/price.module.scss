@@ -1,0 +1,10 @@
+.root {
+    display: flex;
+    gap: 4px;
+    font: var(--paragraph3);
+}
+
+.previousPrice {
+    text-decoration: line-through;
+    color: rgba(23, 17, 13, 0.7);
+}
