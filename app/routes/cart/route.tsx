@@ -13,6 +13,8 @@ const mockCartItem: cart.LineItem = {
     price: { formattedConvertedAmount: '$5.50' },
 };
 
+const noop = () => {};
+
 export default function CartPage() {
     return (
         <div className={styles.page}>
@@ -24,12 +26,16 @@ export default function CartPage() {
                         priceBreakdown={{
                             lineItemPrice: { formattedConvertedAmount: '$5.50' },
                         }}
+                        onQuantityChange={noop}
+                        onRemove={noop}
                     />
                     <CartItem
                         item={mockCartItem}
                         priceBreakdown={{
                             lineItemPrice: { formattedConvertedAmount: '$5.50' },
                         }}
+                        onQuantityChange={noop}
+                        onRemove={noop}
                     />
                 </div>
             </div>

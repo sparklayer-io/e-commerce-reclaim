@@ -1,4 +1,5 @@
 import ecom from '@wix/ecom';
+import { CartItem, CartTotals } from './types';
 
 export function findItemIdInCart(
     cart: ecom.cart.Cart & ecom.cart.CartNonNullableFields,
@@ -30,3 +31,9 @@ export function findItemIdInCart(
 export function calculateCartItemsCount(cart: ecom.cart.Cart): number {
     return cart.lineItems?.reduce((total, item) => total + item.quantity!, 0) ?? 0;
 }
+
+export const findLineItemPriceBreakdown = (item: CartItem, cartTotals: CartTotals | undefined) => {
+    return cartTotals?.calculatedLineItems.find(
+        (calculatedItem) => calculatedItem.lineItemId === item._id,
+    )?.pricesBreakdown;
+};

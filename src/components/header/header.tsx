@@ -4,7 +4,7 @@ import { ROUTES } from '~/router/config';
 import styles from './header.module.scss';
 import { CartIcon, MenuIcon } from '~/components/icons';
 import { useCartOpen } from '../cart/cart-open-context';
-import { useCart } from '~/api/api-hooks';
+import { useCartData } from '~/api/api-hooks';
 import { calculateCartItemsCount } from '~/api/cart-helpers';
 import { useState } from 'react';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
@@ -15,7 +15,7 @@ export interface HeaderProps {
 }
 
 export const Header = ({ className }: HeaderProps) => {
-    const cart = useCart();
+    const cart = useCartData();
     const cartOpener = useCartOpen();
 
     const cartItemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;
