@@ -2,17 +2,26 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from '@remix-run/react';
 import { IProductFilters, ProductFilter } from '~/api/types';
 
-export function useAppliedProductFilters() {
+export function useProductFilters() {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const appliedFilters = useMemo(
-        () => productFiltersFromSearchParams(searchParams),
+    const filters = useMemo(
+        () => parseProductFiltersFromUrlSearchParams(searchParams),
         [searchParams],
     );
 
     const someFiltersApplied =
-        Object.values(appliedFilters).length > 0 &&
-        Object.values(appliedFilters).some((value) => value !== undefined);
+        Object.values(filters).length > 0 &&
+        Object.values(filters).some((value) => value !== undefined);
+
+    const applyFilters = useCallback(
+        (filters: IProductFilters) => {
+            setSearchParams(stringifyProductFiltersToUrlSearchParams(filters), {
+                preventScrollReset: true,
+            });
+        },
+        [setSearchParams],
+    );
 
     const clearFilters = useCallback(
         (filters: ProductFilter[]) => {
@@ -32,16 +41,19 @@ export function useAppliedProductFilters() {
     }, [clearFilters]);
 
     return {
-        appliedFilters,
+        filters,
         someFiltersApplied,
+        applyFilters,
         clearFilters,
         clearAllFilters,
     };
 }
 
-export function productFiltersFromSearchParams(params: URLSearchParams): IProductFilters {
-    const minPrice = params.get(ProductFilter.minPrice);
-    const maxPrice = params.get(ProductFilter.maxPrice);
+export function parseProductFiltersFromUrlSearchParams(
+    searchParams: URLSearchParams,
+): IProductFilters {
+    const minPrice = searchParams.get(ProductFilter.minPrice);
+    const maxPrice = searchParams.get(ProductFilter.maxPrice);
     const minPriceNumber = Number(minPrice);
     const maxPriceNumber = Number(maxPrice);
     return {
@@ -50,12 +62,12 @@ export function productFiltersFromSearchParams(params: URLSearchParams): IProduc
     };
 }
 
-export function searchParamsFromProductFilters({
+export function stringifyProductFiltersToUrlSearchParams({
     minPrice,
     maxPrice,
 }: IProductFilters): URLSearchParams {
-    const params = new URLSearchParams();
-    if (minPrice !== undefined) params.set(ProductFilter.minPrice, minPrice.toString());
-    if (maxPrice !== undefined) params.set(ProductFilter.maxPrice, maxPrice.toString());
-    return params;
+    const searchParams = new URLSearchParams();
+    if (minPrice !== undefined) searchParams.set(ProductFilter.minPrice, minPrice.toString());
+    if (maxPrice !== undefined) searchParams.set(ProductFilter.maxPrice, maxPrice.toString());
+    return searchParams;
 }
