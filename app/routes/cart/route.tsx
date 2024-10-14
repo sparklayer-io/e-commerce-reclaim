@@ -11,6 +11,7 @@ const mockCartItem: cart.LineItem = {
     quantity: 1,
     image: 'https://static.wixstatic.com/media/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg/v1/fill/w_824,h_1098,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg',
     price: { formattedConvertedAmount: '$5.50' },
+    fullPrice: { formattedConvertedAmount: '$7.50' },
 };
 
 const noop = () => {};
