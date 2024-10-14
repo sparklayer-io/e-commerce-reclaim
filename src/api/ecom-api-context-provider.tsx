@@ -18,7 +18,7 @@ export const EcomAPIContextProvider: FC<React.PropsWithChildren> = ({ children }
         <SWRConfig
             value={{
                 revalidateIfStale: false,
-                revalidateOnFocus: false,
+                revalidateOnFocus: true,
                 revalidateOnReconnect: true,
                 refreshInterval: 5 * 60_000, // 5 minutes
                 keepPreviousData: true,
