@@ -19,12 +19,14 @@ import { ProductLink } from '~/components/product-link/product-link';
 import { FadeIn } from '~/components/visual-effects';
 import { AppliedProductFilters } from '~/components/applied-product-filters/applied-product-filters';
 import { EmptyProductsCategory } from '~/components/empty-products-category/empty-products-category';
+import { ProductSortingSelect } from '~/components/product-sorting-select/product-sorting-select';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 import { getErrorMessage } from '~/utils';
 
 import styles from './route.module.scss';
+import { productSortByFromSearchParams } from '~/api/product-sorting';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const categorySlug = params.categorySlug;
@@ -44,6 +46,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         api.getCategoryBySlug(categorySlug),
         api.getProductsByCategory(categorySlug, {
             filters: productFiltersFromSearchParams(url.searchParams),
+            sortBy: productSortByFromSearchParams(url.searchParams),
         }),
         api.getAllCategories(),
         api.getProductPriceBounds(categorySlug),
@@ -205,10 +208,14 @@ export default function ProductsPage() {
                         />
                     )}
 
-                    <p className={styles.productsCount}>
-                        {categoryProducts.totalCount}{' '}
-                        {categoryProducts.totalCount === 1 ? 'product' : 'products'}
-                    </p>
+                    <div className={styles.countAndSorting}>
+                        <p className={styles.productsCount}>
+                            {categoryProducts.totalCount}{' '}
+                            {categoryProducts.totalCount === 1 ? 'product' : 'products'}
+                        </p>
+
+                        <ProductSortingSelect />
+                    </div>
 
                     {renderProducts()}
                 </div>

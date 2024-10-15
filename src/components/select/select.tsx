@@ -4,24 +4,42 @@ import { DropdownIcon } from '../icons';
 
 import styles from './select.module.scss';
 
-export interface SelectProps {
-    value: string;
-    onValueChange: (value: string) => void;
+export interface SelectProps<V extends string> {
+    value: V;
+    onValueChange: (value: V) => void;
     placeholder?: string;
     children: React.ReactNode;
+    className?: string;
+    dropdownClassName?: string;
+    /**
+     * Allows to customize the selected value.
+     * By default the selected item's text will be rendered.
+     */
+    renderValue?: (value: V) => React.ReactNode;
 }
 
-export const Select = ({ value, onValueChange, placeholder, children }: SelectProps) => (
+export const Select = <V extends string>({
+    value,
+    onValueChange,
+    placeholder,
+    children,
+    className,
+    dropdownClassName,
+    renderValue,
+}: SelectProps<V>) => (
     <RadixSelect.Root value={value} onValueChange={onValueChange}>
-        <RadixSelect.Trigger className={styles.trigger}>
-            <RadixSelect.Value placeholder={placeholder} />
+        <RadixSelect.Trigger className={classNames(styles.trigger, className)}>
+            <RadixSelect.Value placeholder={placeholder}>{renderValue?.(value)}</RadixSelect.Value>
             <RadixSelect.Icon className={styles.triggerIcon}>
                 <DropdownIcon width={12} />
             </RadixSelect.Icon>
         </RadixSelect.Trigger>
 
         <RadixSelect.Portal>
-            <RadixSelect.Content className={styles.content} position="popper">
+            <RadixSelect.Content
+                className={classNames(styles.content, dropdownClassName)}
+                position="popper"
+            >
                 <RadixSelect.Viewport>{children}</RadixSelect.Viewport>
             </RadixSelect.Content>
         </RadixSelect.Portal>

@@ -18,6 +18,7 @@ import {
     EcomAPISuccessResponse,
     isEcomSDKError,
 } from './types';
+import { getSortedProductsQuery } from './product-sorting';
 
 function getWixClientId() {
     /**
@@ -76,7 +77,7 @@ function createApi(): EcomAPI {
     const wixClient = getWixClient();
 
     return {
-        async getProductsByCategory(categorySlug, { limit, filters } = {}) {
+        async getProductsByCategory(categorySlug, { limit, filters, sortBy } = {}) {
             try {
                 const category = (await wixClient.collections.getCollectionBySlug(categorySlug))
                     .collection;
@@ -94,6 +95,10 @@ function createApi(): EcomAPI {
                     if (filters.maxPrice) {
                         query = query.le('priceData.price', filters.maxPrice);
                     }
+                }
+
+                if (sortBy) {
+                    query = getSortedProductsQuery(query, sortBy);
                 }
 
                 const { items, totalCount = 0 } = await query.limit(limit ?? 100).find();

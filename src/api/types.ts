@@ -71,9 +71,18 @@ export interface IProductFilters {
     [ProductFilter.maxPrice]?: number;
 }
 
+export enum ProductSortBy {
+    newest = 'newest',
+    priceAsc = 'priceAsc',
+    priceDesc = 'priceDesc',
+    nameAsc = 'nameAsc',
+    nameDesc = 'nameDesc',
+}
+
 interface GetProductsByCategoryOptions {
     limit?: number;
     filters?: IProductFilters;
+    sortBy?: ProductSortBy;
 }
 
 export type EcomAPI = {

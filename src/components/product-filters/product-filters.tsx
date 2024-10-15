@@ -5,7 +5,7 @@ import {
     searchParamsFromProductFilters,
 } from '~/api/product-filters';
 import { formatPrice, mergeUrlSearchParams } from '~/utils';
-import { useSearchParamsOptimistic } from '~/utils/use-search-params-state';
+import { useSearchParamsOptimistic } from '~/utils/use-search-params-optimistic';
 import { Accordion } from '../accordion/accordion';
 import { RangeSlider } from '../range-slider/range-slider';
 
