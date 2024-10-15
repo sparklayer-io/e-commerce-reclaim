@@ -25,7 +25,7 @@ export default createBoard({
                     </Kit.Item>
                 </Kit.Section>
 
-                <Kit.Section title="Selects">
+                <Kit.Section title="Selects" className={styles.demoWidth}>
                     <Kit.Item>
                         <Variant name="Select">
                             <Select value="" onValueChange={() => {}} placeholder="Select value">
@@ -57,7 +57,7 @@ export default createBoard({
                 </Kit.Section>
 
                 <Kit.Section title="Accordion">
-                    <Kit.Item>
+                    <Kit.Item className={styles.demoWidth}>
                         <Variant name="Accordion">
                             <Accordion
                                 items={[
@@ -74,7 +74,6 @@ export default createBoard({
                                         content: 'Content',
                                     },
                                 ]}
-                                className={styles.demoWidth}
                             />
                         </Variant>
                         <Kit.Description>Accordion</Kit.Description>
@@ -103,12 +102,9 @@ export default createBoard({
                         </Variant>
                         <Kit.Description>Product Card</Kit.Description>
                     </Kit.Item>
-                    <Kit.Item className={styles.demoWidth}>
+                    <Kit.Item className={classNames(styles.demoWidth, styles.linkCardWrapper)}>
                         <Variant name="Link Card">
-                            <CategoryLink
-                                categorySlug="all-products"
-                                className={classNames('linkCard', styles.linkCard)}
-                            >
+                            <CategoryLink categorySlug="all-products" className="linkCard">
                                 <img
                                     className="linkCardBackground"
                                     src="https://static.wixstatic.com/media/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg/v1/fill/w_547,h_730,q_90/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg"
