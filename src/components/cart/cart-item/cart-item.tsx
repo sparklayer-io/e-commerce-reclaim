@@ -1,12 +1,13 @@
+import { useEffect, useMemo, useState } from 'react';
 import { cart } from '@wix/ecom';
 import { media } from '@wix/sdk';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
 import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/components/icons';
-import classNames from 'classnames';
-import debounce from 'lodash.debounce';
-import { useEffect, useMemo, useState } from 'react';
 import { Spinner } from '~/components/spinner/spinner';
 import { ProductPrice } from '~/components/product-price/product-price';
+import classNames from 'classnames';
+import debounce from 'lodash.debounce';
+import { CartItemOptions } from '../cart-item-options/cart-item-options';
 
 import styles from './cart-item.module.scss';
 
@@ -67,10 +68,19 @@ export const CartItem = ({
                 <div className={styles.productInfo}>
                     <div className={styles.productNameAndPrice}>
                         <div className={styles.productName}>{productName}</div>
+
                         {item.fullPrice?.formattedConvertedAmount && (
                             <ProductPrice
                                 price={item.fullPrice?.formattedConvertedAmount}
                                 discountedPrice={item.price?.formattedConvertedAmount}
+                            />
+                        )}
+
+                        {item.descriptionLines && item.descriptionLines.length > 0 && (
+                            <CartItemOptions
+                                className={styles.options}
+                                options={item.descriptionLines}
+                                visibleOptionsCount={1}
                             />
                         )}
                     </div>
