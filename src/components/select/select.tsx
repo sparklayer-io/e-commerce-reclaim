@@ -16,6 +16,7 @@ export interface SelectProps<V extends string> {
      * By default the selected item's text will be rendered.
      */
     renderValue?: (value: V) => React.ReactNode;
+    hasError?: boolean;
 }
 
 export const Select = <V extends string>({
@@ -26,9 +27,12 @@ export const Select = <V extends string>({
     className,
     dropdownClassName,
     renderValue,
+    hasError,
 }: SelectProps<V>) => (
     <RadixSelect.Root value={value} onValueChange={onValueChange}>
-        <RadixSelect.Trigger className={classNames(styles.trigger, className)}>
+        <RadixSelect.Trigger
+            className={classNames(styles.trigger, { [styles.hasError]: hasError }, className)}
+        >
             <RadixSelect.Value placeholder={placeholder}>{renderValue?.(value)}</RadixSelect.Value>
             <RadixSelect.Icon className={styles.triggerIcon}>
                 <DropdownIcon width={12} />

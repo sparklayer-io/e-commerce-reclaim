@@ -85,6 +85,10 @@ interface GetProductsByCategoryOptions {
     sortBy?: ProductSortBy;
 }
 
+export type AddToCartOptions =
+    | { variantId: string }
+    | { options: Record<string, string | undefined> };
+
 export type EcomAPI = {
     getProductsByCategory: (
         categorySlug: string,
@@ -107,7 +111,7 @@ export type EcomAPI = {
     addToCart: (
         id: string,
         quantity: number,
-        options?: Record<string, string>,
+        options?: AddToCartOptions,
     ) => Promise<EcomAPIResponse<Cart>>;
     checkout: () => Promise<EcomAPIResponse<{ checkoutUrl: string }>>;
     getAllCategories: () => Promise<EcomAPIResponse<Collection[]>>;

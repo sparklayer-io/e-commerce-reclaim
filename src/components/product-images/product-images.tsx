@@ -1,6 +1,6 @@
 import { products } from '@wix/stores';
 import styles from './product-images.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { ImagePlaceholderIcon } from '../icons';
 import { getClickableElementAttributes } from '~/utils';
@@ -13,6 +13,12 @@ export const ProductImages = ({ media }: ProductImagesProps) => {
     const [selectedImage, setSelectedImage] = useState<products.MediaItem | undefined>(
         media?.mainMedia,
     );
+
+    // The media can change when another product variant was selected and it has
+    // a different set of media items. In this case make sure the selected image is refreshed.
+    useEffect(() => {
+        setSelectedImage(media?.mainMedia);
+    }, [media]);
 
     const imageItems = media?.items?.filter((item) => item.image !== undefined);
 

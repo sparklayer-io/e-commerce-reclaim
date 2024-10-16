@@ -10,7 +10,8 @@ import { products } from '@wix/stores';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { getEcomApi } from '~/api/ecom-api';
-import { EcomApiErrorCodes } from '~/api/types';
+import { useAddToCart } from '~/api/api-hooks';
+import { AddToCartOptions, EcomApiErrorCodes } from '~/api/types';
 import { Accordion } from '~/components/accordion/accordion';
 import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
 import { useCartOpen } from '~/components/cart/cart-open-context';
@@ -18,13 +19,22 @@ import { ErrorPage } from '~/components/error-page/error-page';
 import { ProductImages } from '~/components/product-images/product-images';
 import { ProductPrice } from '~/components/product-price/product-price';
 import { QuantityInput } from '~/components/quantity-input/quantity-input';
+import { ProductOption } from '~/components/product-option/product-option';
 import { ShareProductLinks } from '~/components/share-product-links/share-product-links';
 import { ROUTES } from '~/router/config';
 import { BreadcrumbData, RouteHandle } from '~/router/types';
 import { getErrorMessage, removeQueryStringFromUrl } from '~/utils';
+import {
+    getMedia,
+    getPriceData,
+    getSelectedVariant,
+    getSKU,
+    isOutOfStock,
+    selectedChoicesToVariantChoices,
+} from '~/utils/product-utils';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
+
 import styles from './route.module.scss';
-import { useCart } from '~/hooks/use-cart';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const productSlug = params.productSlug;
@@ -77,31 +87,76 @@ export default function ProductDetailsPage() {
     const breadcrumbs = useBreadcrumbs();
 
     const cartOpener = useCartOpen();
-    const { addToCart, isAddingToCart } = useCart();
+    const { trigger: addToCart, isMutating: isAddingToCart } = useAddToCart();
 
-    const handleAddToCartClick = () =>
-        addToCart(product._id!, quantity).then(() => cartOpener.setIsOpen(true));
+    const getInitialSelectedChoices = () => {
+        const result: Record<string, products.Choice | undefined> = {};
+        for (const option of product.productOptions ?? []) {
+            if (option.name) {
+                result[option.name] = option?.choices?.length === 1 ? option.choices[0] : undefined;
+            }
+        }
 
+        return result;
+    };
+
+    const [selectedChoices, setSelectedChoices] = useState(() => getInitialSelectedChoices());
     const [quantity, setQuantity] = useState(1);
+    const [addToCartAttempted, setAddToCartAttempted] = useState(false);
 
-    const isOutOfStock = product.stock?.inventoryStatus === products.InventoryStatus.OUT_OF_STOCK;
+    const outOfStock = isOutOfStock(product, selectedChoices);
+    const priceData = getPriceData(product, selectedChoices);
+    const sku = getSKU(product, selectedChoices);
+    const media = getMedia(product, selectedChoices);
+
+    const handleAddToCartClick = () => {
+        setAddToCartAttempted(true);
+
+        if (Object.values(selectedChoices).includes(undefined)) return;
+
+        const selectedVariant = getSelectedVariant(product, selectedChoices);
+
+        const options: AddToCartOptions =
+            product.manageVariants && selectedVariant?._id
+                ? { variantId: selectedVariant._id }
+                : { options: selectedChoicesToVariantChoices(product, selectedChoices) };
+
+        addToCart(
+            {
+                id: product._id!,
+                quantity,
+                options,
+            },
+            {
+                onSuccess: () => cartOpener.setIsOpen(true),
+            },
+        );
+    };
+
+    const handleOptionChange = (optionName: string, newChoice: products.Choice) => {
+        setQuantity(1);
+        setSelectedChoices((prev) => ({
+            ...prev,
+            [optionName]: newChoice,
+        }));
+    };
 
     return (
         <div className={styles.page}>
             <Breadcrumbs breadcrumbs={breadcrumbs} />
 
             <div className={styles.content}>
-                <ProductImages media={product.media} />
+                <ProductImages media={media} />
 
                 <div>
                     <h1 className={styles.productName}>{product.name}</h1>
-                    {product.sku && <p className={styles.sku}>SKU: {product.sku}</p>}
+                    {sku && <p className={styles.sku}>SKU: {sku}</p>}
 
-                    {product.priceData && (
+                    {priceData && (
                         <ProductPrice
                             className={styles.price}
-                            price={product.priceData.formatted?.price}
-                            discountedPrice={product.priceData.formatted?.discountedPrice}
+                            price={priceData.formatted?.price}
+                            discountedPrice={priceData.formatted?.discountedPrice}
                         />
                     )}
 
@@ -112,19 +167,43 @@ export default function ProductDetailsPage() {
                         />
                     )}
 
+                    {product.productOptions && product.productOptions.length > 0 && (
+                        <div className={styles.productOptions}>
+                            {product.productOptions.map((option) => (
+                                <ProductOption
+                                    key={option.name}
+                                    error={
+                                        addToCartAttempted &&
+                                        selectedChoices[option.name!] === undefined
+                                            ? `Select ${option.name}`
+                                            : undefined
+                                    }
+                                    option={option}
+                                    selectedChoice={selectedChoices[option.name!]}
+                                    onChange={(choice) => handleOptionChange(option.name!, choice)}
+                                />
+                            ))}
+                        </div>
+                    )}
+
                     <div className={styles.quantity}>
                         <label htmlFor="quantity" className={styles.quantityLabel}>
                             Quantity
                         </label>
-                        <QuantityInput id="quantity" value={quantity} onChange={setQuantity} />
+                        <QuantityInput
+                            id="quantity"
+                            value={quantity}
+                            onChange={setQuantity}
+                            disabled={outOfStock}
+                        />
                     </div>
 
                     <button
                         className={classNames('button', 'primaryButton', styles.addToCartButton)}
                         onClick={handleAddToCartClick}
-                        disabled={isOutOfStock || isAddingToCart}
+                        disabled={outOfStock || isAddingToCart}
                     >
-                        {isOutOfStock ? 'Out of stock' : 'Add to Cart'}
+                        {outOfStock ? 'Out of stock' : 'Add to Cart'}
                     </button>
 
                     {product.additionalInfoSections &&
