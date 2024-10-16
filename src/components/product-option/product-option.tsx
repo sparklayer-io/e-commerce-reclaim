@@ -41,7 +41,13 @@ export const ProductOption = ({ option, selectedChoice, error, onChange }: Produ
                     className="colorSelect"
                     // `description` is what identifies the color choice. It's the unique color name.
                     // `value` is the color value, which can be repeated in different color choices.
-                    options={choices.map((c) => ({ id: c.description!, color: c.value! }))}
+                    options={choices
+                        .filter((c) => c.value && c.description && c.visible)
+                        .map((c) => ({
+                            id: c.description!,
+                            color: c.value!,
+                            crossedOut: !c.inStock,
+                        }))}
                     selectedId={selectedChoice?.description ?? ''}
                     onChange={handleChange}
                     hasError={hasError}
@@ -53,11 +59,14 @@ export const ProductOption = ({ option, selectedChoice, error, onChange }: Produ
                     onValueChange={handleChange}
                     hasError={hasError}
                 >
-                    {choices.map((c) => (
-                        <SelectItem key={c.value} value={c.value!}>
-                            {c.description}
-                        </SelectItem>
-                    ))}
+                    {choices
+                        .filter((c) => c.value && c.description && c.visible)
+                        .map((c) => (
+                            <SelectItem key={c.value} value={c.value!}>
+                                {c.description}
+                                {!c.inStock && ` (out of stock)`}
+                            </SelectItem>
+                        ))}
                 </Select>
             )}
 

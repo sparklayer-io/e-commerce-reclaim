@@ -27,6 +27,7 @@ import { getErrorMessage, removeQueryStringFromUrl } from '~/utils';
 import {
     getMedia,
     getPriceData,
+    getProductOptions,
     getSelectedVariant,
     getSKU,
     isOutOfStock,
@@ -108,6 +109,7 @@ export default function ProductDetailsPage() {
     const priceData = getPriceData(product, selectedChoices);
     const sku = getSKU(product, selectedChoices);
     const media = getMedia(product, selectedChoices);
+    const productOptions = getProductOptions(product, selectedChoices);
 
     const handleAddToCartClick = () => {
         setAddToCartAttempted(true);
@@ -167,9 +169,9 @@ export default function ProductDetailsPage() {
                         />
                     )}
 
-                    {product.productOptions && product.productOptions.length > 0 && (
+                    {productOptions && productOptions.length > 0 && (
                         <div className={styles.productOptions}>
-                            {product.productOptions.map((option) => (
+                            {productOptions.map((option) => (
                                 <ProductOption
                                     key={option.name}
                                     error={
