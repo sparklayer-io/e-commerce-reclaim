@@ -5,10 +5,10 @@ import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/components/icons';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import { useEffect, useMemo, useState } from 'react';
-
-import styles from './cart-item.module.scss';
 import { Spinner } from '~/components/spinner/spinner';
 import { ProductPrice } from '~/components/product-price/product-price';
+
+import styles from './cart-item.module.scss';
 
 export interface CartItemProps {
     item: cart.LineItem;

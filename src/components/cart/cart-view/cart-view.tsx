@@ -9,6 +9,8 @@ import styles from './cart-view.module.scss';
 export interface CartViewProps {
     cart?: Cart;
     cartTotals?: CartTotals;
+    updatingCartItemIds?: string[];
+    isUpdating?: boolean;
     onClose: () => void;
     onCheckout: () => void;
     onViewCart: () => void;
@@ -19,6 +21,8 @@ export interface CartViewProps {
 export const CartView = ({
     cart,
     cartTotals,
+    updatingCartItemIds = [],
+    isUpdating = false,
     onClose,
     onCheckout,
     onViewCart,
@@ -45,6 +49,7 @@ export const CartView = ({
                             <CartItem
                                 key={item._id}
                                 item={item}
+                                isUpdating={updatingCartItemIds.includes(item._id!)}
                                 priceBreakdown={findLineItemPriceBreakdown(item, cartTotals)}
                                 onQuantityChange={(quantity: number) =>
                                     onItemQuantityChange({ id: item._id!, quantity })
@@ -74,6 +79,7 @@ export const CartView = ({
                                 styles.checkoutButton,
                             )}
                             onClick={onCheckout}
+                            disabled={isUpdating}
                         >
                             Checkout
                         </button>

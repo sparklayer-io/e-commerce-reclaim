@@ -8,7 +8,15 @@ import { ROUTES } from '~/router/config';
 export const Cart = () => {
     const { isOpen, setIsOpen } = useCartOpen();
     const navigate = useNavigate();
-    const { cartData, cartTotals, checkout, removeItem, updateItemQuantity } = useCart();
+    const {
+        cartData,
+        cartTotals,
+        isCartTotalsUpdating,
+        updatingCartItemIds,
+        checkout,
+        removeItem,
+        updateItemQuantity,
+    } = useCart();
 
     const handleViewCart = () => {
         setIsOpen(false);
@@ -25,6 +33,8 @@ export const Cart = () => {
                 onViewCart={handleViewCart}
                 onItemRemove={removeItem}
                 onItemQuantityChange={updateItemQuantity}
+                isUpdating={isCartTotalsUpdating}
+                updatingCartItemIds={updatingCartItemIds}
             />
         </Drawer>
     );

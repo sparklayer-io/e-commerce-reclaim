@@ -7,9 +7,18 @@ import { useCart } from '~/hooks/use-cart';
 import { findLineItemPriceBreakdown } from '~/api/cart-helpers';
 
 import styles from './route.module.scss';
+import { Spinner } from '~/components/spinner/spinner';
 
 export default function CartPage() {
-    const { cartData, cartTotals, checkout, removeItem, updateItemQuantity } = useCart();
+    const {
+        cartData,
+        cartTotals,
+        isCartTotalsUpdating,
+        updatingCartItemIds,
+        checkout,
+        removeItem,
+        updateItemQuantity,
+    } = useCart();
 
     if (!cartData) return null;
 
@@ -35,6 +44,7 @@ export default function CartPage() {
                         <CartItem
                             key={item._id}
                             item={item}
+                            isUpdating={updatingCartItemIds.includes(item._id!)}
                             priceBreakdown={findLineItemPriceBreakdown(item, cartTotals)}
                             onRemove={() => removeItem(item._id!)}
                             onQuantityChange={(quantity: number) =>
@@ -46,7 +56,11 @@ export default function CartPage() {
             </div>
             <div className={styles.summary}>
                 <h1 className={styles.summaryHeader}>Order summary</h1>
-                <div className={styles.summarySection}>
+                <div
+                    className={classNames(styles.summarySection, {
+                        [styles.loading]: isCartTotalsUpdating,
+                    })}
+                >
                     <div className={styles.summaryRow}>
                         <span>Subtotal</span>
                         <span>{cartTotals?.priceSummary?.subtotal?.formattedConvertedAmount}</span>
@@ -62,24 +76,28 @@ export default function CartPage() {
                     <div className={styles.summaryRow}>
                         <span className={styles.location}>Poland</span>
                     </div>
-                </div>
-                <div className={styles.summarySection}>
                     <div className={classNames(styles.summaryRow, styles.summaryTotal)}>
                         <span>Total</span>
                         <span>{cartTotals?.priceSummary?.total?.formattedConvertedAmount}</span>
                     </div>
+                    {isCartTotalsUpdating && (
+                        <div className={styles.spinner}>
+                            <Spinner size={50} />
+                        </div>
+                    )}
+                </div>
 
-                    <button
-                        className={classNames('button', styles.checkoutButton)}
-                        onClick={checkout}
-                    >
-                        Checkout
-                    </button>
+                <button
+                    className={classNames('button', styles.checkoutButton)}
+                    onClick={checkout}
+                    disabled={isCartTotalsUpdating}
+                >
+                    Checkout
+                </button>
 
-                    <div className={styles.secureCheckout}>
-                        <LockIcon width={11} />
-                        <span>Secure Checkout</span>
-                    </div>
+                <div className={styles.secureCheckout}>
+                    <LockIcon width={11} />
+                    <span>Secure Checkout</span>
                 </div>
             </div>
         </div>
