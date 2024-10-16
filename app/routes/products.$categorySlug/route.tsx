@@ -8,25 +8,25 @@ import {
 } from '@remix-run/react';
 import classNames from 'classnames';
 import { getEcomApi } from '~/api/ecom-api';
-import { EcomApiErrorCodes } from '~/api/types';
 import { productFiltersFromSearchParams, useAppliedProductFilters } from '~/api/product-filters';
+import { productSortByFromSearchParams } from '~/api/product-sorting';
+import { EcomApiErrorCodes } from '~/api/types';
+import { AppliedProductFilters } from '~/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
 import { CategoryLink } from '~/components/category-link/category-link';
+import { EmptyProductsCategory } from '~/components/empty-products-category/empty-products-category';
 import { ErrorPage } from '~/components/error-page/error-page';
 import { ProductCard } from '~/components/product-card/product-card';
 import { ProductFilters } from '~/components/product-filters/product-filters';
 import { ProductLink } from '~/components/product-link/product-link';
-import { FadeIn } from '~/components/visual-effects';
-import { AppliedProductFilters } from '~/components/applied-product-filters/applied-product-filters';
-import { EmptyProductsCategory } from '~/components/empty-products-category/empty-products-category';
 import { ProductSortingSelect } from '~/components/product-sorting-select/product-sorting-select';
+import { FadeIn } from '~/components/visual-effects';
 import { ROUTES } from '~/router/config';
 import { RouteHandle } from '~/router/types';
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 import { getErrorMessage } from '~/utils';
 
 import styles from './route.module.scss';
-import { productSortByFromSearchParams } from '~/api/product-sorting';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const categorySlug = params.categorySlug;
