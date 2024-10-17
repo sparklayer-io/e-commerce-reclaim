@@ -10,7 +10,6 @@ import { products } from '@wix/stores';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { getEcomApi } from '~/api/ecom-api';
-import { useAddToCart } from '~/api/api-hooks';
 import { AddToCartOptions, EcomApiErrorCodes } from '~/api/types';
 import { Accordion } from '~/components/accordion/accordion';
 import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
@@ -36,6 +35,7 @@ import {
 import { useBreadcrumbs } from '~/router/use-breadcrumbs';
 
 import styles from './route.module.scss';
+import { useCart } from '~/hooks/use-cart';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const productSlug = params.productSlug;
@@ -88,7 +88,7 @@ export default function ProductDetailsPage() {
     const breadcrumbs = useBreadcrumbs();
 
     const cartOpener = useCartOpen();
-    const { trigger: addToCart, isMutating: isAddingToCart } = useAddToCart();
+    const { addToCart, isAddingToCart } = useCart();
 
     const getInitialSelectedChoices = () => {
         const result: Record<string, products.Choice | undefined> = {};
@@ -123,16 +123,7 @@ export default function ProductDetailsPage() {
                 ? { variantId: selectedVariant._id }
                 : { options: selectedChoicesToVariantChoices(product, selectedChoices) };
 
-        addToCart(
-            {
-                id: product._id!,
-                quantity,
-                options,
-            },
-            {
-                onSuccess: () => cartOpener.setIsOpen(true),
-            },
-        );
+        addToCart(product._id!, quantity, options).then(() => cartOpener.setIsOpen(true));
     };
 
     const handleOptionChange = (optionName: string, newChoice: products.Choice) => {
