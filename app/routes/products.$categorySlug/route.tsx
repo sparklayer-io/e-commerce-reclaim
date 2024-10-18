@@ -1,85 +1,38 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import {
-    isRouteErrorResponse,
-    json,
-    useLoaderData,
-    useNavigate,
-    useRouteError,
-} from '@remix-run/react';
+import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import classNames from 'classnames';
-import { getEcomApi } from '~/api/ecom-api';
-import { productFiltersFromSearchParams, useAppliedProductFilters } from '~/api/product-filters';
-import { productSortByFromSearchParams } from '~/api/product-sorting';
-import { EcomApiErrorCodes } from '~/api/types';
-import { AppliedProductFilters } from '~/components/applied-product-filters/applied-product-filters';
-import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { EmptyProductsCategory } from '~/components/empty-products-category/empty-products-category';
-import { ErrorPage } from '~/components/error-page/error-page';
-import { ProductCard } from '~/components/product-card/product-card';
-import { ProductFilters } from '~/components/product-filters/product-filters';
-import { ProductLink } from '~/components/product-link/product-link';
-import { ProductSortingSelect } from '~/components/product-sorting-select/product-sorting-select';
-import { FadeIn } from '~/components/visual-effects';
-import { ROUTES } from '~/router/config';
-import { RouteHandle } from '~/router/types';
-import { useBreadcrumbs } from '~/router/use-breadcrumbs';
-import { getErrorMessage } from '~/utils';
+import { EcomApiErrorCodes } from '~/lib/ecom';
+import { useAppliedProductFilters } from '~/lib/hooks';
+import { getProductsRouteData } from '~/lib/route-loaders';
+import { FadeIn } from '~/lib/components/visual-effects';
+import { getErrorMessage } from '~/lib/utils';
+import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
+import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
+import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { EmptyProductsCategory } from '~/src/components/empty-products-category/empty-products-category';
+import { ErrorPage } from '~/src/components/error-page/error-page';
+import { ProductCard } from '~/src/components/product-card/product-card';
+import { ProductFilters } from '~/src/components/product-filters/product-filters';
+import { ProductLink } from '~/src/components/product-link/product-link';
+import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
+import { ROUTES } from '~/src/router/config';
 
 import styles from './route.module.scss';
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-    const categorySlug = params.categorySlug;
-    if (!categorySlug) {
-        throw new Error('Missing category slug');
-    }
-
-    const api = getEcomApi();
-    const url = new URL(request.url);
-
-    const [
-        currentCategoryResponse,
-        categoryProductsResponse,
-        allCategoriesResponse,
-        productPriceBoundsResponse,
-    ] = await Promise.all([
-        api.getCategoryBySlug(categorySlug),
-        api.getProductsByCategory(categorySlug, {
-            filters: productFiltersFromSearchParams(url.searchParams),
-            sortBy: productSortByFromSearchParams(url.searchParams),
-        }),
-        api.getAllCategories(),
-        api.getProductPriceBounds(categorySlug),
-    ]);
-
-    if (currentCategoryResponse.status === 'failure') {
-        throw json(currentCategoryResponse.error);
-    }
-    if (allCategoriesResponse.status === 'failure') {
-        throw json(allCategoriesResponse.error);
-    }
-    if (categoryProductsResponse.status === 'failure') {
-        throw json(categoryProductsResponse.error);
-    }
-    if (productPriceBoundsResponse.status === 'failure') {
-        throw json(productPriceBoundsResponse.error);
-    }
-
-    return {
-        category: currentCategoryResponse.body,
-        categoryProducts: categoryProductsResponse.body,
-        allCategories: allCategoriesResponse.body,
-        productPriceBounds: productPriceBoundsResponse.body,
-    };
+export const loader = ({ params, request }: LoaderFunctionArgs) => {
+    return getProductsRouteData(params.categorySlug, request.url);
 };
 
-export const handle: RouteHandle<typeof loader> = {
-    breadcrumbs: (match) => [
-        {
-            title: match.data.category.name!,
-            to: ROUTES.products.to(match.data.category.slug!),
-        },
-    ],
+const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
+    {
+        title: match.data.category.name!,
+        to: ROUTES.products.to(match.data.category.slug!),
+    },
+];
+
+export const handle = {
+    breadcrumbs,
 };
 
 export default function ProductsPage() {

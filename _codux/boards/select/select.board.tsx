@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createBoard } from '@wixc3/react-board';
-import { Select, SelectItem } from '~/components/select/select';
+import { Select, SelectItem } from '~/src/components/select/select';
 
 import styles from './select.board.module.scss';
 

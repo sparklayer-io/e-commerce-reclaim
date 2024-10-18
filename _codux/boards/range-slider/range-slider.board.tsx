@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createBoard } from '@wixc3/react-board';
-import { RangeSlider } from '~/components/range-slider/range-slider';
+import { RangeSlider } from '~/lib/components/range-slider/range-slider';
 
 import styles from './range-slider.board.module.scss';
 

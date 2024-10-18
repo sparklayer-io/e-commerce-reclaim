@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cart } from '@wix/ecom';
 import classNames from 'classnames';
-import { DropdownIcon } from '~/components/icons';
+import { DropdownIcon } from '~/src/components/icons';
 
 import styles from './cart-item-options.module.scss';
 

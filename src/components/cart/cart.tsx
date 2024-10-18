@@ -1,9 +1,9 @@
-import { Drawer } from '~/components/drawer/drawer';
-import { useCartOpen } from './cart-open-context';
-import { CartView } from './cart-view/cart-view';
-import { useCart } from '~/hooks/use-cart';
 import { useNavigate } from '@remix-run/react';
-import { ROUTES } from '~/router/config';
+import { useCartOpen } from '~/lib/cart-open-context';
+import { useCart } from '~/lib/ecom';
+import { ROUTES } from '~/src/router/config';
+import { Drawer } from '~/src/components/drawer/drawer';
+import { CartView } from './cart-view/cart-view';
 
 export const Cart = () => {
     const { isOpen, setIsOpen } = useCartOpen();

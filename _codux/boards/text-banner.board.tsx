@@ -1,5 +1,5 @@
 import { createBoard } from '@wixc3/react-board';
-import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
+import { LabelWithArrow } from '~/src/components/label-with-arrow/label-with-arrow';
 
 export default createBoard({
     name: 'Text Banner',

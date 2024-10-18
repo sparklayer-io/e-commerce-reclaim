@@ -3,8 +3,8 @@ import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import Cookies from 'js-cookie';
-import { ROUTES } from '~/router/config';
-import { getErrorMessage } from '~/utils';
+import { ROUTES } from '~/src/router/config';
+import { getErrorMessage } from '~/lib/utils';
 import {
     DEMO_STORE_WIX_CLIENT_ID,
     WIX_CLIENT_ID_COOKIE_KEY,
@@ -19,6 +19,7 @@ import {
     isEcomSDKError,
 } from './types';
 import { getSortedProductsQuery } from './product-sorting';
+import { getFilteredProductsQuery } from './product-filters';
 
 function getWixClientId() {
     /**
@@ -88,13 +89,7 @@ function createApi(): EcomAPI {
                     .hasSome('collectionIds', [category._id]);
 
                 if (filters) {
-                    if (filters.minPrice) {
-                        query = query.ge('priceData.price', filters.minPrice);
-                    }
-
-                    if (filters.maxPrice) {
-                        query = query.le('priceData.price', filters.maxPrice);
-                    }
+                    query = getFilteredProductsQuery(query, filters);
                 }
 
                 if (sortBy) {

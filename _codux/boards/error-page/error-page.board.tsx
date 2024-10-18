@@ -1,5 +1,5 @@
 import { createBoard } from '@wixc3/react-board';
-import { ErrorPage } from '~/components/error-page/error-page';
+import { ErrorPage } from '~/src/components/error-page/error-page';
 
 export default createBoard({
     name: 'Error Page',

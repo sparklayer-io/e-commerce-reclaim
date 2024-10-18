@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Cart, CartTotals } from '~/api/types';
-import { findLineItemPriceBreakdown, calculateCartItemsCount } from '~/api/cart-helpers';
-import { CloseIcon, LockIcon } from '~/components/icons';
+import { Cart, CartTotals } from '~/lib/ecom';
+import { findLineItemPriceBreakdown, calculateCartItemsCount } from '~/lib/utils';
+import { CloseIcon, LockIcon } from '~/src/components/icons';
 import { CartItem } from '../cart-item/cart-item';
 
 import styles from './cart-view.module.scss';

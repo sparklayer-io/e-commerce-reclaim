@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { cart } from '@wix/ecom';
 import { media } from '@wix/sdk';
-import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/components/icons';
-import { Spinner } from '~/components/spinner/spinner';
-import { ProductPrice } from '~/components/product-price/product-price';
+import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
+import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/src/components/icons';
+import { Spinner } from '~/src/components/spinner/spinner';
+import { ProductPrice } from '~/src/components/product-price/product-price';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import { CartItemOptions } from '../cart-item-options/cart-item-options';

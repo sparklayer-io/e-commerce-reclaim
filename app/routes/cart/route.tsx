@@ -1,13 +1,13 @@
-import { CartItem } from '~/components/cart/cart-item/cart-item';
+import { CartItem } from '~/src/components/cart/cart-item/cart-item';
 import classNames from 'classnames';
-import { LockIcon } from '~/components/icons';
-import { ROUTES } from '~/router/config';
+import { LockIcon } from '~/src/components/icons';
+import { ROUTES } from '~/src/router/config';
 import { Link } from '@remix-run/react';
-import { useCart } from '~/hooks/use-cart';
-import { findLineItemPriceBreakdown } from '~/api/cart-helpers';
+import { useCart } from '~/lib/ecom';
+import { findLineItemPriceBreakdown } from '~/lib/utils';
 
 import styles from './route.module.scss';
-import { Spinner } from '~/components/spinner/spinner';
+import { Spinner } from '~/src/components/spinner/spinner';
 
 export default function CartPage() {
     const {

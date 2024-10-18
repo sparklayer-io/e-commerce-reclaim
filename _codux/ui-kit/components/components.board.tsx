@@ -1,11 +1,11 @@
 import { createBoard, Variant } from '@wixc3/react-board';
-import { Accordion } from '~/components/accordion/accordion';
-import { ProductCard } from '~/components/product-card/product-card';
-import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { Select, SelectItem } from '~/components/select/select';
+import { Accordion } from '~/src/components/accordion/accordion';
+import { ProductCard } from '~/src/components/product-card/product-card';
+import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
+import { Select, SelectItem } from '~/src/components/select/select';
 import classNames from 'classnames';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { ColorSelect } from '~/components/color-select/color-select';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { ColorSelect } from '~/lib/components/color-select/color-select';
 import ComponentWrapper from '_codux/board-wrappers/component-wrapper';
 import { Kit } from '../ui-kit-utils/kit';
 

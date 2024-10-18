@@ -1,9 +1,9 @@
 import { createBoard, Variant } from '@wixc3/react-board';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { LabelWithArrow } from '~/src/components/label-with-arrow/label-with-arrow';
 import ComponentWrapper from '_codux/board-wrappers/component-wrapper';
-import { BackgroundParallax, FloatIn } from '~/components/visual-effects';
-import { FeaturedProductsSection } from '~/components/featured-products-section/featured-products-section';
+import { BackgroundParallax, FloatIn } from '~/lib/components/visual-effects';
+import { FeaturedProductsSection } from '~/src/components/featured-products-section/featured-products-section';
 import { Kit } from '../ui-kit-utils/kit';
 
 import styles from './sections.board.module.scss';

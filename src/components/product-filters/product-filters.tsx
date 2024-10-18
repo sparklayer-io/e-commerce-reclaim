@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from 'react';
-import { IProductFilters } from '~/api/types';
 import {
+    IProductFilters,
     productFiltersFromSearchParams,
     searchParamsFromProductFilters,
-} from '~/api/product-filters';
-import { formatPrice, mergeUrlSearchParams } from '~/utils';
-import { useSearchParamsOptimistic } from '~/utils/use-search-params-optimistic';
+} from '~/lib/ecom';
+import { RangeSlider } from '~/lib/components/range-slider/range-slider';
+import { formatPrice, mergeUrlSearchParams } from '~/lib/utils';
+import { useSearchParamsOptimistic } from '~/lib/hooks';
 import { Accordion } from '../accordion/accordion';
-import { RangeSlider } from '../range-slider/range-slider';
 
 interface ProductFiltersProps {
     lowestPrice: number;

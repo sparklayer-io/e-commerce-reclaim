@@ -1,6 +1,6 @@
 import { createBoard, Variant } from '@wixc3/react-board';
-import { CartIcon, FacebookIcon, PinterestIcon, WhatsAppIcon } from '~/components/icons';
-import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
+import { CartIcon, FacebookIcon, PinterestIcon, WhatsAppIcon } from '~/src/components/icons';
+import { LabelWithArrow } from '~/src/components/label-with-arrow/label-with-arrow';
 import { TrashIcon } from '../../../src/components/icons/trash-icon';
 import { LockIcon } from '../../../src/components/icons/lock-icon';
 import { ErrorIcon } from '../../../src/components/icons/error-icon';

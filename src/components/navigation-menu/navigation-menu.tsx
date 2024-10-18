@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { NavLink } from '@remix-run/react';
-import { ROUTES } from '~/router/config';
+import { ROUTES } from '~/src/router/config';
 import { CategoryLink } from '../category-link/category-link';
 import styles from './navigation-menu.module.scss';
 

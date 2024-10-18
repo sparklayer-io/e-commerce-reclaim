@@ -1,7 +1,7 @@
-import { CategoryLink } from '~/components/category-link/category-link';
-import { FeaturedProductsSection } from '~/components/featured-products-section/featured-products-section';
-import { LabelWithArrow } from '~/components/label-with-arrow/label-with-arrow';
-import { BackgroundParallax, FadeIn, FloatIn } from '~/components/visual-effects';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { FeaturedProductsSection } from '~/src/components/featured-products-section/featured-products-section';
+import { LabelWithArrow } from '~/src/components/label-with-arrow/label-with-arrow';
+import { BackgroundParallax, FadeIn, FloatIn } from '~/lib/components/visual-effects';
 
 export default function HomePage() {
     return (

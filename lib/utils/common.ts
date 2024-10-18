@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, Location } from '@remix-run/react';
-import { isEcomSDKError } from '~/api/types';
+import { isEcomSDKError } from '~/lib/ecom';
 
 /**
  * It's important to add an appropriate role and a keyboard support
@@ -64,17 +64,6 @@ export function getErrorMessage(error: unknown): string {
     }
 
     return String(error);
-}
-
-export function formatPrice(price: number, currency: string): string {
-    const formatter = Intl.NumberFormat('en-US', {
-        currency,
-        style: 'currency',
-        currencyDisplay: 'narrowSymbol',
-        minimumFractionDigits: 2,
-    });
-
-    return formatter.format(price);
 }
 
 /**

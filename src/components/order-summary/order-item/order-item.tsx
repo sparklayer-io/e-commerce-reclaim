@@ -2,7 +2,7 @@ import { orders } from '@wix/ecom';
 import type { SerializeFrom } from '@remix-run/node';
 import { media } from '@wix/sdk';
 import styles from './order-item.module.scss';
-import { ImagePlaceholderIcon } from '~/components/icons';
+import { ImagePlaceholderIcon } from '~/src/components/icons';
 
 interface OrderItemProps {
     item: SerializeFrom<orders.OrderLineItem>;

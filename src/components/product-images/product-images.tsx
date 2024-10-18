@@ -1,9 +1,10 @@
 import { products } from '@wix/stores';
-import styles from './product-images.module.scss';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { getClickableElementAttributes } from '~/lib/utils';
 import { ImagePlaceholderIcon } from '../icons';
-import { getClickableElementAttributes } from '~/utils';
+
+import styles from './product-images.module.scss';
 
 interface ProductImagesProps {
     media?: products.Media;

@@ -2,11 +2,10 @@ import { collections } from '@wix/stores';
 import { Product } from '@wix/stores_products';
 import classNames from 'classnames';
 import useSWR from 'swr';
-import { getEcomApi } from '~/api/ecom-api';
-import { CollectionDetails, isEcomSDKError } from '~/api/types';
-import { ProductCard, ProductCardSkeleton } from '~/components/product-card/product-card';
-import { ProductLink } from '~/components/product-link/product-link';
-import { FadeIn, Reveal } from '~/components/visual-effects';
+import { getEcomApi, CollectionDetails, isEcomSDKError } from '~/lib/ecom';
+import { FadeIn, Reveal } from '~/lib/components/visual-effects';
+import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
+import { ProductLink } from '~/src/components/product-link/product-link';
 
 import styles from './featured-products-section.module.scss';
 
