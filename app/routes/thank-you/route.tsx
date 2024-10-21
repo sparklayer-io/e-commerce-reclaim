@@ -1,24 +1,15 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { isRouteErrorResponse, json, useLoaderData, useRouteError } from '@remix-run/react';
-import { getEcomApi } from '~/api/ecom-api';
-import { OrderDetails } from '~/api/types';
-import { CategoryLink } from '~/components/category-link/category-link';
-import { ErrorPage } from '~/components/error-page/error-page';
-import { OrderSummary } from '~/components/order-summary/order-summary';
-import { getErrorMessage } from '~/utils';
+import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react';
+import { getErrorMessage } from '~/lib/utils';
+import { getThankYouRouteData } from '~/lib/route-loaders';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { ErrorPage } from '~/src/components/error-page/error-page';
+import { OrderSummary } from '~/src/components/order-summary/order-summary';
+
 import styles from './route.module.scss';
 
-export const loader = async ({
-    request,
-}: LoaderFunctionArgs): Promise<{ order?: OrderDetails }> => {
-    const orderId = new URL(request.url).searchParams.get('orderId');
-    // Show "Thank you" page even without order details.
-    if (!orderId) return { order: undefined };
-
-    const orderResponse = await getEcomApi().getOrder(orderId);
-    if (orderResponse.status === 'failure') throw json(orderResponse.error);
-
-    return { order: orderResponse.body };
+export const loader = ({ request }: LoaderFunctionArgs) => {
+    return getThankYouRouteData(request.url);
 };
 
 export default function ThankYouPage() {

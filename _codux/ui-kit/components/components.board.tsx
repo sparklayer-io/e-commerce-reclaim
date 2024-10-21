@@ -1,10 +1,11 @@
 import { createBoard, Variant } from '@wixc3/react-board';
-import { Accordion } from '~/components/accordion/accordion';
-import { ProductCard } from '~/components/product-card/product-card';
-import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { Select, SelectItem } from '~/components/select/select';
+import { Accordion } from '~/src/components/accordion/accordion';
+import { ProductCard } from '~/src/components/product-card/product-card';
+import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
+import { Select, SelectItem } from '~/src/components/select/select';
 import classNames from 'classnames';
-import { CategoryLink } from '~/components/category-link/category-link';
+import { CategoryLink } from '~/src/components/category-link/category-link';
+import { ColorSelect } from '~/lib/components/color-select/color-select';
 import ComponentWrapper from '_codux/board-wrappers/component-wrapper';
 import { Kit } from '../ui-kit-utils/kit';
 
@@ -22,7 +23,9 @@ export default createBoard({
                         </Variant>
                         <Kit.Description>Number Input</Kit.Description>
                     </Kit.Item>
+                </Kit.Section>
 
+                <Kit.Section title="Selects" className={styles.demoWidth}>
                     <Kit.Item>
                         <Variant name="Select">
                             <Select value="" onValueChange={() => {}} placeholder="Select value">
@@ -33,10 +36,28 @@ export default createBoard({
                         </Variant>
                         <Kit.Description>Select</Kit.Description>
                     </Kit.Item>
+
+                    <Kit.Item>
+                        <Variant name="Color Select">
+                            <ColorSelect
+                                className="colorSelect"
+                                selectedId="color2"
+                                onChange={() => {}}
+                                options={[
+                                    { id: 'color1', color: 'white' },
+                                    { id: 'color2', color: 'black' },
+                                    { id: 'color3', color: '#00a400' },
+                                    { id: 'color4', color: 'rgb(214, 122, 127)' },
+                                    { id: 'color5', color: 'hsl(30deg 82% 43%)' },
+                                ]}
+                            />
+                        </Variant>
+                        <Kit.Description>Color Select</Kit.Description>
+                    </Kit.Item>
                 </Kit.Section>
 
                 <Kit.Section title="Accordion">
-                    <Kit.Item>
+                    <Kit.Item className={styles.demoWidth}>
                         <Variant name="Accordion">
                             <Accordion
                                 items={[
@@ -53,7 +74,6 @@ export default createBoard({
                                         content: 'Content',
                                     },
                                 ]}
-                                className={styles.demoWidth}
                             />
                         </Variant>
                         <Kit.Description>Accordion</Kit.Description>
@@ -82,12 +102,9 @@ export default createBoard({
                         </Variant>
                         <Kit.Description>Product Card</Kit.Description>
                     </Kit.Item>
-                    <Kit.Item className={styles.demoWidth}>
+                    <Kit.Item className={classNames(styles.demoWidth, styles.linkCardWrapper)}>
                         <Variant name="Link Card">
-                            <CategoryLink
-                                categorySlug="all-products"
-                                className={classNames('linkCard', styles.linkCard)}
-                            >
+                            <CategoryLink categorySlug="all-products" className="linkCard">
                                 <img
                                     className="linkCardBackground"
                                     src="https://static.wixstatic.com/media/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg/v1/fill/w_547,h_730,q_90/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg"

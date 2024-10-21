@@ -48,8 +48,13 @@
     color: var(--primary4);
 }
 
-.checkoutButton {
+.checkoutButton,
+.viewCartButton {
     width: 100%;
+}
+
+.viewCartButton {
+    margin-top: 12px;
 }
 
 .secureCheckout {

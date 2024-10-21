@@ -17,7 +17,7 @@ interface RangeSlider {
     /**
      * The granularity that the values must adhere to. @default 1
      */
-    step?: number;
+    step?: number | 'any';
     /**
      * Allows to format the displayed start and end values. For example, add a currency symbol,
      * format with the specified number of decimal places, etc.

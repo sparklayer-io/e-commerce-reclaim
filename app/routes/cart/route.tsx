@@ -1,67 +1,103 @@
-import { CartItem } from '~/components/cart/cart-item/cart-item';
-import { cart } from '@wix/ecom';
+import { CartItem } from '~/src/components/cart/cart-item/cart-item';
 import classNames from 'classnames';
-import { LockIcon } from '~/components/icons';
+import { LockIcon } from '~/src/components/icons';
+import { ROUTES } from '~/src/router/config';
+import { Link } from '@remix-run/react';
+import { useCart } from '~/lib/ecom';
+import { findLineItemPriceBreakdown } from '~/lib/utils';
 
 import styles from './route.module.scss';
-
-const mockCartItem: cart.LineItem = {
-    _id: '1',
-    productName: { translated: 'Bamboo Toothbrush' },
-    quantity: 1,
-    image: 'https://static.wixstatic.com/media/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg/v1/fill/w_824,h_1098,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/c837a6_18152edaef9940ca88f446ae94b48a47~mv2.jpg',
-    price: { formattedConvertedAmount: '$5.50' },
-};
+import { Spinner } from '~/src/components/spinner/spinner';
 
 export default function CartPage() {
+    const {
+        cartData,
+        cartTotals,
+        isCartTotalsUpdating,
+        updatingCartItemIds,
+        checkout,
+        removeItem,
+        updateItemQuantity,
+    } = useCart();
+
+    if (!cartData) return null;
+
+    if (!cartData.lineItems.length)
+        return (
+            <div className={styles.cart}>
+                <h1 className={styles.cartHeader}>My cart</h1>
+                <div className={styles.emptyCartMessage}>
+                    <div>Cart is empty</div>
+                    <Link to={ROUTES.home.to()} className={styles.continueBrowsingLink}>
+                        Continue Browsing
+                    </Link>
+                </div>
+            </div>
+        );
+
     return (
         <div className={styles.page}>
             <div className={styles.cart}>
                 <h1 className={styles.cartHeader}>My cart</h1>
                 <div className={styles.cartItems}>
-                    <CartItem
-                        item={mockCartItem}
-                        priceBreakdown={{
-                            lineItemPrice: { formattedConvertedAmount: '$5.50' },
-                        }}
-                    />
-                    <CartItem
-                        item={mockCartItem}
-                        priceBreakdown={{
-                            lineItemPrice: { formattedConvertedAmount: '$5.50' },
-                        }}
-                    />
+                    {cartData?.lineItems.map((item) => (
+                        <CartItem
+                            key={item._id}
+                            item={item}
+                            isUpdating={updatingCartItemIds.includes(item._id!)}
+                            priceBreakdown={findLineItemPriceBreakdown(item, cartTotals)}
+                            onRemove={() => removeItem(item._id!)}
+                            onQuantityChange={(quantity: number) =>
+                                updateItemQuantity({ id: item._id!, quantity })
+                            }
+                        />
+                    ))}
                 </div>
             </div>
             <div className={styles.summary}>
                 <h1 className={styles.summaryHeader}>Order summary</h1>
-                <div className={styles.summarySection}>
+                <div
+                    className={classNames(styles.summarySection, {
+                        [styles.loading]: isCartTotalsUpdating,
+                    })}
+                >
                     <div className={styles.summaryRow}>
                         <span>Subtotal</span>
-                        <span>$5.50</span>
+                        <span>{cartTotals?.priceSummary?.subtotal?.formattedConvertedAmount}</span>
                     </div>
                     <div className={styles.summaryRow}>
                         <span>Delivery</span>
-                        <span>FREE</span>
+                        <span>
+                            {Number(cartTotals?.priceSummary?.shipping?.amount) === 0
+                                ? 'FREE'
+                                : cartTotals?.priceSummary?.shipping?.formattedConvertedAmount}
+                        </span>
                     </div>
                     <div className={styles.summaryRow}>
                         <span className={styles.location}>Poland</span>
                     </div>
-                </div>
-                <div className={styles.summarySection}>
                     <div className={classNames(styles.summaryRow, styles.summaryTotal)}>
                         <span>Total</span>
-                        <span>$5.50</span>
+                        <span>{cartTotals?.priceSummary?.total?.formattedConvertedAmount}</span>
                     </div>
+                    {isCartTotalsUpdating && (
+                        <div className={styles.spinner}>
+                            <Spinner size={50} />
+                        </div>
+                    )}
+                </div>
 
-                    <button className={classNames('button', styles.checkoutButton)}>
-                        Checkout
-                    </button>
+                <button
+                    className={classNames('button', styles.checkoutButton)}
+                    onClick={checkout}
+                    disabled={isCartTotalsUpdating}
+                >
+                    Checkout
+                </button>
 
-                    <div className={styles.secureCheckout}>
-                        <LockIcon width={11} />
-                        <span>Secure Checkout</span>
-                    </div>
+                <div className={styles.secureCheckout}>
+                    <LockIcon width={11} />
+                    <span>Secure Checkout</span>
                 </div>
             </div>
         </div>

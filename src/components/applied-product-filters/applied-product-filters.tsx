@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import classNames from 'classnames';
-import { ProductFilter, IProductFilters } from '~/api/types';
-import { formatPrice } from '~/utils';
+import { ProductFilter, IProductFilters } from '~/lib/ecom';
+import { formatPrice } from '~/lib/utils';
 import { AppliedFilter } from '../applied-filter/applied-filter';
 
 import styles from './applied-product-filters.module.scss';
@@ -11,6 +11,10 @@ interface AppliedProductFiltersProps {
     onClearFilters: (filters: ProductFilter[]) => void;
     onClearAllFilters: () => void;
     currency: string;
+    // Min and max prices in the current category.
+    // Used to replace missing bounds ("$5 - ?" or "? - $25") when only one filter bound is set.
+    minPriceInCategory: number;
+    maxPriceInCategory: number;
     className?: string;
 }
 
@@ -19,6 +23,8 @@ export const AppliedProductFilters = ({
     onClearFilters,
     onClearAllFilters,
     currency,
+    minPriceInCategory,
+    maxPriceInCategory,
     className,
 }: AppliedProductFiltersProps) => {
     const { minPrice, maxPrice } = appliedFilters;
@@ -26,22 +32,15 @@ export const AppliedProductFilters = ({
     const priceFilter = useMemo<JSX.Element | null>(() => {
         if (minPrice === undefined && maxPrice === undefined) {
             return null;
-        } else if (minPrice !== undefined && maxPrice !== undefined) {
-            return (
-                <span>
-                    {formatPrice(minPrice, currency)}&ndash;{formatPrice(maxPrice, currency)}
-                </span>
-            );
         } else {
             return (
                 <span>
-                    {minPrice !== undefined
-                        ? formatPrice(minPrice, currency)
-                        : formatPrice(maxPrice!, currency)}
+                    {formatPrice(minPrice ?? minPriceInCategory, currency)}&ndash;
+                    {formatPrice(maxPrice ?? maxPriceInCategory, currency)}
                 </span>
             );
         }
-    }, [minPrice, maxPrice, currency]);
+    }, [minPrice, maxPrice, currency, minPriceInCategory, maxPriceInCategory]);
 
     return (
         <div className={classNames(styles.root, className)}>

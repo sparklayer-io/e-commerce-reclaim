@@ -1,51 +1,59 @@
+import { useEffect, useMemo, useState } from 'react';
 import { cart } from '@wix/ecom';
-import { useRemoveItemFromCart, useUpdateCartItemQuantity } from '~/api/api-hooks';
 import { media } from '@wix/sdk';
-import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/components/icons';
-import { Spinner } from '~/components/spinner/spinner';
+import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
+import { TrashIcon, ImagePlaceholderIcon, ErrorIcon } from '~/src/components/icons';
+import { Spinner } from '~/src/components/spinner/spinner';
+import { ProductPrice } from '~/src/components/product-price/product-price';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
+import { CartItemOptions } from '../cart-item-options/cart-item-options';
+
 import styles from './cart-item.module.scss';
-import { useMemo, useState } from 'react';
 
 export interface CartItemProps {
     item: cart.LineItem;
     priceBreakdown?: cart.LineItemPricesData;
+    isUpdating?: boolean;
+    onRemove: () => void;
+    onQuantityChange: (newQuantity: number) => void;
 }
 
-export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
+export const CartItem = ({
+    item,
+    priceBreakdown,
+    isUpdating = false,
+    onRemove,
+    onQuantityChange,
+}: CartItemProps) => {
     const productName = item.productName?.translated ?? '';
-
-    const { trigger: removeItem, isMutating: isRemovingItem } = useRemoveItemFromCart();
-    const { trigger: updateItemQuantity, isMutating: isUpdatingItemQuantity } =
-        useUpdateCartItemQuantity();
 
     const [quantity, setQuantity] = useState(item.quantity!);
 
-    const updateItemQuantityDebounced = useMemo(
-        () => debounce(updateItemQuantity, 300),
-        [updateItemQuantity],
-    );
+    useEffect(() => {
+        if (!isUpdating) {
+            setQuantity(item.quantity!);
+        }
+    }, [item.quantity, isUpdating]);
 
-    const handleRemove = () => {
-        removeItem(item._id!);
-    };
+    const updateItemQuantityDebounced = useMemo(
+        () => debounce(onQuantityChange, 300),
+        [onQuantityChange],
+    );
 
     const handleQuantityChange = (value: number) => {
         setQuantity(value);
         if (value > 0) {
-            updateItemQuantityDebounced({ id: item._id!, quantity: value });
+            updateItemQuantityDebounced(value);
         }
     };
 
     const image = item.image ? media.getImageUrl(item.image) : undefined;
-    const isUpdatingItem = isRemovingItem || isUpdatingItemQuantity;
 
     const isUnavailable = item.availability?.status === cart.ItemAvailabilityStatus.NOT_AVAILABLE;
 
     return (
-        <div className={classNames(styles.root, { [styles.loading]: isUpdatingItem })}>
+        <div className={classNames(styles.root, { [styles.loading]: isUpdating })}>
             <div className={styles.itemContent}>
                 {image ? (
                     <div className={styles.imageWrapper}>
@@ -60,8 +68,20 @@ export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
                 <div className={styles.productInfo}>
                     <div className={styles.productNameAndPrice}>
                         <div className={styles.productName}>{productName}</div>
-                        {item.price && (
-                            <div className="paragraph3">{item.price.formattedConvertedAmount}</div>
+
+                        {item.fullPrice?.formattedConvertedAmount && (
+                            <ProductPrice
+                                price={item.fullPrice?.formattedConvertedAmount}
+                                discountedPrice={item.price?.formattedConvertedAmount}
+                            />
+                        )}
+
+                        {item.descriptionLines && item.descriptionLines.length > 0 && (
+                            <CartItemOptions
+                                className={styles.options}
+                                options={item.descriptionLines}
+                                visibleOptionsCount={1}
+                            />
                         )}
                     </div>
 
@@ -78,7 +98,7 @@ export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
                     <div className={styles.priceBreakdown}>
                         {priceBreakdown?.lineItemPrice?.formattedConvertedAmount}
                     </div>
-                    <button className={styles.removeButton} onClick={handleRemove}>
+                    <button className={styles.removeButton} onClick={onRemove}>
                         <TrashIcon />
                     </button>
                 </div>
@@ -91,7 +111,7 @@ export const CartItem = ({ item, priceBreakdown }: CartItemProps) => {
                 </div>
             )}
 
-            {isUpdatingItem && (
+            {isUpdating && (
                 <div className={styles.spinner}>
                     <Spinner size={50} />
                 </div>

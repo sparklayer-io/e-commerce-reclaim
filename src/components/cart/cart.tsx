@@ -1,101 +1,41 @@
-import { cart } from '@wix/ecom';
-import classNames from 'classnames';
-import { useCart, useCartTotals } from '~/api/api-hooks';
-import { calculateCartItemsCount } from '~/api/cart-helpers';
-import { useEcomAPI } from '~/api/ecom-api-context-provider';
-import { Drawer } from '~/components/drawer/drawer';
-import { CloseIcon, LockIcon } from '~/components/icons';
-import { CartItem } from './cart-item/cart-item';
-import { useCartOpen } from './cart-open-context';
-
-import styles from './cart.module.scss';
+import { useNavigate } from '@remix-run/react';
+import { useCartOpen } from '~/lib/cart-open-context';
+import { useCart } from '~/lib/ecom';
+import { ROUTES } from '~/src/router/config';
+import { Drawer } from '~/src/components/drawer/drawer';
+import { CartView } from './cart-view/cart-view';
 
 export const Cart = () => {
-    const ecomAPI = useEcomAPI();
-    const cartOpener = useCartOpen();
-    const cart = useCart();
-    const cartTotals = useCartTotals();
+    const { isOpen, setIsOpen } = useCartOpen();
+    const navigate = useNavigate();
+    const {
+        cartData,
+        cartTotals,
+        isCartTotalsUpdating,
+        updatingCartItemIds,
+        checkout,
+        removeItem,
+        updateItemQuantity,
+    } = useCart();
 
-    const handleCheckout = async () => {
-        const checkoutResponse = await ecomAPI.checkout();
-
-        if (checkoutResponse.status === 'success') {
-            window.location.href = checkoutResponse.body.checkoutUrl;
-        } else {
-            alert('Checkout failed.');
-        }
+    const handleViewCart = () => {
+        setIsOpen(false);
+        navigate(ROUTES.cart.to());
     };
-
-    const findLineItemPriceBreakdown = (item: cart.LineItem) => {
-        return cartTotals.data?.calculatedLineItems.find(
-            (calculatedItem) => calculatedItem.lineItemId === item._id,
-        )?.pricesBreakdown;
-    };
-
-    const itemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;
 
     return (
-        <Drawer open={cartOpener.isOpen} onClose={() => cartOpener.setIsOpen(false)}>
-            <div className={styles.cart}>
-                <div className={styles.header}>
-                    <span className="heading6">
-                        Cart ({itemsCount} {itemsCount === 1 ? 'item' : 'items'})
-                    </span>
-
-                    <button
-                        className={styles.closeButton}
-                        onClick={() => cartOpener.setIsOpen(false)}
-                    >
-                        <CloseIcon />
-                    </button>
-                </div>
-
-                {cart.data && cart.data.lineItems.length > 0 ? (
-                    <>
-                        <div className={styles.cartItems}>
-                            {cart.data.lineItems.map((item) => (
-                                <CartItem
-                                    key={item._id}
-                                    item={item}
-                                    priceBreakdown={findLineItemPriceBreakdown(item)}
-                                />
-                            ))}
-                        </div>
-
-                        <div className={styles.footer}>
-                            {cart.data.subtotal && (
-                                <>
-                                    <div className={styles.subtotal}>
-                                        <span>Subtotal</span>
-                                        <span>{cart.data.subtotal.formattedConvertedAmount}</span>
-                                    </div>
-                                    <div className={styles.subtotalNote}>
-                                        Taxes and shipping are calculated at checkout.
-                                    </div>
-                                </>
-                            )}
-
-                            <button
-                                className={classNames(
-                                    'button',
-                                    'mutedPrimaryButton',
-                                    styles.checkoutButton,
-                                )}
-                                onClick={handleCheckout}
-                            >
-                                Checkout
-                            </button>
-
-                            <div className={styles.secureCheckout}>
-                                <LockIcon width={11} />
-                                <span>Secure Checkout</span>
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <div className={styles.emptyCartMessage}>Your cart is empty.</div>
-                )}
-            </div>
+        <Drawer onClose={() => setIsOpen(false)} open={isOpen}>
+            <CartView
+                cart={cartData}
+                cartTotals={cartTotals}
+                onClose={() => setIsOpen(false)}
+                onCheckout={checkout}
+                onViewCart={handleViewCart}
+                onItemRemove={removeItem}
+                onItemQuantityChange={updateItemQuantity}
+                isUpdating={isCartTotalsUpdating}
+                updatingCartItemIds={updatingCartItemIds}
+            />
         </Drawer>
     );
 };

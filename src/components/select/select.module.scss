@@ -16,6 +16,10 @@
     box-shadow: none;
 }
 
+.trigger.hasError {
+    border-color: var(--error);
+}
+
 .trigger:hover,
 .trigger:focus,
 .trigger[data-state='open'] {

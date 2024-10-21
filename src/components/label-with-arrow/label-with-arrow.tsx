@@ -1,5 +1,5 @@
 import styles from './label-with-arrow.module.scss';
-import { ArrowRightIcon } from '~/components/icons';
+import { ArrowRightIcon } from '~/src/components/icons';
 import classNames from 'classnames';
 import { FC, HTMLAttributes } from 'react';
 

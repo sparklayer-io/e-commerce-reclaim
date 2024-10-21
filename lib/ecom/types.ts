@@ -5,6 +5,7 @@ export type Product = products.Product;
 export type Collection = collections.Collection;
 export type CollectionDetails = collections.Collection & collections.CollectionNonNullableFields;
 export type Cart = currentCart.Cart & currentCart.CartNonNullableFields;
+export type CartItem = cart.LineItem;
 export type CartItemDetails = cart.LineItem & cart.CartNonNullableFields['lineItems'][0];
 export type CartTotals = currentCart.EstimateTotalsResponse &
     currentCart.EstimateTotalsResponseNonNullableFields;
@@ -70,10 +71,23 @@ export interface IProductFilters {
     [ProductFilter.maxPrice]?: number;
 }
 
+export enum ProductSortBy {
+    newest = 'newest',
+    priceAsc = 'priceAsc',
+    priceDesc = 'priceDesc',
+    nameAsc = 'nameAsc',
+    nameDesc = 'nameDesc',
+}
+
 interface GetProductsByCategoryOptions {
     limit?: number;
     filters?: IProductFilters;
+    sortBy?: ProductSortBy;
 }
+
+export type AddToCartOptions =
+    | { variantId: string }
+    | { options: Record<string, string | undefined> };
 
 export type EcomAPI = {
     getProductsByCategory: (
@@ -97,7 +111,7 @@ export type EcomAPI = {
     addToCart: (
         id: string,
         quantity: number,
-        options?: Record<string, string>,
+        options?: AddToCartOptions,
     ) => Promise<EcomAPIResponse<Cart>>;
     checkout: () => Promise<EcomAPIResponse<{ checkoutUrl: string }>>;
     getAllCategories: () => Promise<EcomAPIResponse<Collection[]>>;

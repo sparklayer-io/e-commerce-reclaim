@@ -1,48 +1,36 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigation } from '@remix-run/react';
-import { IProductFilters } from '~/api/types';
-import { formatPrice } from '~/utils';
+import { useCallback, useMemo } from 'react';
+import {
+    IProductFilters,
+    productFiltersFromSearchParams,
+    searchParamsFromProductFilters,
+} from '~/lib/ecom';
+import { RangeSlider } from '~/lib/components/range-slider/range-slider';
+import { formatPrice, mergeUrlSearchParams } from '~/lib/utils';
+import { useSearchParamsOptimistic } from '~/lib/hooks';
 import { Accordion } from '../accordion/accordion';
-import { RangeSlider } from '../range-slider/range-slider';
 
 interface ProductFiltersProps {
-    appliedFilters: IProductFilters;
-    onFiltersChange: (filters: IProductFilters) => void;
     lowestPrice: number;
     highestPrice: number;
     currency: string;
 }
 
-export const ProductFilters = ({
-    appliedFilters,
-    onFiltersChange,
-    lowestPrice,
-    highestPrice,
-    currency,
-}: ProductFiltersProps) => {
-    const navigation = useNavigation();
+export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductFiltersProps) => {
+    const [searchParams, setSearchParams] = useSearchParamsOptimistic();
 
-    // Allows updating the UI optimistically while Remix navigates to the URL
-    // with updated parameters.
-    const [filters, setFilters] = useState(appliedFilters);
+    const filters = useMemo(() => productFiltersFromSearchParams(searchParams), [searchParams]);
 
     const handleFiltersChange = (changed: Partial<IProductFilters>) => {
-        const newFilters = { ...filters, ...changed };
-        setFilters(newFilters);
-        onFiltersChange(newFilters);
+        const newParams = searchParamsFromProductFilters({ ...filters, ...changed });
+        setSearchParams((params) => mergeUrlSearchParams(params, newParams), {
+            preventScrollReset: true,
+        });
     };
 
     const formatPriceValue = useCallback(
         (price: number) => formatPrice(price, currency),
         [currency],
     );
-
-    // Synchronize filters on back/forward browser button clicks.
-    useEffect(() => {
-        if (navigation.state !== 'loading') {
-            setFilters(appliedFilters);
-        }
-    }, [navigation.state, appliedFilters]);
 
     return (
         <Accordion
@@ -53,13 +41,18 @@ export const ProductFilters = ({
                     content: (
                         <RangeSlider
                             className="rangeSlider"
+                            step="any"
                             startValue={filters.minPrice ?? lowestPrice}
                             endValue={filters.maxPrice ?? highestPrice}
                             onStartValueChange={(value) => {
-                                handleFiltersChange({ minPrice: value });
+                                handleFiltersChange({
+                                    minPrice: Math.max(Math.floor(value), lowestPrice),
+                                });
                             }}
                             onEndValueChange={(value) => {
-                                handleFiltersChange({ maxPrice: value });
+                                handleFiltersChange({
+                                    maxPrice: Math.min(Math.ceil(value), highestPrice),
+                                });
                             }}
                             minValue={lowestPrice}
                             maxValue={highestPrice}

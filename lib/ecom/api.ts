@@ -3,8 +3,8 @@ import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import Cookies from 'js-cookie';
-import { ROUTES } from '~/router/config';
-import { getErrorMessage } from '~/utils';
+import { ROUTES } from '~/src/router/config';
+import { getErrorMessage } from '~/lib/utils';
 import {
     DEMO_STORE_WIX_CLIENT_ID,
     WIX_CLIENT_ID_COOKIE_KEY,
@@ -18,6 +18,8 @@ import {
     EcomAPISuccessResponse,
     isEcomSDKError,
 } from './types';
+import { getSortedProductsQuery } from './product-sorting';
+import { getFilteredProductsQuery } from './product-filters';
 
 function getWixClientId() {
     /**
@@ -76,7 +78,7 @@ function createApi(): EcomAPI {
     const wixClient = getWixClient();
 
     return {
-        async getProductsByCategory(categorySlug, { limit, filters } = {}) {
+        async getProductsByCategory(categorySlug, { limit, filters, sortBy } = {}) {
             try {
                 const category = (await wixClient.collections.getCollectionBySlug(categorySlug))
                     .collection;
@@ -87,13 +89,11 @@ function createApi(): EcomAPI {
                     .hasSome('collectionIds', [category._id]);
 
                 if (filters) {
-                    if (filters.minPrice) {
-                        query = query.ge('priceData.price', filters.minPrice);
-                    }
+                    query = getFilteredProductsQuery(query, filters);
+                }
 
-                    if (filters.maxPrice) {
-                        query = query.le('priceData.price', filters.maxPrice);
-                    }
+                if (sortBy) {
+                    query = getSortedProductsQuery(query, sortBy);
                 }
 
                 const { items, totalCount = 0 } = await query.limit(limit ?? 100).find();
@@ -178,9 +178,9 @@ function createApi(): EcomAPI {
                             catalogReference: {
                                 catalogItemId: id,
                                 appId: WIX_STORES_APP_ID,
-                                options: { options: options },
+                                options,
                             },
-                            quantity: quantity,
+                            quantity,
                         },
                     ],
                 });

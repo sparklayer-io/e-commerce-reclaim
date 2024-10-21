@@ -1,21 +1,22 @@
+import { useState } from 'react';
 import { Link } from '@remix-run/react';
 import classNames from 'classnames';
-import { ROUTES } from '~/router/config';
-import styles from './header.module.scss';
-import { CartIcon, MenuIcon } from '~/components/icons';
-import { useCartOpen } from '../cart/cart-open-context';
-import { useCart } from '~/api/api-hooks';
-import { calculateCartItemsCount } from '~/api/cart-helpers';
-import { useState } from 'react';
+import { useCartData } from '~/lib/ecom';
+import { useCartOpen } from '~/lib/cart-open-context';
+import { calculateCartItemsCount } from '~/lib/utils';
+import { ROUTES } from '~/src/router/config';
+import { CartIcon, MenuIcon } from '~/src/components/icons';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
+
+import styles from './header.module.scss';
 
 export interface HeaderProps {
     className?: string;
 }
 
 export const Header = ({ className }: HeaderProps) => {
-    const cart = useCart();
+    const cart = useCartData();
     const cartOpener = useCartOpen();
 
     const cartItemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;

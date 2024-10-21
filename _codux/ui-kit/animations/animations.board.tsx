@@ -1,8 +1,8 @@
 import { createBoard, Variant } from '@wixc3/react-board';
-import { BackgroundParallax } from '~/components/visual-effects/background-parallax';
-import { FadeIn } from '~/components/visual-effects/fade-in';
-import { FloatIn } from '~/components/visual-effects/float-in';
-import { Reveal } from '~/components/visual-effects/reveal';
+import { BackgroundParallax } from '~/lib/components/visual-effects/background-parallax';
+import { FadeIn } from '~/lib/components/visual-effects/fade-in';
+import { FloatIn } from '~/lib/components/visual-effects/float-in';
+import { Reveal } from '~/lib/components/visual-effects/reveal';
 
 import styles from './animations.board.module.scss';
 

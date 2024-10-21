@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { SWRConfig } from 'swr';
-import { getEcomApi } from './ecom-api';
+import { getEcomApi } from './api';
 import { EcomAPI } from './types';
 
 export const EcomAPIContext = React.createContext<EcomAPI | null>(null);
@@ -18,7 +18,7 @@ export const EcomAPIContextProvider: FC<React.PropsWithChildren> = ({ children }
         <SWRConfig
             value={{
                 revalidateIfStale: false,
-                revalidateOnFocus: false,
+                revalidateOnFocus: true,
                 revalidateOnReconnect: true,
                 refreshInterval: 5 * 60_000, // 5 minutes
                 keepPreviousData: true,

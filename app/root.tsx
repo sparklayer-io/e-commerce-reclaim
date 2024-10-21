@@ -12,19 +12,19 @@ import {
     useRouteError,
 } from '@remix-run/react';
 import { useEffect } from 'react';
-import { EcomAPIContextProvider } from '~/api/ecom-api-context-provider';
-import { CartOpenContextProvider } from '~/components/cart/cart-open-context';
-import { ErrorPage } from '~/components/error-page/error-page';
-import { SiteWrapper } from '~/components/site-wrapper/site-wrapper';
-import { ROUTES } from '~/router/config';
-import { RouteHandle } from '~/router/types';
-import { getErrorMessage, routeLocationToUrl } from '~/utils';
+import { EcomAPIContextProvider } from '~/lib/ecom';
+import { CartOpenContextProvider } from '~/lib/cart-open-context';
+import { getErrorMessage, routeLocationToUrl } from '~/lib/utils';
+import { ErrorPage } from '~/src/components/error-page/error-page';
+import { SiteWrapper } from '~/src/components/site-wrapper/site-wrapper';
+import { ROUTES } from '~/src/router/config';
+import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 
-import '~/styles/reset.scss';
-import '~/styles/colors.scss';
-import '~/styles/typography.scss';
-import '~/styles/common.scss';
-import '~/styles/index.scss';
+import '~/src/styles/reset.scss';
+import '~/src/styles/colors.scss';
+import '~/src/styles/typography.scss';
+import '~/src/styles/common.scss';
+import '~/src/styles/index.scss';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'ReClaim: Home Goods Store' }];
@@ -38,8 +38,10 @@ export async function loader() {
     };
 }
 
-export const handle: RouteHandle = {
-    breadcrumbs: () => [{ title: 'Home', to: ROUTES.home.path }],
+const breadcrumbs: RouteBreadcrumbs = () => [{ title: 'Home', to: ROUTES.home.path }];
+
+export const handle = {
+    breadcrumbs,
 };
 
 export function Layout({ children }: React.PropsWithChildren) {

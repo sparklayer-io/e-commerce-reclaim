@@ -1,45 +1,25 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import {
-    isRouteErrorResponse,
-    json,
-    useLoaderData,
-    useNavigate,
-    useRouteError,
-} from '@remix-run/react';
-import { products } from '@wix/stores';
+import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import classNames from 'classnames';
-import { useState } from 'react';
-import { useAddToCart } from '~/api/api-hooks';
-import { getEcomApi } from '~/api/ecom-api';
-import { EcomApiErrorCodes } from '~/api/types';
-import { Accordion } from '~/components/accordion/accordion';
-import { Breadcrumbs } from '~/components/breadcrumbs/breadcrumbs';
-import { useCartOpen } from '~/components/cart/cart-open-context';
-import { ErrorPage } from '~/components/error-page/error-page';
-import { ProductImages } from '~/components/product-images/product-images';
-import { ProductPrice } from '~/components/product-price/product-price';
-import { QuantityInput } from '~/components/quantity-input/quantity-input';
-import { ShareProductLinks } from '~/components/share-product-links/share-product-links';
-import { ROUTES } from '~/router/config';
-import { BreadcrumbData, RouteHandle } from '~/router/types';
-import { getErrorMessage, removeQueryStringFromUrl } from '~/utils';
-import { useBreadcrumbs } from '~/router/use-breadcrumbs';
+import { EcomApiErrorCodes } from '~/lib/ecom';
+import { useProductDetails } from '~/lib/hooks';
+import { getProductDetailsRouteData } from '~/lib/route-loaders';
+import { getErrorMessage } from '~/lib/utils';
+import { Accordion } from '~/src/components/accordion/accordion';
+import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
+import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
+import { ErrorPage } from '~/src/components/error-page/error-page';
+import { ProductImages } from '~/src/components/product-images/product-images';
+import { ProductPrice } from '~/src/components/product-price/product-price';
+import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
+import { ProductOption } from '~/src/components/product-option/product-option';
+import { ShareProductLinks } from '~/src/components/share-product-links/share-product-links';
+import { ROUTES } from '~/src/router/config';
+
 import styles from './route.module.scss';
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-    const productSlug = params.productSlug;
-    if (!productSlug) {
-        throw new Error('Missing product slug');
-    }
-    const productResponse = await getEcomApi().getProductBySlug(productSlug);
-    if (productResponse.status === 'failure') {
-        throw json(productResponse.error);
-    }
-
-    return {
-        product: productResponse.body,
-        canonicalUrl: removeQueryStringFromUrl(request.url),
-    };
+export const loader = ({ params, request }: LoaderFunctionArgs) => {
+    return getProductDetailsRouteData(params.productSlug, request.url);
 };
 
 interface ProductDetailsLocationState {
@@ -49,68 +29,70 @@ interface ProductDetailsLocationState {
     };
 }
 
-export const handle: RouteHandle<typeof loader, ProductDetailsLocationState> = {
-    breadcrumbs: (match, location) => {
-        const fromCategory = location.state?.fromCategory;
+const breadcrumbs: RouteBreadcrumbs<typeof loader, ProductDetailsLocationState> = (
+    match,
+    location,
+) => {
+    const fromCategory = location.state?.fromCategory;
 
-        const breadcrumbs: BreadcrumbData[] = [
-            {
-                title: match.data.product.name!,
-                to: ROUTES.productDetails.to(match.data.product.slug!),
-            },
-        ];
+    const breadcrumbs: BreadcrumbData[] = [
+        {
+            title: match.data.product.name!,
+            to: ROUTES.productDetails.to(match.data.product.slug!),
+        },
+    ];
 
-        if (fromCategory) {
-            breadcrumbs.unshift({
-                title: fromCategory.name,
-                to: ROUTES.products.to(fromCategory.slug),
-                clientOnly: true,
-            });
-        }
+    if (fromCategory) {
+        breadcrumbs.unshift({
+            title: fromCategory.name,
+            to: ROUTES.products.to(fromCategory.slug),
+            clientOnly: true,
+        });
+    }
 
-        return breadcrumbs;
-    },
+    return breadcrumbs;
+};
+
+export const handle = {
+    breadcrumbs,
 };
 
 export default function ProductDetailsPage() {
     const { product, canonicalUrl } = useLoaderData<typeof loader>();
+
+    const {
+        outOfStock,
+        priceData,
+        sku,
+        media,
+        productOptions,
+        quantity,
+        selectedChoices,
+        isAddingToCart,
+        addToCartAttempted,
+        handleAddToCart,
+        handleOptionChange,
+        handleQuantityChange,
+    } = useProductDetails(product);
+
     const breadcrumbs = useBreadcrumbs();
-
-    const cartOpener = useCartOpen();
-    const { trigger: addToCart, isMutating: isAddingToCart } = useAddToCart();
-
-    const [quantity, setQuantity] = useState(1);
-
-    const handleAddToCartClick = () => {
-        addToCart(
-            {
-                id: product._id!,
-                quantity,
-            },
-            {
-                onSuccess: () => cartOpener.setIsOpen(true),
-            },
-        );
-    };
-
-    const isOutOfStock = product.stock?.inventoryStatus === products.InventoryStatus.OUT_OF_STOCK;
 
     return (
         <div className={styles.page}>
             <Breadcrumbs breadcrumbs={breadcrumbs} />
 
             <div className={styles.content}>
-                <ProductImages media={product.media} />
+                <ProductImages media={media} />
 
                 <div>
                     <h1 className={styles.productName}>{product.name}</h1>
-                    {product.sku && <p className={styles.sku}>SKU: {product.sku}</p>}
+                    {sku && <p className={styles.sku}>SKU: {sku}</p>}
 
-                    {product.priceData && (
+                    {priceData && (
                         <ProductPrice
                             className={styles.price}
-                            price={product.priceData.formatted?.price}
-                            discountedPrice={product.priceData.formatted?.discountedPrice}
+                            price={priceData.formatted?.price}
+                            discountedPrice={priceData.formatted?.discountedPrice}
                         />
                     )}
 
@@ -121,19 +103,43 @@ export default function ProductDetailsPage() {
                         />
                     )}
 
+                    {productOptions && productOptions.length > 0 && (
+                        <div className={styles.productOptions}>
+                            {productOptions.map((option) => (
+                                <ProductOption
+                                    key={option.name}
+                                    error={
+                                        addToCartAttempted &&
+                                        selectedChoices[option.name!] === undefined
+                                            ? `Select ${option.name}`
+                                            : undefined
+                                    }
+                                    option={option}
+                                    selectedChoice={selectedChoices[option.name!]}
+                                    onChange={(choice) => handleOptionChange(option.name!, choice)}
+                                />
+                            ))}
+                        </div>
+                    )}
+
                     <div className={styles.quantity}>
                         <label htmlFor="quantity" className={styles.quantityLabel}>
                             Quantity
                         </label>
-                        <QuantityInput id="quantity" value={quantity} onChange={setQuantity} />
+                        <QuantityInput
+                            id="quantity"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            disabled={outOfStock}
+                        />
                     </div>
 
                     <button
                         className={classNames('button', 'primaryButton', styles.addToCartButton)}
-                        onClick={handleAddToCartClick}
-                        disabled={isOutOfStock || isAddingToCart}
+                        onClick={handleAddToCart}
+                        disabled={outOfStock || isAddingToCart}
                     >
-                        {isOutOfStock ? 'Out of stock' : 'Add to Cart'}
+                        {outOfStock ? 'Out of stock' : 'Add to Cart'}
                     </button>
 
                     {product.additionalInfoSections &&

@@ -52,6 +52,10 @@
     margin-bottom: 10px;
 }
 
+.options {
+    margin-top: 4px;
+}
+
 .price {
     grid-area: price;
 }
@@ -107,12 +111,12 @@
     display: flex;
     align-items: center;
     column-gap: 4px;
-    background-color: #fceaea;
+    background: #fceaea;
     font: var(--paragraph3);
 }
 
 .unavailableIcon {
-    color: #df3131;
+    color: var(--error);
     width: 20px;
     height: 20px;
 }

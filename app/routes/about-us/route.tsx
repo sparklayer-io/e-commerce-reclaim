@@ -1,4 +1,4 @@
-import { FadeIn, Reveal } from '~/components/visual-effects';
+import { FadeIn, Reveal } from '~/lib/components/visual-effects';
 import styles from './route.module.scss';
 
 export default function AboutUsPage() {

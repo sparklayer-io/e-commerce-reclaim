@@ -35,6 +35,13 @@
     line-height: 1.5;
 }
 
+.productOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 14px;
+}
+
 .quantity {
     margin-top: 20px;
 }

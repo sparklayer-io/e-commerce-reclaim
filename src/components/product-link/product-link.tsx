@@ -1,5 +1,5 @@
 import { NavLink, NavLinkProps } from '@remix-run/react';
-import { ROUTES } from '~/router/config';
+import { ROUTES } from '~/src/router/config';
 
 export interface ProductLinkProps extends Omit<NavLinkProps, 'to'> {
     productSlug: string;
