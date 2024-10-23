@@ -80,6 +80,7 @@ export enum ProductSortBy {
 }
 
 interface GetProductsByCategoryOptions {
+    skip?: number;
     limit?: number;
     filters?: IProductFilters;
     sortBy?: ProductSortBy;
@@ -93,12 +94,7 @@ export type EcomAPI = {
     getProductsByCategory: (
         categorySlug: string,
         options?: GetProductsByCategoryOptions,
-    ) => Promise<
-        EcomAPIResponse<{
-            items: Product[];
-            totalCount: number;
-        }>
-    >;
+    ) => Promise<EcomAPIResponse<{ items: Product[]; totalCount: number }>>;
     getPromotedProducts: () => Promise<EcomAPIResponse<Product[]>>;
     getProductBySlug: (slug: string) => Promise<EcomAPIResponse<Product>>;
     getCart: () => Promise<EcomAPIResponse<Cart>>;

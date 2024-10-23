@@ -1,14 +1,16 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import classNames from 'classnames';
+import { FadeIn } from '~/lib/components/visual-effects';
 import { EcomApiErrorCodes } from '~/lib/ecom';
 import { useAppliedProductFilters } from '~/lib/hooks';
+import { useProductSorting } from '~/lib/hooks/use-product-sorting';
+import { useProductsPageResults } from '~/lib/hooks/use-products-page-results';
 import { getProductsRouteData } from '~/lib/route-loaders';
-import { FadeIn } from '~/lib/components/visual-effects';
 import { getErrorMessage } from '~/lib/utils';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
-import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
+import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { EmptyProductsCategory } from '~/src/components/empty-products-category/empty-products-category';
 import { ErrorPage } from '~/src/components/error-page/error-page';
@@ -36,15 +38,27 @@ export const handle = {
 };
 
 export default function ProductsPage() {
-    const { category, categoryProducts, allCategories, productPriceBounds } =
-        useLoaderData<typeof loader>();
-
-    const breadcrumbs = useBreadcrumbs();
+    const {
+        category,
+        categoryProducts: resultsFromLoader,
+        allCategories,
+        productPriceBounds,
+    } = useLoaderData<typeof loader>();
 
     const { appliedFilters, someFiltersApplied, clearFilters, clearAllFilters } =
         useAppliedProductFilters();
+    const { sorting } = useProductSorting();
+    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts } =
+        useProductsPageResults({
+            categorySlug: category.slug!,
+            filters: appliedFilters,
+            sorting,
+            resultsFromLoader,
+        });
 
-    const currency = categoryProducts.items[0]?.priceData?.currency ?? 'USD';
+    const currency = products[0]?.priceData?.currency ?? 'USD';
+
+    const breadcrumbs = useBreadcrumbs();
 
     const renderProducts = () => {
         if (category.numberOfProducts === 0) {
@@ -56,7 +70,7 @@ export default function ProductsPage() {
             );
         }
 
-        if (someFiltersApplied && categoryProducts.items.length === 0) {
+        if (someFiltersApplied && products.length === 0) {
             return (
                 <EmptyProductsCategory
                     title="We couldn't find any matches"
@@ -72,7 +86,7 @@ export default function ProductsPage() {
 
         return (
             <div className={styles.productsList}>
-                {categoryProducts.items.map((product) => (
+                {products.map((product) => (
                     <FadeIn key={product._id} duration={0.9}>
                         <ProductLink
                             className={styles.productLink}
@@ -163,14 +177,25 @@ export default function ProductsPage() {
 
                     <div className={styles.countAndSorting}>
                         <p className={styles.productsCount}>
-                            {categoryProducts.totalCount}{' '}
-                            {categoryProducts.totalCount === 1 ? 'product' : 'products'}
+                            {totalProducts} {totalProducts === 1 ? 'product' : 'products'}
                         </p>
 
                         <ProductSortingSelect />
                     </div>
 
                     {renderProducts()}
+
+                    {products.length < totalProducts && (
+                        <div className={styles.loadMoreWrapper}>
+                            <button
+                                className="button secondaryButton"
+                                onClick={loadMoreProducts}
+                                disabled={isLoadingMoreProducts}
+                            >
+                                {isLoadingMoreProducts ? 'Loading...' : 'Load More'}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -3,14 +3,16 @@ import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import Cookies from 'js-cookie';
-import { ROUTES } from '~/src/router/config';
 import { getErrorMessage } from '~/lib/utils';
+import { ROUTES } from '~/src/router/config';
 import {
     DEMO_STORE_WIX_CLIENT_ID,
     WIX_CLIENT_ID_COOKIE_KEY,
     WIX_SESSION_TOKEN_COOKIE_KEY,
     WIX_STORES_APP_ID,
 } from './constants';
+import { getFilteredProductsQuery } from './product-filters';
+import { getSortedProductsQuery } from './product-sorting';
 import {
     EcomAPI,
     EcomApiErrorCodes,
@@ -18,8 +20,6 @@ import {
     EcomAPISuccessResponse,
     isEcomSDKError,
 } from './types';
-import { getSortedProductsQuery } from './product-sorting';
-import { getFilteredProductsQuery } from './product-filters';
 
 function getWixClientId() {
     /**
@@ -78,7 +78,7 @@ function createApi(): EcomAPI {
     const wixClient = getWixClient();
 
     return {
-        async getProductsByCategory(categorySlug, { limit, filters, sortBy } = {}) {
+        async getProductsByCategory(categorySlug, { skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
                 const category = (await wixClient.collections.getCollectionBySlug(categorySlug))
                     .collection;
@@ -96,7 +96,7 @@ function createApi(): EcomAPI {
                     query = getSortedProductsQuery(query, sortBy);
                 }
 
-                const { items, totalCount = 0 } = await query.limit(limit ?? 100).find();
+                const { items, totalCount = 0 } = await query.skip(skip).limit(limit).find();
 
                 return successResponse({ items, totalCount });
             } catch (e) {
