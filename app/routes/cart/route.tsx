@@ -26,8 +26,8 @@ export default function CartPage() {
         return (
             <div className={styles.cart}>
                 <h1 className={styles.cartHeader}>My cart</h1>
-                <div className={styles.emptyCartMessage}>
-                    <div>Cart is empty</div>
+                <div className={styles.emptyCart}>
+                    <div className={styles.emptyCartMessage}>Cart is empty</div>
                     <Link to={ROUTES.home.to()} className={styles.continueBrowsingLink}>
                         Continue Browsing
                     </Link>
