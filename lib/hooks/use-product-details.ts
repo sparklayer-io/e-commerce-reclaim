@@ -15,7 +15,7 @@ import { useCartOpen } from '~/lib/cart-open-context';
 
 export function useProductDetails(product: SerializeFrom<products.Product>) {
     const cartOpener = useCartOpen();
-    const { addToCart, isAddingToCart } = useCart();
+    const { addToCart, isAddingToCart, checkout } = useCart();
 
     const getInitialSelectedChoices = () => {
         const result: Record<string, products.Choice | undefined> = {};
@@ -61,6 +61,11 @@ export function useProductDetails(product: SerializeFrom<products.Product>) {
         }));
     }, []);
 
+    const handleAddToCartAndCheckout = useCallback(() => {
+        handleAddToCart();
+        checkout();
+    }, [checkout, handleAddToCart]);
+
     return {
         outOfStock,
         priceData,
@@ -74,5 +79,6 @@ export function useProductDetails(product: SerializeFrom<products.Product>) {
         handleAddToCart,
         handleOptionChange,
         handleQuantityChange: setQuantity,
+        handleAddToCartAndCheckout,
     };
 }
