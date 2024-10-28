@@ -29,7 +29,7 @@ export enum EcomApiErrorCodes {
     GetOrderFailure = 'GetOrderFailure',
 }
 
-export type EcomAPIError = { code: EcomApiErrorCodes; message?: string };
+export type EcomAPIError = { code: EcomApiErrorCodes; message: string };
 export type EcomAPISuccessResponse<T> = { status: 'success'; body: T };
 export type EcomAPIFailureResponse = { status: 'failure'; error: EcomAPIError };
 export type EcomAPIResponse<T> = EcomAPISuccessResponse<T> | EcomAPIFailureResponse;
