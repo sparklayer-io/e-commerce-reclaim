@@ -18,7 +18,6 @@ import { ProductCard } from '~/src/components/product-card/product-card';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductLink } from '~/src/components/product-link/product-link';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-import { ROUTES } from '~/src/router/config';
 
 import styles from './route.module.scss';
 
@@ -29,7 +28,7 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
 const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
     {
         title: match.data.category.name!,
-        to: ROUTES.products.to(match.data.category.slug!),
+        to: `/products/${match.data.category.slug}`,
     },
 ];
 
@@ -219,7 +218,7 @@ export function ErrorBoundary() {
             title={title}
             message={message}
             actionButtonText="Back to shopping"
-            onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+            onActionButtonClick={() => navigate('/products/all-products')}
         />
     );
 }

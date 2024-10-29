@@ -1,7 +1,6 @@
 import { useNavigate } from '@remix-run/react';
 import { useCartOpen } from '~/lib/cart-open-context';
 import { useCart } from '~/lib/ecom';
-import { ROUTES } from '~/src/router/config';
 import { Drawer } from '~/src/components/drawer/drawer';
 import { CartView } from './cart-view/cart-view';
 
@@ -20,7 +19,7 @@ export const Cart = () => {
 
     const handleViewCart = () => {
         setIsOpen(false);
-        navigate(ROUTES.cart.to());
+        navigate('/cart');
     };
 
     return (

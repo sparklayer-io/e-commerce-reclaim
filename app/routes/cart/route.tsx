@@ -1,7 +1,6 @@
 import { CartItem } from '~/src/components/cart/cart-item/cart-item';
 import classNames from 'classnames';
 import { LockIcon } from '~/src/components/icons';
-import { ROUTES } from '~/src/router/config';
 import { Link } from '@remix-run/react';
 import { useCart } from '~/lib/ecom';
 import { findLineItemPriceBreakdown } from '~/lib/utils';
@@ -28,7 +27,7 @@ export default function CartPage() {
                 <h1 className={styles.cartHeader}>My cart</h1>
                 <div className={styles.emptyCart}>
                     <div className={styles.emptyCartMessage}>Cart is empty</div>
-                    <Link to={ROUTES.home.to()} className={styles.continueBrowsingLink}>
+                    <Link to="/" className={styles.continueBrowsingLink}>
                         Continue Browsing
                     </Link>
                 </div>

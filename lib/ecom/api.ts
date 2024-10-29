@@ -4,7 +4,6 @@ import { createClient, OAuthStrategy } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import Cookies from 'js-cookie';
 import { getErrorMessage } from '~/lib/utils';
-import { ROUTES } from '~/src/router/config';
 import {
     DEMO_STORE_WIX_CLIENT_ID,
     WIX_CLIENT_ID_COOKIE_KEY,
@@ -214,7 +213,7 @@ function createApi(): EcomAPI {
                     ecomCheckout: { checkoutId },
                     callbacks: {
                         postFlowUrl: window.location.origin,
-                        thankYouPageUrl: `${window.location.origin}${ROUTES.thankYou.path}`,
+                        thankYouPageUrl: `${window.location.origin}/thank-you`,
                     },
                 });
                 if (!redirectSession?.fullUrl) {
