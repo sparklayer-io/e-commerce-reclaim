@@ -1,47 +1,11 @@
-import { collections } from '@wix/stores';
-import { Product } from '@wix/stores_products';
 import classNames from 'classnames';
 import useSWR from 'swr';
-import { getEcomApi, CollectionDetails, EcomApiErrorCodes } from '~/lib/ecom';
 import { FadeIn, Reveal } from '~/lib/components/visual-effects';
+import { useEcomAPI } from '~/lib/ecom';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';
 
 import styles from './featured-products-section.module.scss';
-
-interface FeaturedProductsData {
-    category: collections.Collection;
-    products: Product[];
-}
-
-const getFeaturedProducts = async (
-    categorySlug: string,
-    limit: number,
-): Promise<FeaturedProductsData | null> => {
-    const api = getEcomApi();
-
-    let category: CollectionDetails | undefined;
-    const response = await api.getCategoryBySlug(categorySlug);
-    if (response.status === 'success') {
-        category = response.body;
-    } else {
-        const error = response.error;
-        if (error.code === EcomApiErrorCodes.CategoryNotFound) {
-            const response = await api.getCategoryBySlug('all-products');
-            if (response.status === 'success') {
-                category = response.body;
-            } else {
-                throw error;
-            }
-        } else {
-            throw error;
-        }
-    }
-
-    const productsResponse = await api.getProductsByCategory(category.slug!, { limit });
-    if (productsResponse.status === 'failure') throw productsResponse.error;
-    return { category, products: productsResponse.body.items };
-};
 
 interface FeaturedProductsSectionProps {
     categorySlug: string;
@@ -54,8 +18,18 @@ interface FeaturedProductsSectionProps {
 export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => {
     const { title, description, productCount = 4, categorySlug, className } = props;
 
-    const { data } = useSWR(`/category/${categorySlug}/featured/limit/${productCount}`, () =>
-        getFeaturedProducts(categorySlug, productCount),
+    const api = useEcomAPI();
+
+    const { data } = useSWR(
+        `/category/${categorySlug}/featured/limit/${productCount}`,
+        async () => {
+            const response = await api.getFeaturedProducts(categorySlug, productCount);
+            if (response.status === 'failure') {
+                throw response.error;
+            }
+
+            return response.body;
+        },
     );
 
     return (
@@ -68,7 +42,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
             </FadeIn>
             <Reveal className={styles.productsRow} direction="down" duration={1.4}>
                 {data
-                    ? data.products.map((product) => (
+                    ? data.items.map((product) => (
                           <ProductLink key={product._id} productSlug={product.slug!}>
                               <ProductCard
                                   name={product.name!}

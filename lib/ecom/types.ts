@@ -95,6 +95,10 @@ export type EcomAPI = {
         categorySlug: string,
         options?: GetProductsByCategoryOptions,
     ) => Promise<EcomAPIResponse<{ items: Product[]; totalCount: number }>>;
+    getFeaturedProducts: (
+        categorySlug: string,
+        count: number,
+    ) => Promise<EcomAPIResponse<{ category: Collection; items: Product[] }>>;
     getPromotedProducts: () => Promise<EcomAPIResponse<Product[]>>;
     getProductBySlug: (slug: string) => Promise<EcomAPIResponse<Product>>;
     getCart: () => Promise<EcomAPIResponse<Cart>>;

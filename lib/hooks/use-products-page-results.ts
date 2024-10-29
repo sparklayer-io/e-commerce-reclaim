@@ -1,6 +1,6 @@
 import { SerializeFrom } from '@remix-run/node';
 import { useEffect, useRef, useState } from 'react';
-import { getEcomApi, IProductFilters, Product, ProductSortBy } from '../ecom';
+import { IProductFilters, Product, ProductSortBy, useEcomAPI } from '../ecom';
 import { getErrorMessage } from '../utils';
 
 export interface ProductsPageResults {
@@ -43,7 +43,7 @@ export function useProductsPageResults({
 
     const [isLoadingMoreProducts, setIsLoadingMoreProducts] = useState(false);
 
-    const api = getEcomApi();
+    const api = useEcomAPI();
     const loadMoreProducts = async () => {
         setIsLoadingMoreProducts(true);
 

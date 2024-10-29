@@ -1,3 +1,4 @@
+import { json, LoaderFunctionArgs } from '@remix-run/node';
 import {
     isRouteErrorResponse,
     Links,
@@ -11,13 +12,15 @@ import {
     useNavigation,
     useRouteError,
 } from '@remix-run/react';
+import { Tokens } from '@wix/sdk';
 import { useEffect } from 'react';
-import { EcomAPIContextProvider } from '~/lib/ecom';
 import { CartOpenContextProvider } from '~/lib/cart-open-context';
+import { EcomAPIContextProvider } from '~/lib/ecom';
+import { commitSession, initializeEcomSession } from '~/lib/ecom/session';
 import { getErrorMessage, routeLocationToUrl } from '~/lib/utils';
+import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { ErrorPage } from '~/src/components/error-page/error-page';
 import { SiteWrapper } from '~/src/components/site-wrapper/site-wrapper';
-import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 
 import '~/src/styles/reset.scss';
 import '~/src/styles/colors.scss';
@@ -29,12 +32,25 @@ export const meta: MetaFunction = () => {
     return [{ title: 'ReClaim: Home Goods Store' }];
 };
 
-export async function loader() {
-    return {
-        ENV: {
-            WIX_CLIENT_ID: process?.env?.WIX_CLIENT_ID,
+export async function loader({ request }: LoaderFunctionArgs) {
+    const { wixEcomTokens, session, shouldUpdateSessionCookie } =
+        await initializeEcomSession(request);
+
+    return json(
+        {
+            ENV: {
+                WIX_CLIENT_ID: process?.env?.WIX_CLIENT_ID,
+            },
+            wixEcomTokens,
         },
-    };
+        shouldUpdateSessionCookie
+            ? {
+                  headers: {
+                      'Set-Cookie': await commitSession(session),
+                  },
+              }
+            : undefined,
+    );
 }
 
 const breadcrumbs: RouteBreadcrumbs = () => [{ title: 'Home', to: '/' }];
@@ -61,9 +77,13 @@ export function Layout({ children }: React.PropsWithChildren) {
     );
 }
 
-function ContentWrapper({ children }: React.PropsWithChildren) {
+interface ContentWrapperProps extends React.PropsWithChildren {
+    tokens?: Tokens;
+}
+
+function ContentWrapper({ children, tokens }: ContentWrapperProps) {
     return (
-        <EcomAPIContextProvider>
+        <EcomAPIContextProvider tokens={tokens}>
             <CartOpenContextProvider>
                 <SiteWrapper>{children}</SiteWrapper>
             </CartOpenContextProvider>
@@ -72,14 +92,14 @@ function ContentWrapper({ children }: React.PropsWithChildren) {
 }
 
 export default function App() {
-    const data = useLoaderData<typeof loader>();
+    const { ENV, wixEcomTokens } = useLoaderData<typeof loader>();
 
     if (typeof window !== 'undefined' && typeof window.ENV === 'undefined') {
-        window.ENV = data.ENV;
+        window.ENV = ENV;
     }
 
     return (
-        <ContentWrapper>
+        <ContentWrapper tokens={wixEcomTokens}>
             <Outlet />
         </ContentWrapper>
     );
