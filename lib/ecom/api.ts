@@ -61,6 +61,14 @@ export function createWixClient(tokens?: Tokens): WixApiClient {
 
 export function createApi(wixClient: WixApiClient): EcomAPI {
     return {
+        async getProducts(limit = 100) {
+            try {
+                const response = await wixClient.products.queryProducts().limit(limit).find();
+                return successResponse(response.items);
+            } catch (e) {
+                return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
+            }
+        },
         async getProductsByCategory(categorySlug, { skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
                 const category = (await wixClient.collections.getCollectionBySlug(categorySlug))

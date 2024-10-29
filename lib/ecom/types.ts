@@ -91,6 +91,7 @@ export type AddToCartOptions =
     | { options: Record<string, string | undefined> };
 
 export type EcomAPI = {
+    getProducts: (limit?: number) => Promise<EcomAPIResponse<Product[]>>;
     getProductsByCategory: (
         categorySlug: string,
         options?: GetProductsByCategoryOptions,

@@ -1,7 +1,8 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
+import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { EcomApiErrorCodes } from '~/lib/ecom';
+import { createApi, createWixClient, EcomApiErrorCodes } from '~/lib/ecom';
 import { initializeEcomApi } from '~/lib/ecom/session';
 import { useProductDetails } from '~/lib/hooks';
 import { getProductDetailsRouteData } from '~/lib/route-loaders';
@@ -22,6 +23,17 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const api = await initializeEcomApi(request);
 
     return getProductDetailsRouteData(api, params.productSlug, request.url);
+};
+
+export const getStaticRoutes: GetStaticRoutes = async () => {
+    const api = createApi(createWixClient());
+    const products = await api.getProducts();
+
+    if (products.status === 'failure') {
+        throw products.error;
+    }
+
+    return products.body.map((product) => `/product-details/${product.slug}`);
 };
 
 interface ProductDetailsLocationState {
