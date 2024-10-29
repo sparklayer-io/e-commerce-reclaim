@@ -2,7 +2,7 @@ import { collections } from '@wix/stores';
 import { Product } from '@wix/stores_products';
 import classNames from 'classnames';
 import useSWR from 'swr';
-import { getEcomApi, CollectionDetails, isEcomSDKError } from '~/lib/ecom';
+import { getEcomApi, CollectionDetails, EcomApiErrorCodes } from '~/lib/ecom';
 import { FadeIn, Reveal } from '~/lib/components/visual-effects';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';
@@ -26,7 +26,7 @@ const getFeaturedProducts = async (
         category = response.body;
     } else {
         const error = response.error;
-        if (isEcomSDKError(error) && error.details.applicationError.code === 404) {
+        if (error.code === EcomApiErrorCodes.CategoryNotFound) {
             const response = await api.getCategoryBySlug('all-products');
             if (response.status === 'success') {
                 category = response.body;
