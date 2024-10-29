@@ -1,0 +1,14 @@
+:where(.root) {
+    /* Default styles. Customize them by passing a className to the component. */
+    --option-size: 24px;
+    --border-color: #bdbdbd;
+    --border-color-hover: #212121;
+    --border-color-selected: #757575;
+    --border-color-error: #ff0000;
+}
+
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

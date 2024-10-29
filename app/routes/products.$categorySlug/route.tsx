@@ -1,24 +1,13 @@
-import type { LoaderFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs, SerializeFrom } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
-import classNames from 'classnames';
-import { EcomApiErrorCodes } from '~/lib/ecom';
-import { useAppliedProductFilters } from '~/lib/hooks';
+import { Product } from '@wix/stores_products';
 import { getProductsRouteData } from '~/lib/route-loaders';
-import { FadeIn } from '~/lib/components/visual-effects';
 import { getErrorMessage } from '~/lib/utils';
-import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
-import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
-import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
-import { CategoryLink } from '~/src/components/category-link/category-link';
-import { EmptyProductsCategory } from '~/src/components/empty-products-category/empty-products-category';
+import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { ErrorPage } from '~/src/components/error-page/error-page';
-import { ProductCard } from '~/src/components/product-card/product-card';
-import { ProductFilters } from '~/src/components/product-filters/product-filters';
-import { ProductLink } from '~/src/components/product-link/product-link';
-import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
 import { ROUTES } from '~/src/router/config';
-
-import styles from './route.module.scss';
+import { ProductIterator } from '../../../src/components/product-iterator/product-iterator';
+import { ProductView1 } from '../../../src/components/product-view-1/product-view-1';
 
 export const loader = ({ params, request }: LoaderFunctionArgs) => {
     return getProductsRouteData(params.categorySlug, request.url);
@@ -36,145 +25,14 @@ export const handle = {
 };
 
 export default function ProductsPage() {
-    const { category, categoryProducts, allCategories, productPriceBounds } =
-        useLoaderData<typeof loader>();
-
-    const breadcrumbs = useBreadcrumbs();
-
-    const { appliedFilters, someFiltersApplied, clearFilters, clearAllFilters } =
-        useAppliedProductFilters();
-
-    const currency = categoryProducts.items[0]?.priceData?.currency ?? 'USD';
-
-    const renderProducts = () => {
-        if (category.numberOfProducts === 0) {
-            return (
-                <EmptyProductsCategory
-                    title="No products here yet..."
-                    subtitle="In the meantime, you can choose a different category to continue shopping."
-                />
-            );
-        }
-
-        if (someFiltersApplied && categoryProducts.items.length === 0) {
-            return (
-                <EmptyProductsCategory
-                    title="We couldn't find any matches"
-                    subtitle="Try different filters or another category."
-                    actionButton={
-                        <button className={styles.clearFiltersButton} onClick={clearAllFilters}>
-                            Clear Filters
-                        </button>
-                    }
-                />
-            );
-        }
-
-        return (
-            <div className={styles.productsList}>
-                {categoryProducts.items.map((product) => (
-                    <FadeIn key={product._id} duration={0.9}>
-                        <ProductLink
-                            className={styles.productLink}
-                            productSlug={product.slug!}
-                            state={{
-                                fromCategory: {
-                                    name: category.name,
-                                    slug: category.slug,
-                                },
-                            }}
-                        >
-                            <ProductCard
-                                name={product.name!}
-                                imageUrl={product.media?.mainMedia?.image?.url}
-                                price={product.priceData?.formatted?.price}
-                                discountedPrice={product.priceData?.formatted?.discountedPrice}
-                                ribbon={product.ribbon ?? undefined}
-                                inventoryStatus={product.stock?.inventoryStatus}
-                            />
-                        </ProductLink>
-                    </FadeIn>
-                ))}
-            </div>
-        );
-    };
-
-    return (
-        <div className={styles.page}>
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-
-            <div className={styles.content}>
-                <div className={styles.sidebar}>
-                    <nav>
-                        <h2 className={styles.sidebarTitle}>Browse by</h2>
-                        <ul>
-                            {allCategories.map((category) => (
-                                <li key={category._id} className={styles.categoryListItem}>
-                                    <CategoryLink
-                                        categorySlug={category.slug!}
-                                        className={({ isActive }) =>
-                                            classNames(styles.categoryLink, {
-                                                [styles.categoryLinkActive]: isActive,
-                                            })
-                                        }
-                                    >
-                                        {category.name}
-                                    </CategoryLink>
-                                </li>
-                            ))}
-                        </ul>
-
-                        {category.numberOfProducts !== 0 && (
-                            <div className={styles.filters}>
-                                <h2
-                                    className={classNames(styles.sidebarTitle, styles.filtersTitle)}
-                                >
-                                    Filters
-                                </h2>
-                                <ProductFilters
-                                    lowestPrice={productPriceBounds.lowest}
-                                    highestPrice={productPriceBounds.highest}
-                                    currency={currency}
-                                />
-                            </div>
-                        )}
-                    </nav>
-                </div>
-
-                <div className={styles.main}>
-                    <div className={styles.categoryHeader}>
-                        <h1 className={styles.categoryName}>{category.name}</h1>
-                        {category.description && (
-                            <p className={styles.categoryDescription}>{category.description}</p>
-                        )}
-                    </div>
-
-                    {someFiltersApplied && (
-                        <AppliedProductFilters
-                            className={styles.appliedFilters}
-                            appliedFilters={appliedFilters}
-                            onClearFilters={clearFilters}
-                            onClearAllFilters={clearAllFilters}
-                            currency={currency}
-                            minPriceInCategory={productPriceBounds.lowest}
-                            maxPriceInCategory={productPriceBounds.highest}
-                        />
-                    )}
-
-                    <div className={styles.countAndSorting}>
-                        <p className={styles.productsCount}>
-                            {categoryProducts.totalCount}{' '}
-                            {categoryProducts.totalCount === 1 ? 'product' : 'products'}
-                        </p>
-
-                        <ProductSortingSelect />
-                    </div>
-
-                    {renderProducts()}
-                </div>
-            </div>
-        </div>
-    );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const loadProducts: () => SerializeFrom<{
+        categoryProducts: {
+            items: Product[];
+            totalCount: number;
+        };
+    }> = useLoaderData<typeof loader>;
+    return <div>list of all products</div>;
 }
 
 export function ErrorBoundary() {
@@ -184,7 +42,8 @@ export function ErrorBoundary() {
     let title = 'Error';
     let message = getErrorMessage(error);
 
-    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+    // if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+    if (isRouteErrorResponse(error)) {
         title = 'Category Not Found';
         message = "Unfortunately, the category page you're trying to open does not exist";
     }
