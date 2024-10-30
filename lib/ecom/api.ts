@@ -124,14 +124,6 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
             if (productsResponse.status === 'failure') throw productsResponse.error;
             return successResponse({ category, items: productsResponse.body.items });
         },
-        async getPromotedProducts() {
-            try {
-                const products = (await wixClient.products.queryProducts().limit(4).find()).items;
-                return successResponse(products);
-            } catch (e) {
-                return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
-            }
-        },
         async getProductBySlug(slug) {
             try {
                 const product = (
