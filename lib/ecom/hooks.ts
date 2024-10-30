@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import useSwr, { Key } from 'swr';
+import useSwr, { Key, SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { findItemIdInCart } from '~/lib/utils';
 import { useEcomAPI } from './api-context';
-import { AddToCartOptions } from './types';
+import { AddToCartOptions, CollectionDetails, GetProductsOptions, Product } from './types';
 
 export const useCartData = () => {
     const ecomApi = useEcomAPI();
@@ -169,3 +169,39 @@ export const useCart = () => {
         checkout,
     };
 };
+
+export function useCategoryDetails(slug: string): SWRResponse<CollectionDetails> {
+    const ecomApi = useEcomAPI();
+    return useSwr(
+        ['category-details', slug],
+        async ([, slug]) => {
+            const response = await ecomApi.getCategoryBySlug(slug);
+            if (response.status === 'failure') throw response.error;
+            return response.body;
+        },
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+            shouldRetryOnError: false,
+        },
+    );
+}
+
+export function useProducts(
+    options: GetProductsOptions,
+): SWRResponse<{ items: Product[]; totalCount: number }> {
+    const ecomApi = useEcomAPI();
+    return useSwr(
+        ['products', options],
+        async ([, options]) => {
+            const response = await ecomApi.getProducts(options);
+            if (response.status === 'failure') throw response.error;
+            return response.body;
+        },
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+            shouldRetryOnError: false,
+        },
+    );
+}

@@ -7,7 +7,6 @@ import { DEMO_STORE_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
 import { getFilteredProductsQuery } from './product-filters';
 import { getSortedProductsQuery } from './product-sorting';
 import {
-    CollectionDetails,
     EcomAPI,
     EcomApiErrorCodes,
     EcomAPIFailureResponse,
@@ -97,32 +96,6 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
             } catch (e) {
                 return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
             }
-        },
-        async getFeaturedProducts(categorySlug, count) {
-            let category: CollectionDetails | undefined;
-            const response = await this.getCategoryBySlug(categorySlug);
-            if (response.status === 'success') {
-                category = response.body;
-            } else {
-                const error = response.error;
-                if (error.code === EcomApiErrorCodes.CategoryNotFound) {
-                    const response = await this.getCategoryBySlug('all-products');
-                    if (response.status === 'success') {
-                        category = response.body;
-                    } else {
-                        throw error;
-                    }
-                } else {
-                    throw error;
-                }
-            }
-
-            const productsResponse = await this.getProducts({
-                categorySlug: category.slug!,
-                limit: count,
-            });
-            if (productsResponse.status === 'failure') throw productsResponse.error;
-            return successResponse({ category, items: productsResponse.body.items });
         },
         async getProductBySlug(slug) {
             try {

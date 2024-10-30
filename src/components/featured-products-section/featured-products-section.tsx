@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import useSWR from 'swr';
 import { FadeIn, Reveal } from '~/lib/components/visual-effects';
-import { useEcomAPI } from '~/lib/ecom';
+import { useCategoryDetails, useProducts } from '~/lib/ecom';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';
 
@@ -17,32 +16,22 @@ interface FeaturedProductsSectionProps {
 
 export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => {
     const { title, description, productCount = 4, categorySlug, className } = props;
-
-    const api = useEcomAPI();
-
-    const { data } = useSWR(
-        `/category/${categorySlug}/featured/limit/${productCount}`,
-        async () => {
-            const response = await api.getFeaturedProducts(categorySlug, productCount);
-            if (response.status === 'failure') {
-                throw response.error;
-            }
-
-            return response.body;
-        },
-    );
+    const category = useCategoryDetails(categorySlug);
+    const products = useProducts({ categorySlug, limit: productCount });
 
     return (
         <div className={classNames(styles.root, className)}>
             <FadeIn className={styles.header} duration={1.8}>
-                <h3 className={styles.headerTitle}>{title ?? data?.category.name}</h3>
+                <h3 className={styles.headerTitle}>
+                    {title ?? category.data?.name ?? categorySlug}
+                </h3>
                 <div className={styles.headerDescription}>
-                    {description ?? data?.category.description}
+                    {description ?? category.data?.description}
                 </div>
             </FadeIn>
             <Reveal className={styles.productsRow} direction="down" duration={1.4}>
-                {data
-                    ? data.items.map((product) => (
+                {products.data
+                    ? products.data.items.map((product) => (
                           <ProductLink key={product._id} productSlug={product.slug!}>
                               <ProductCard
                                   name={product.name!}
