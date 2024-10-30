@@ -1,7 +1,7 @@
 import { Tokens } from '@wix/sdk';
 import React, { FC, useMemo } from 'react';
 import { SWRConfig } from 'swr';
-import { createApi, createWixClient } from './api';
+import { initializeEcomApiAnonymous, initializeEcomApiWithTokens } from './api';
 import { EcomAPI } from './types';
 
 export const EcomAPIContext = React.createContext<EcomAPI | null>(null);
@@ -20,8 +20,7 @@ export interface EcomAPIContextProviderProps extends React.PropsWithChildren {
 
 export const EcomAPIContextProvider: FC<EcomAPIContextProviderProps> = ({ tokens, children }) => {
     const api = useMemo(() => {
-        const client = createWixClient(tokens);
-        return createApi(client);
+        return tokens ? initializeEcomApiWithTokens(tokens) : initializeEcomApiAnonymous();
     }, [tokens]);
 
     return (

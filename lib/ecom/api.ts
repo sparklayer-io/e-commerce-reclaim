@@ -59,7 +59,17 @@ export function createWixClient(tokens?: Tokens): WixApiClient {
     });
 }
 
-export function createApi(wixClient: WixApiClient): EcomAPI {
+export function initializeEcomApiWithTokens(tokens: Tokens) {
+    const client = createWixClient(tokens);
+    return createEcomApi(client);
+}
+
+export function initializeEcomApiAnonymous() {
+    const client = createWixClient();
+    return createEcomApi(client);
+}
+
+function createEcomApi(wixClient: WixApiClient): EcomAPI {
     return {
         async getProducts({ categorySlug, skip = 0, limit = 100, filters, sortBy } = {}) {
             try {

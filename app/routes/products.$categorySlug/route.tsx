@@ -3,8 +3,8 @@ import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from 
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
 import { FadeIn } from '~/lib/components/visual-effects';
-import { createApi, createWixClient, EcomApiErrorCodes } from '~/lib/ecom';
-import { initializeEcomApi } from '~/lib/ecom/session';
+import { EcomApiErrorCodes, initializeEcomApiAnonymous } from '~/lib/ecom';
+import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { useAppliedProductFilters } from '~/lib/hooks';
 import { useProductSorting } from '~/lib/hooks/use-product-sorting';
 import { useProductsPageResults } from '~/lib/hooks/use-products-page-results';
@@ -24,7 +24,7 @@ import { ProductSortingSelect } from '~/src/components/product-sorting-select/pr
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-    const api = await initializeEcomApi(request);
+    const api = await initializeEcomApiForRequest(request);
     return getProductsRouteData(api, params.categorySlug, request.url);
 };
 
@@ -36,7 +36,7 @@ const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
 ];
 
 export const getStaticRoutes: GetStaticRoutes = async () => {
-    const api = createApi(createWixClient());
+    const api = initializeEcomApiAnonymous();
     const categories = await api.getAllCategories();
 
     if (categories.status === 'failure') {
