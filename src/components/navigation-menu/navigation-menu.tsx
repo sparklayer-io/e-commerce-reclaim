@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { NavLink } from '@remix-run/react';
-import { ROUTES } from '~/src/router/config';
 import { CategoryLink } from '../category-link/category-link';
 import styles from './navigation-menu.module.scss';
 
@@ -39,9 +38,7 @@ export const NavigationMenu = ({ className, vertical = false }: NavigationMenuPr
                     </CategoryLink>
                 </li>
                 <li>
-                    <NavLink to={ROUTES.aboutUs.to()} className={menuItemStyle}>
-                        About Us
-                    </NavLink>
+                    <NavLink to="/about-us">About Us</NavLink>
                 </li>
             </ul>
         </nav>

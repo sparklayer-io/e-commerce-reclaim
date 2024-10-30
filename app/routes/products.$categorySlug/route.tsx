@@ -1,14 +1,18 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
+import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { EcomApiErrorCodes } from '~/lib/ecom';
-import { useAppliedProductFilters } from '~/lib/hooks';
-import { getProductsRouteData } from '~/lib/route-loaders';
 import { FadeIn } from '~/lib/components/visual-effects';
+import { createApi, createWixClient, EcomApiErrorCodes } from '~/lib/ecom';
+import { initializeEcomApi } from '~/lib/ecom/session';
+import { useAppliedProductFilters } from '~/lib/hooks';
+import { useProductSorting } from '~/lib/hooks/use-product-sorting';
+import { useProductsPageResults } from '~/lib/hooks/use-products-page-results';
+import { getProductsRouteData } from '~/lib/route-loaders';
 import { getErrorMessage } from '~/lib/utils';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
-import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
+import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { EmptyProductsCategory } from '~/src/components/empty-products-category/empty-products-category';
 import { ErrorPage } from '~/src/components/error-page/error-page';
@@ -16,35 +20,58 @@ import { ProductCard } from '~/src/components/product-card/product-card';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductLink } from '~/src/components/product-link/product-link';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-import { ROUTES } from '~/src/router/config';
 
 import styles from './route.module.scss';
 
-export const loader = ({ params, request }: LoaderFunctionArgs) => {
-    return getProductsRouteData(params.categorySlug, request.url);
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+    const api = await initializeEcomApi(request);
+    return getProductsRouteData(api, params.categorySlug, request.url);
 };
 
 const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
     {
         title: match.data.category.name!,
-        to: ROUTES.products.to(match.data.category.slug!),
+        to: `/products/${match.data.category.slug}`,
     },
 ];
+
+export const getStaticRoutes: GetStaticRoutes = async () => {
+    const api = createApi(createWixClient());
+    const categories = await api.getAllCategories();
+
+    if (categories.status === 'failure') {
+        throw categories.error;
+    }
+
+    return categories.body.map((category) => `/products/${category.slug}`);
+};
 
 export const handle = {
     breadcrumbs,
 };
 
 export default function ProductsPage() {
-    const { category, categoryProducts, allCategories, productPriceBounds } =
-        useLoaderData<typeof loader>();
-
-    const breadcrumbs = useBreadcrumbs();
+    const {
+        category,
+        categoryProducts: resultsFromLoader,
+        allCategories,
+        productPriceBounds,
+    } = useLoaderData<typeof loader>();
 
     const { appliedFilters, someFiltersApplied, clearFilters, clearAllFilters } =
         useAppliedProductFilters();
+    const { sorting } = useProductSorting();
+    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts } =
+        useProductsPageResults({
+            categorySlug: category.slug!,
+            filters: appliedFilters,
+            sorting,
+            resultsFromLoader,
+        });
 
-    const currency = categoryProducts.items[0]?.priceData?.currency ?? 'USD';
+    const currency = products[0]?.priceData?.currency ?? 'USD';
+
+    const breadcrumbs = useBreadcrumbs();
 
     const renderProducts = () => {
         if (category.numberOfProducts === 0) {
@@ -56,7 +83,7 @@ export default function ProductsPage() {
             );
         }
 
-        if (someFiltersApplied && categoryProducts.items.length === 0) {
+        if (someFiltersApplied && products.length === 0) {
             return (
                 <EmptyProductsCategory
                     title="We couldn't find any matches"
@@ -72,7 +99,7 @@ export default function ProductsPage() {
 
         return (
             <div className={styles.productsList}>
-                {categoryProducts.items.map((product) => (
+                {products.map((product) => (
                     <FadeIn key={product._id} duration={0.9}>
                         <ProductLink
                             className={styles.productLink}
@@ -163,14 +190,25 @@ export default function ProductsPage() {
 
                     <div className={styles.countAndSorting}>
                         <p className={styles.productsCount}>
-                            {categoryProducts.totalCount}{' '}
-                            {categoryProducts.totalCount === 1 ? 'product' : 'products'}
+                            {totalProducts} {totalProducts === 1 ? 'product' : 'products'}
                         </p>
 
                         <ProductSortingSelect />
                     </div>
 
                     {renderProducts()}
+
+                    {products.length < totalProducts && (
+                        <div className={styles.loadMoreWrapper}>
+                            <button
+                                className="button secondaryButton"
+                                onClick={loadMoreProducts}
+                                disabled={isLoadingMoreProducts}
+                            >
+                                {isLoadingMoreProducts ? 'Loading...' : 'Load More'}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -194,7 +232,7 @@ export function ErrorBoundary() {
             title={title}
             message={message}
             actionButtonText="Back to shopping"
-            onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+            onActionButtonClick={() => navigate('/products/all-products')}
         />
     );
 }

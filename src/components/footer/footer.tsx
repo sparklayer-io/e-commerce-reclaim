@@ -2,7 +2,6 @@ import { Link, NavLink } from '@remix-run/react';
 import classNames from 'classnames';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { FadeIn } from '~/lib/components/visual-effects';
-import { ROUTES } from '~/src/router/config';
 
 import styles from './footer.module.scss';
 
@@ -55,7 +54,7 @@ export const Footer = ({ className }: FooterProps) => {
                             </CategoryLink>
                         </li>
                         <li>
-                            <NavLink to={ROUTES.aboutUs.to()} className={navItemStyle}>
+                            <NavLink to="/about-us" className={navItemStyle}>
                                 About Us
                             </NavLink>
                         </li>
@@ -63,22 +62,22 @@ export const Footer = ({ className }: FooterProps) => {
                 </nav>
                 <ul>
                     <li>
-                        <NavLink to={ROUTES.termsAndConditions.to()} className={navItemStyle}>
+                        <NavLink to="/terms-and-conditions" className={navItemStyle}>
                             Terms & Conditions
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to={ROUTES.privacyPolicy.to()} className={navItemStyle}>
+                        <NavLink to="/privacy-policy" className={navItemStyle}>
                             Privacy Policy
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to={ROUTES.shippingPolicy.to()} className={navItemStyle}>
+                        <NavLink to="/shipping-policy" className={navItemStyle}>
                             Shipping Policy
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to={ROUTES.refundPolicy.to()} className={navItemStyle}>
+                        <NavLink to="/refund-policy" className={navItemStyle}>
                             Refund Policy
                         </NavLink>
                     </li>
@@ -114,7 +113,7 @@ export const Footer = ({ className }: FooterProps) => {
                 </ul>
             </FadeIn>
             <FadeIn className={styles.bottomBar} duration={1.8}>
-                <Link to={ROUTES.home.to()} className={styles.logo}>
+                <Link to="/" className={styles.logo}>
                     ReClaim
                 </Link>
                 <div className={styles.copyright}>

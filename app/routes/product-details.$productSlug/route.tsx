@@ -1,25 +1,39 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
+import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { EcomApiErrorCodes } from '~/lib/ecom';
+import { createApi, createWixClient, EcomApiErrorCodes } from '~/lib/ecom';
+import { initializeEcomApi } from '~/lib/ecom/session';
 import { useProductDetails } from '~/lib/hooks';
 import { getProductDetailsRouteData } from '~/lib/route-loaders';
 import { getErrorMessage } from '~/lib/utils';
 import { Accordion } from '~/src/components/accordion/accordion';
 import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
-import { useBreadcrumbs, RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
+import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { ErrorPage } from '~/src/components/error-page/error-page';
 import { ProductImages } from '~/src/components/product-images/product-images';
+import { ProductOption } from '~/src/components/product-option/product-option';
 import { ProductPrice } from '~/src/components/product-price/product-price';
 import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
-import { ProductOption } from '~/src/components/product-option/product-option';
 import { ShareProductLinks } from '~/src/components/share-product-links/share-product-links';
-import { ROUTES } from '~/src/router/config';
 
 import styles from './route.module.scss';
 
-export const loader = ({ params, request }: LoaderFunctionArgs) => {
-    return getProductDetailsRouteData(params.productSlug, request.url);
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+    const api = await initializeEcomApi(request);
+
+    return getProductDetailsRouteData(api, params.productSlug, request.url);
+};
+
+export const getStaticRoutes: GetStaticRoutes = async () => {
+    const api = createApi(createWixClient());
+    const products = await api.getProducts();
+
+    if (products.status === 'failure') {
+        throw products.error;
+    }
+
+    return products.body.map((product) => `/product-details/${product.slug}`);
 };
 
 interface ProductDetailsLocationState {
@@ -38,14 +52,14 @@ const breadcrumbs: RouteBreadcrumbs<typeof loader, ProductDetailsLocationState> 
     const breadcrumbs: BreadcrumbData[] = [
         {
             title: match.data.product.name!,
-            to: ROUTES.productDetails.to(match.data.product.slug!),
+            to: `/product-details/${match.data.product.slug}`,
         },
     ];
 
     if (fromCategory) {
         breadcrumbs.unshift({
             title: fromCategory.name,
-            to: ROUTES.products.to(fromCategory.slug),
+            to: `/products/${fromCategory.slug}`,
             clientOnly: true,
         });
     }
@@ -186,7 +200,7 @@ export function ErrorBoundary() {
             title={title}
             message={message}
             actionButtonText="Back to shopping"
-            onActionButtonClick={() => navigate(ROUTES.products.to('all-products'))}
+            onActionButtonClick={() => navigate('/products/all-products')}
         />
     );
 }
