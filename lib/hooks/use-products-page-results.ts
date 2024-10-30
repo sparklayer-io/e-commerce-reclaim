@@ -28,45 +28,37 @@ export function useProductsPageResults({
     resultsFromLoader,
 }: UseProductsPageResultsArgs) {
     const [results, setResults] = useState(resultsFromLoader);
+    const resultsRef = useRef(results);
+    resultsRef.current = results;
 
-    const resultsFromLoaderVersionRef = useRef(0);
-
-    // When the filters or category change, the loader fetches the first batch of new
-    // results without a full-page reload, and we need to reset the state of this hook.
+    // When the category or filters change, the loader fetches the first batch of new
+    // results without a full-page reload, and we need to reset the list of results.
     useEffect(() => {
         setResults(resultsFromLoader);
-
-        return () => {
-            resultsFromLoaderVersionRef.current = resultsFromLoaderVersionRef.current + 1;
-        };
     }, [resultsFromLoader]);
 
     const [isLoadingMoreProducts, setIsLoadingMoreProducts] = useState(false);
 
     const api = useEcomAPI();
     const loadMoreProducts = async () => {
+        const resultsBeforeFetch = resultsRef.current;
         setIsLoadingMoreProducts(true);
 
-        const resultsFromLoaderVersion = resultsFromLoaderVersionRef.current;
         try {
-            const nextProductsResponse = await api.getProductsByCategory(categorySlug, {
+            const response = await api.getProducts({
+                categorySlug,
                 filters,
                 sortBy: sorting,
                 skip: results.items.length,
             });
 
-            if (nextProductsResponse.status === 'success') {
-                // ignore data if loading started for other loader data
-                if (resultsFromLoaderVersion !== resultsFromLoaderVersionRef.current) {
-                    return;
-                }
+            if (response.status === 'failure') throw response.error;
 
+            if (resultsRef.current === resultsBeforeFetch) {
                 setResults((prev) => ({
-                    totalCount: nextProductsResponse.body.totalCount,
-                    items: [...prev.items, ...nextProductsResponse.body.items],
+                    totalCount: response.body.totalCount,
+                    items: [...prev.items, ...response.body.items],
                 }));
-            } else {
-                throw new Error('Failed to load products', { cause: nextProductsResponse.error });
             }
         } catch (e) {
             alert(getErrorMessage(e));

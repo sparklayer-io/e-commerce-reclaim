@@ -17,7 +17,8 @@ export async function getProductsRouteData(
         productPriceBoundsResponse,
     ] = await Promise.all([
         api.getCategoryBySlug(categorySlug),
-        api.getProductsByCategory(categorySlug, {
+        api.getProducts({
+            categorySlug,
             filters: productFiltersFromSearchParams(searchParams),
             sortBy: productSortByFromSearchParams(searchParams),
         }),

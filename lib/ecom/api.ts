@@ -61,23 +61,17 @@ export function createWixClient(tokens?: Tokens): WixApiClient {
 
 export function createApi(wixClient: WixApiClient): EcomAPI {
     return {
-        async getProducts(limit = 100) {
+        async getProducts({ categorySlug, skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
-                const response = await wixClient.products.queryProducts().limit(limit).find();
-                return successResponse(response.items);
-            } catch (e) {
-                return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
-            }
-        },
-        async getProductsByCategory(categorySlug, { skip = 0, limit = 100, filters, sortBy } = {}) {
-            try {
-                const category = (await wixClient.collections.getCollectionBySlug(categorySlug))
-                    .collection;
-                if (!category) throw new Error('Category not found');
+                const { collection } = categorySlug
+                    ? await wixClient.collections.getCollectionBySlug(categorySlug)
+                    : {};
 
-                let query = wixClient.products
-                    .queryProducts()
-                    .hasSome('collectionIds', [category._id]);
+                let query = wixClient.products.queryProducts();
+
+                if (collection) {
+                    query = query.hasSome('collectionIds', [collection._id]);
+                }
 
                 if (filters) {
                     query = getFilteredProductsQuery(query, filters);
@@ -113,7 +107,8 @@ export function createApi(wixClient: WixApiClient): EcomAPI {
                 }
             }
 
-            const productsResponse = await this.getProductsByCategory(category.slug!, {
+            const productsResponse = await this.getProducts({
+                categorySlug: category.slug!,
                 limit: count,
             });
             if (productsResponse.status === 'failure') throw productsResponse.error;

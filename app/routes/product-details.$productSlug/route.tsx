@@ -33,7 +33,7 @@ export const getStaticRoutes: GetStaticRoutes = async () => {
         throw products.error;
     }
 
-    return products.body.map((product) => `/product-details/${product.slug}`);
+    return products.body.items.map((product) => `/product-details/${product.slug}`);
 };
 
 interface ProductDetailsLocationState {
