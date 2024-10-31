@@ -12,6 +12,7 @@ export default function CartPage() {
     const {
         cartData,
         cartTotals,
+        isCartLoading,
         isCartTotalsUpdating,
         updatingCartItemIds,
         checkout,
@@ -19,9 +20,9 @@ export default function CartPage() {
         updateItemQuantity,
     } = useCart();
 
-    if (!cartData) return null;
+    if (!cartData && isCartLoading) return null;
 
-    if (!cartData.lineItems.length)
+    if (!cartData?.lineItems.length)
         return (
             <div className={styles.cart}>
                 <h1 className={styles.cartHeader}>My cart</h1>

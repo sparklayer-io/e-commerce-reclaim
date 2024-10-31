@@ -121,7 +121,7 @@ export const useCart = () => {
     const ecomAPI = useEcomAPI();
     const [updatingCartItemIds, setUpdatingCartItems] = useState<string[]>([]);
 
-    const { data: cartData } = useCartData();
+    const { data: cartData, isLoading: isCartLoading } = useCartData();
     const { data: cartTotals, isValidating: isCartTotalsValidating } = useCartTotals();
 
     const { trigger: triggerUpdateItemQuantity } = useUpdateCartItemQuantity();
@@ -160,6 +160,7 @@ export const useCart = () => {
         cartTotals,
         updatingCartItemIds,
 
+        isCartLoading,
         isAddingToCart,
         isCartTotalsUpdating: updatingCartItemIds.length > 0 || isCartTotalsValidating,
 
