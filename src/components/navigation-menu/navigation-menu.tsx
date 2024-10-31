@@ -38,7 +38,9 @@ export const NavigationMenu = ({ className, vertical = false }: NavigationMenuPr
                     </CategoryLink>
                 </li>
                 <li>
-                    <NavLink to="/about-us">About Us</NavLink>
+                    <NavLink to="/about-us" className={menuItemStyle}>
+                        About Us
+                    </NavLink>
                 </li>
             </ul>
         </nav>
