@@ -360,6 +360,43 @@
     }
 }
 
+/* Tabs **************************************************************/
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--secondary1);
+    overflow: auto;
+}
+
+.tab {
+    padding: 14px 30px;
+    border-bottom: 4px solid transparent;
+    flex-shrink: 0;
+}
+
+.tab:hover {
+    border-bottom-color: var(--secondary2);
+}
+
+.tab.active {
+    border-bottom-color: var(--secondary3);
+}
+
+@media (max-width: $tablet-width) {
+    .tab {
+        padding: 14px 20px;
+    }
+
+    .tab.active {
+        color: var(--primary4);
+    }
+
+    .tab.active,
+    .tab:hover {
+        border-bottom-color: transparent;
+    }
+}
+
 /* Miscellaneous **************************************************************/
 
 .alternateBackground {
