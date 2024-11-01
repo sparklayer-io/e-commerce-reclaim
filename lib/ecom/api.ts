@@ -11,8 +11,8 @@ import {
     EcomApiErrorCodes,
     EcomAPIFailureResponse,
     EcomAPISuccessResponse,
-    isEcomSDKError,
 } from './types';
+import { isNotFoundWixClientError, throwNormalizedWixClientError } from './wix-client-error';
 
 type WixApiClient = WixClient<
     undefined,
@@ -73,7 +73,9 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
         async getProducts({ categorySlug, skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
                 const { collection } = categorySlug
-                    ? await wixClient.collections.getCollectionBySlug(categorySlug)
+                    ? await wixClient.collections
+                          .getCollectionBySlug(categorySlug)
+                          .catch(throwNormalizedWixClientError)
                     : {};
 
                 let query = wixClient.products.queryProducts();
@@ -90,7 +92,11 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
                     query = getSortedProductsQuery(query, sortBy);
                 }
 
-                const { items, totalCount = 0 } = await query.skip(skip).limit(limit).find();
+                const { items, totalCount = 0 } = await query
+                    .skip(skip)
+                    .limit(limit)
+                    .find()
+                    .catch(throwNormalizedWixClientError);
 
                 return successResponse({ items, totalCount });
             } catch (e) {
@@ -231,7 +237,7 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
 
                 return successResponse(category);
             } catch (e) {
-                if (isEcomSDKError(e) && e.details.applicationError.code === 404) {
+                if (isNotFoundWixClientError(e)) {
                     return failureResponse(
                         EcomApiErrorCodes.CategoryNotFound,
                         'Category not found',
@@ -243,17 +249,10 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
         },
         async getOrder(id) {
             try {
-                const order = await wixClient.orders.getOrder(id);
-                if (!order) {
-                    return failureResponse(EcomApiErrorCodes.OrderNotFound, 'Order not found');
-                }
-
-                return successResponse(order);
-            } catch (e) {
-                if (isEcomSDKError(e) && e.details.applicationError.code === 404) {
-                    return failureResponse(EcomApiErrorCodes.OrderNotFound, 'Order not found');
-                }
-                return failureResponse(EcomApiErrorCodes.GetOrderFailure, getErrorMessage(e));
+                return await wixClient.orders.getOrder(id).catch(throwNormalizedWixClientError);
+            } catch (error) {
+                console.log(error);
+                if (!isNotFoundWixClientError(error)) throw error;
             }
         },
         async getProductPriceBounds(categorySlug: string) {

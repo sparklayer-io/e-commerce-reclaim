@@ -24,6 +24,14 @@ module.exports = {
     extends: ['eslint:recommended'],
 
     overrides: [
+        // General
+        {
+            files: ['**/*.{ts,tsx}'],
+            rules: {
+                'no-empty': 'off',
+            },
+        },
+
         // React
         {
             files: ['**/*.{js,jsx,ts,tsx}'],
