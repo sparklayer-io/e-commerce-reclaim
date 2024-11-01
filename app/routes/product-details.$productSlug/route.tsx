@@ -2,11 +2,10 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { EcomApiErrorCodes, initializeEcomApiAnonymous } from '~/lib/ecom';
+import { initializeEcomApiAnonymous } from '~/lib/ecom';
 import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { useProductDetails } from '~/lib/hooks';
-import { getProductDetailsRouteData } from '~/lib/route-loaders';
-import { getErrorMessage } from '~/lib/utils';
+import { getErrorMessage, removeQueryStringFromUrl } from '~/lib/utils';
 import { Accordion } from '~/src/components/accordion/accordion';
 import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -20,9 +19,11 @@ import { ShareProductLinks } from '~/src/components/share-product-links/share-pr
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+    if (!params.productSlug) throw new Response('Bad Request', { status: 400 });
     const api = await initializeEcomApiForRequest(request);
-
-    return getProductDetailsRouteData(api, params.productSlug, request.url);
+    const product = await api.getProductBySlug(params.productSlug);
+    if (!product) throw new Response('Product Not Found', { status: 404 });
+    return { product, canonicalUrl: removeQueryStringFromUrl(request.url) };
 };
 
 export const getStaticRoutes: GetStaticRoutes = async () => {
@@ -190,7 +191,7 @@ export function ErrorBoundary() {
     let title = 'Error';
     let message = getErrorMessage(error);
 
-    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.ProductNotFound) {
+    if (isRouteErrorResponse(error) && error.status === 404) {
         title = 'Product Not Found';
         message = "Unfortunately a product page you trying to open doesn't exist";
     }

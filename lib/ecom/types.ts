@@ -12,8 +12,6 @@ export type CartTotals = currentCart.EstimateTotalsResponse &
 export type OrderDetails = orders.Order & orders.OrderNonNullableFields;
 
 export enum EcomApiErrorCodes {
-    ProductNotFound = 'ProductNotFound',
-    GetProductFailure = 'GetProductFailure',
     GetProductsFailure = 'GetProductsFailure',
     CategoryNotFound = 'CategoryNotFound',
     GetCategoryFailure = 'GetCategoryFailure',
@@ -95,7 +93,7 @@ export type EcomAPI = {
     getProducts: (
         options?: GetProductsOptions,
     ) => Promise<EcomAPIResponse<{ items: Product[]; totalCount: number }>>;
-    getProductBySlug: (slug: string) => Promise<EcomAPIResponse<Product>>;
+    getProductBySlug: (slug: string) => Promise<Product | undefined>;
     getCart: () => Promise<EcomAPIResponse<Cart>>;
     getCartTotals: () => Promise<EcomAPIResponse<CartTotals>>;
     updateCartItemQuantity: (

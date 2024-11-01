@@ -97,19 +97,16 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
                 return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
             }
         },
+
         async getProductBySlug(slug) {
-            try {
-                const product = (
-                    await wixClient.products.queryProducts().eq('slug', slug).limit(1).find()
-                ).items[0];
-                if (product === undefined) {
-                    return failureResponse(EcomApiErrorCodes.ProductNotFound, 'Product not found');
-                }
-                return successResponse(product);
-            } catch (e) {
-                return failureResponse(EcomApiErrorCodes.GetProductFailure, getErrorMessage(e));
-            }
+            const { items } = await wixClient.products
+                .queryProducts()
+                .eq('slug', slug)
+                .limit(1)
+                .find();
+            return items.at(0);
         },
+
         async getCart() {
             try {
                 const currentCart = await wixClient.currentCart.getCurrentCart();
