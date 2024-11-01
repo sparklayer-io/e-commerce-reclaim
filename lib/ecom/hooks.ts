@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import useSwr, { Key, SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { findItemIdInCart } from '~/lib/utils';
-import { useEcomAPI } from './api-context';
+import { useEcomApi } from './api-context';
 import { AddToCartOptions, CollectionDetails, GetProductsOptions, Product } from './types';
 
 export const useCartData = () => {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     return useSwr('cart', async () => {
         const response = await ecomApi.getCart();
         if (response.status === 'failure') {
@@ -18,7 +18,7 @@ export const useCartData = () => {
 };
 
 export const useCartTotals = () => {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     const { data } = useCartData();
 
     const cartTotals = useSwr('cart-totals', async () => {
@@ -45,7 +45,7 @@ interface AddToCartArgs {
 }
 
 export const useAddToCart = () => {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     const { data: cart } = useCartData();
     return useSWRMutation(
         'cart',
@@ -82,7 +82,7 @@ interface UpdateCartItemQuantityArgs {
 }
 
 export const useUpdateCartItemQuantity = () => {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     return useSWRMutation(
         'cart',
         async (_key: Key, { arg }: { arg: UpdateCartItemQuantityArgs }) => {
@@ -100,7 +100,7 @@ export const useUpdateCartItemQuantity = () => {
 };
 
 export const useRemoveItemFromCart = () => {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     return useSWRMutation(
         'cart',
         async (_key: Key, { arg }: { arg: string }) => {
@@ -118,7 +118,7 @@ export const useRemoveItemFromCart = () => {
 };
 
 export const useCart = () => {
-    const ecomAPI = useEcomAPI();
+    const ecomApi = useEcomApi();
     const [updatingCartItemIds, setUpdatingCartItems] = useState<string[]>([]);
 
     const { data: cartData, isLoading: isCartLoading } = useCartData();
@@ -146,7 +146,7 @@ export const useCart = () => {
         triggerAddToCart({ id: productId, quantity, options });
 
     const checkout = async () => {
-        const checkoutResponse = await ecomAPI.checkout();
+        const checkoutResponse = await ecomApi.checkout();
 
         if (checkoutResponse.status === 'success') {
             window.location.href = checkoutResponse.body.checkoutUrl;
@@ -172,7 +172,7 @@ export const useCart = () => {
 };
 
 export function useCategoryDetails(slug: string): SWRResponse<CollectionDetails> {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     return useSwr(
         ['category-details', slug],
         async ([, slug]) => {
@@ -191,7 +191,7 @@ export function useCategoryDetails(slug: string): SWRResponse<CollectionDetails>
 export function useProducts(
     options: GetProductsOptions,
 ): SWRResponse<{ items: Product[]; totalCount: number }> {
-    const ecomApi = useEcomAPI();
+    const ecomApi = useEcomApi();
     return useSwr(
         ['products', options],
         async ([, options]) => {

@@ -1,8 +1,8 @@
 import { json } from '@remix-run/react';
-import { EcomAPI, productFiltersFromSearchParams, productSortByFromSearchParams } from '~/lib/ecom';
+import { EcomApi, productFiltersFromSearchParams, productSortByFromSearchParams } from '~/lib/ecom';
 
 export async function getProductsRouteData(
-    api: EcomAPI,
+    api: EcomApi,
     categorySlug: string | undefined,
     url: string,
 ) {

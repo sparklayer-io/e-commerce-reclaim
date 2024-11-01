@@ -15,7 +15,7 @@ import {
 import { Tokens } from '@wix/sdk';
 import { useEffect } from 'react';
 import { CartOpenContextProvider } from '~/lib/cart-open-context';
-import { EcomAPIContextProvider } from '~/lib/ecom';
+import { EcomApiContextProvider } from '~/lib/ecom';
 import { commitSession, initializeEcomSession } from '~/lib/ecom/session';
 import { getErrorMessage, routeLocationToUrl } from '~/lib/utils';
 import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -83,11 +83,11 @@ interface ContentWrapperProps extends React.PropsWithChildren {
 
 function ContentWrapper({ children, tokens }: ContentWrapperProps) {
     return (
-        <EcomAPIContextProvider tokens={tokens}>
+        <EcomApiContextProvider tokens={tokens}>
             <CartOpenContextProvider>
                 <SiteWrapper>{children}</SiteWrapper>
             </CartOpenContextProvider>
-        </EcomAPIContextProvider>
+        </EcomApiContextProvider>
     );
 }
 

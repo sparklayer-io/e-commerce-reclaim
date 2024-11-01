@@ -7,10 +7,10 @@ import { DEMO_STORE_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
 import { getFilteredProductsQuery } from './product-filters';
 import { getSortedProductsQuery } from './product-sorting';
 import {
-    EcomAPI,
+    EcomApi,
     EcomApiErrorCodes,
-    EcomAPIFailureResponse,
-    EcomAPISuccessResponse,
+    EcomApiFailureResponse,
+    EcomApiSuccessResponse,
 } from './types';
 import { isNotFoundWixClientError, throwNormalizedWixClientError } from './wix-client-error';
 
@@ -68,7 +68,7 @@ export function initializeEcomApiAnonymous() {
     return createEcomApi(client);
 }
 
-function createEcomApi(wixClient: WixApiClient): EcomAPI {
+function createEcomApi(wixClient: WixApiClient): EcomApi {
     return {
         async getProducts({ categorySlug, skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
@@ -288,14 +288,14 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
     };
 }
 
-function failureResponse(code: EcomApiErrorCodes, message: string): EcomAPIFailureResponse {
+function failureResponse(code: EcomApiErrorCodes, message: string): EcomApiFailureResponse {
     return {
         status: 'failure',
         error: { code, message },
     };
 }
 
-function successResponse<T>(body: T): EcomAPISuccessResponse<T> {
+function successResponse<T>(body: T): EcomApiSuccessResponse<T> {
     return {
         status: 'success',
         body,

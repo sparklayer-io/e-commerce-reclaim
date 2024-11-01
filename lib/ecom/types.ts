@@ -25,10 +25,10 @@ export enum EcomApiErrorCodes {
     CreateCheckoutRedirectSessionFailure = 'CreateCheckoutRedirectSessionFailure',
 }
 
-export type EcomAPIError = { code: EcomApiErrorCodes; message: string };
-export type EcomAPISuccessResponse<T> = { status: 'success'; body: T };
-export type EcomAPIFailureResponse = { status: 'failure'; error: EcomAPIError };
-export type EcomAPIResponse<T> = EcomAPISuccessResponse<T> | EcomAPIFailureResponse;
+export type EcomApiError = { code: EcomApiErrorCodes; message: string };
+export type EcomApiSuccessResponse<T> = { status: 'success'; body: T };
+export type EcomApiFailureResponse = { status: 'failure'; error: EcomApiError };
+export type EcomApiResponse<T> = EcomApiSuccessResponse<T> | EcomApiFailureResponse;
 
 export enum ProductFilter {
     minPrice = 'minPrice',
@@ -66,31 +66,31 @@ export type AddToCartOptions =
     | { variantId: string }
     | { options: Record<string, string | undefined> };
 
-export type EcomAPI = {
+export type EcomApi = {
     getProducts: (
         options?: GetProductsOptions,
-    ) => Promise<EcomAPIResponse<{ items: Product[]; totalCount: number }>>;
+    ) => Promise<EcomApiResponse<{ items: Product[]; totalCount: number }>>;
     getProductBySlug: (slug: string) => Promise<Product | undefined>;
-    getCart: () => Promise<EcomAPIResponse<Cart>>;
-    getCartTotals: () => Promise<EcomAPIResponse<CartTotals>>;
+    getCart: () => Promise<EcomApiResponse<Cart>>;
+    getCartTotals: () => Promise<EcomApiResponse<CartTotals>>;
     updateCartItemQuantity: (
         id: string | undefined | null,
         quantity: number,
-    ) => Promise<EcomAPIResponse<Cart>>;
-    removeItemFromCart: (id: string) => Promise<EcomAPIResponse<Cart>>;
+    ) => Promise<EcomApiResponse<Cart>>;
+    removeItemFromCart: (id: string) => Promise<EcomApiResponse<Cart>>;
     addToCart: (
         id: string,
         quantity: number,
         options?: AddToCartOptions,
-    ) => Promise<EcomAPIResponse<Cart>>;
-    checkout: () => Promise<EcomAPIResponse<{ checkoutUrl: string }>>;
-    getAllCategories: () => Promise<EcomAPIResponse<Collection[]>>;
-    getCategoryBySlug: (slug: string) => Promise<EcomAPIResponse<CollectionDetails>>;
+    ) => Promise<EcomApiResponse<Cart>>;
+    checkout: () => Promise<EcomApiResponse<{ checkoutUrl: string }>>;
+    getAllCategories: () => Promise<EcomApiResponse<Collection[]>>;
+    getCategoryBySlug: (slug: string) => Promise<EcomApiResponse<CollectionDetails>>;
     getOrder: (id: string) => Promise<OrderDetails | undefined>;
     /**
      * Returns the lowest and the highest product price in the category.
      */
     getProductPriceBounds: (
         categorySlug: string,
-    ) => Promise<EcomAPIResponse<{ lowest: number; highest: number }>>;
+    ) => Promise<EcomApiResponse<{ lowest: number; highest: number }>>;
 };

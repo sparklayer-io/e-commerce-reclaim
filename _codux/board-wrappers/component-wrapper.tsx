@@ -1,6 +1,6 @@
 import { createRemixStub } from '@remix-run/testing';
 import { PropsWithChildren } from 'react';
-import { EcomAPIContextProvider } from '~/lib/ecom';
+import { EcomApiContextProvider } from '~/lib/ecom';
 
 export interface ComponentWrapperProps extends PropsWithChildren {
     loaderData?: Record<string, unknown>;
@@ -15,8 +15,8 @@ export default function ComponentWrapper({ children, loaderData }: ComponentWrap
     ]);
 
     return (
-        <EcomAPIContextProvider>
+        <EcomApiContextProvider>
             <RemixStub hydrationData={{ loaderData }} />
-        </EcomAPIContextProvider>
+        </EcomApiContextProvider>
     );
 }
