@@ -34,7 +34,7 @@ module.exports = {
 
         // React
         {
-            files: ['**/*.{js,jsx,ts,tsx}'],
+            files: ['**/*.{ts,tsx}'],
             plugins: ['react', 'jsx-a11y'],
             extends: [
                 'plugin:react/recommended',
@@ -56,12 +56,9 @@ module.exports = {
                 },
             },
             rules: {
+                'react/jsx-no-target-blank': 'off',
                 'jsx-a11y/click-events-have-key-events': 'off',
                 'jsx-a11y/no-static-element-interactions': 'off',
-                'import/no-extraneous-dependencies': [
-                    'error',
-                    { devDependencies: ['_codux/**/*'] },
-                ],
             },
         },
 
@@ -88,7 +85,7 @@ module.exports = {
             ],
             rules: {
                 '@typescript-eslint/no-explicit-any': 'off',
-                'react/jsx-no-target-blank': 'off',
+                '@typescript-eslint/explicit-member-accessibility': 'error',
                 'import/no-extraneous-dependencies': [
                     'error',
                     { devDependencies: ['_codux/**/*', 'vite.config.ts'] },
