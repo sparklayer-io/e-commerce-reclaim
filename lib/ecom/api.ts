@@ -251,7 +251,6 @@ function createEcomApi(wixClient: WixApiClient): EcomAPI {
             try {
                 return await wixClient.orders.getOrder(id).catch(throwNormalizedWixClientError);
             } catch (error) {
-                console.log(error);
                 if (!isNotFoundWixClientError(error)) throw error;
             }
         },

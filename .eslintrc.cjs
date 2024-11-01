@@ -17,15 +17,12 @@ module.exports = {
     // Base config
     extends: ['eslint:recommended'],
 
-    overrides: [
-        // General
-        {
-            files: ['**/*.{ts,tsx}'],
-            rules: {
-                'no-empty': 'off',
-            },
-        },
+    rules: {
+        'no-empty': 'off',
+        'no-console': 'error',
+    },
 
+    overrides: [
         // React
         {
             files: ['**/*.{ts,tsx}'],
