@@ -1,19 +1,18 @@
 .spinner {
-    animation: rotation 2s linear infinite;
+    animation: spin 2s linear infinite;
 }
 
 .circle {
-    animation: circleAnimation 1.5s ease-in-out infinite;
-    stroke: var(--primary5);
+    animation: pulsingStroke 1.5s ease-in-out infinite;
 }
 
-@keyframes rotation {
+@keyframes spin {
     100% {
         transform: rotate(360deg);
     }
 }
 
-@keyframes circleAnimation {
+@keyframes pulsingStroke {
     0% {
         stroke-dasharray: 1, 150;
         stroke-dashoffset: 0;
