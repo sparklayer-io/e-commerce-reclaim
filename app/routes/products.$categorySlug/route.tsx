@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { FadeIn } from '~/lib/components/visual-effects';
 import { EcomApiErrorCodes, initializeEcomApiAnonymous } from '~/lib/ecom';
 import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { useAppliedProductFilters } from '~/lib/hooks';
@@ -14,13 +13,10 @@ import { AppliedProductFilters } from '~/src/components/applied-product-filters/
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { CategoryLink } from '~/src/components/category-link/category-link';
-import { EmptyProductsCategory } from '~/src/components/empty-products-category/empty-products-category';
 import { ErrorPage } from '~/src/components/error-page/error-page';
-import { ProductCard } from '~/src/components/product-card/product-card';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
-import { ProductLink } from '~/src/components/product-link/product-link';
+import { ProductGrid } from '~/src/components/product-grid/product-grid';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -72,59 +68,6 @@ export default function ProductsPage() {
     const currency = products[0]?.priceData?.currency ?? 'USD';
 
     const breadcrumbs = useBreadcrumbs();
-
-    const renderProducts = () => {
-        if (category.numberOfProducts === 0) {
-            return (
-                <EmptyProductsCategory
-                    title="No products here yet..."
-                    subtitle="In the meantime, you can choose a different category to continue shopping."
-                />
-            );
-        }
-
-        if (someFiltersApplied && products.length === 0) {
-            return (
-                <EmptyProductsCategory
-                    title="We couldn't find any matches"
-                    subtitle="Try different filters or another category."
-                    actionButton={
-                        <button className={styles.clearFiltersButton} onClick={clearAllFilters}>
-                            Clear Filters
-                        </button>
-                    }
-                />
-            );
-        }
-
-        return (
-            <div className={styles.productsList}>
-                {products.map((product) => (
-                    <FadeIn key={product._id} duration={0.9}>
-                        <ProductLink
-                            className={styles.productLink}
-                            productSlug={product.slug!}
-                            state={{
-                                fromCategory: {
-                                    name: category.name,
-                                    slug: category.slug,
-                                },
-                            }}
-                        >
-                            <ProductCard
-                                name={product.name!}
-                                imageUrl={product.media?.mainMedia?.image?.url}
-                                price={product.priceData?.formatted?.price}
-                                discountedPrice={product.priceData?.formatted?.discountedPrice}
-                                ribbon={product.ribbon ?? undefined}
-                                inventoryStatus={product.stock?.inventoryStatus}
-                            />
-                        </ProductLink>
-                    </FadeIn>
-                ))}
-            </div>
-        );
-    };
 
     return (
         <div className={styles.page}>
@@ -196,7 +139,12 @@ export default function ProductsPage() {
                         <ProductSortingSelect />
                     </div>
 
-                    {renderProducts()}
+                    <ProductGrid
+                        products={products}
+                        category={category}
+                        filtersApplied={someFiltersApplied}
+                        onClickClearFilters={clearAllFilters}
+                    />
 
                     {products.length < totalProducts && (
                         <div className={styles.loadMoreWrapper}>

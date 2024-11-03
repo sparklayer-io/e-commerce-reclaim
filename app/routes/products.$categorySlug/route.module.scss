@@ -79,36 +79,10 @@
     font: var(--paragraph3);
 }
 
-.productsList {
-    --minCardSize: 404px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--minCardSize), 100%), 1fr));
-    gap: 20px 4px;
-}
-
-.productLink {
-    display: block;
-}
-
-.clearFiltersButton {
-    margin-top: 32px;
-    cursor: pointer;
-}
-
-.clearFiltersButton:hover {
-    color: rgba(23, 17, 13, 0.7);
-}
-
 .loadMoreWrapper {
     margin-top: 40px;
     display: flex;
     justify-content: center;
-}
-
-@media (max-width: $desktop-width) {
-    .productsList {
-        --minCardSize: 250px;
-    }
 }
 
 @media (max-width: $tablet-width) {

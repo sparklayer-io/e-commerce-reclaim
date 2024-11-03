@@ -1,0 +1,27 @@
+@import '@styles/variables.scss';
+
+.productGrid {
+    --minCardSize: 404px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--minCardSize), 100%), 1fr));
+    gap: 20px 4px;
+}
+
+.productLink {
+    display: block;
+}
+
+.clearFiltersButton {
+    margin-top: 32px;
+    cursor: pointer;
+}
+
+.clearFiltersButton:hover {
+    color: rgba(23, 17, 13, 0.7);
+}
+
+@media (max-width: $desktop-width) {
+    .productGrid {
+        --minCardSize: 250px;
+    }
+}
