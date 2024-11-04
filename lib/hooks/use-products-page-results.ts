@@ -9,7 +9,7 @@ export interface ProductsPageResults {
 }
 
 export interface UseProductsPageResultsArgs {
-    categorySlug: string;
+    categoryId: string;
     filters: IProductFilters;
     sorting: ProductSortBy;
     resultsFromLoader: ProductsPageResults;
@@ -22,7 +22,7 @@ export interface UseProductsPageResultsArgs {
  * to avoid redundant fetching on the client side.
  */
 export function useProductsPageResults({
-    categorySlug,
+    categoryId,
     filters,
     sorting,
     resultsFromLoader,
@@ -47,18 +47,16 @@ export function useProductsPageResults({
 
         try {
             const response = await ecomApi.getProducts({
-                categorySlug,
+                categoryId,
                 filters,
                 sortBy: sorting,
                 skip: results.items.length,
             });
 
-            if (response.status === 'failure') throw response.error;
-
             if (resultsRef.current === resultsBeforeFetch) {
                 setResults((prev) => ({
-                    totalCount: response.body.totalCount,
-                    items: [...prev.items, ...response.body.items],
+                    totalCount: response.totalCount,
+                    items: [...prev.items, ...response.items],
                 }));
             }
         } catch (e) {

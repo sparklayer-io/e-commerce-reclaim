@@ -11,18 +11,6 @@ export type CartTotals = currentCart.EstimateTotalsResponse &
     currentCart.EstimateTotalsResponseNonNullableFields;
 export type OrderDetails = orders.Order & orders.OrderNonNullableFields;
 
-export enum EcomApiErrorCodes {
-    GetProductsFailure = 'GetProductsFailure',
-    CategoryNotFound = 'CategoryNotFound',
-    GetCategoryFailure = 'GetCategoryFailure',
-    GetAllCategoriesFailure = 'GetAllCategoriesFailure',
-}
-
-export type EcomApiError = { code: EcomApiErrorCodes; message: string };
-export type EcomApiSuccessResponse<T> = { status: 'success'; body: T };
-export type EcomApiFailureResponse = { status: 'failure'; error: EcomApiError };
-export type EcomApiResponse<T> = EcomApiSuccessResponse<T> | EcomApiFailureResponse;
-
 export enum ProductFilter {
     minPrice = 'minPrice',
     maxPrice = 'maxPrice',
@@ -48,6 +36,7 @@ export enum ProductSortBy {
 }
 
 export interface GetProductsOptions {
+    categoryId?: string;
     categorySlug?: string;
     skip?: number;
     limit?: number;
@@ -62,7 +51,7 @@ export type AddToCartOptions =
 export type EcomApi = {
     getProducts: (
         options?: GetProductsOptions,
-    ) => Promise<EcomApiResponse<{ items: Product[]; totalCount: number }>>;
+    ) => Promise<{ items: Product[]; totalCount: number }>;
     getProductBySlug: (slug: string) => Promise<Product | undefined>;
     getCart: () => Promise<Cart>;
     getCartTotals: () => Promise<CartTotals>;
@@ -75,13 +64,13 @@ export type EcomApi = {
         /** Redirect URL if checkout is cancelled, e.g., 'Browse Products' page. */
         cancelUrl: string;
     }) => Promise<{ checkoutUrl: string }>;
-    getAllCategories: () => Promise<EcomApiResponse<Collection[]>>;
-    getCategoryBySlug: (slug: string) => Promise<EcomApiResponse<CollectionDetails>>;
+    getAllCategories: () => Promise<Collection[]>;
+    getCategoryBySlug: (slug: string) => Promise<CollectionDetails | undefined>;
     getOrder: (id: string) => Promise<OrderDetails | undefined>;
     /**
      * Returns the lowest and the highest product price in the category.
      */
-    getProductPriceBounds: (
-        categorySlug: string,
-    ) => Promise<EcomApiResponse<{ lowest: number; highest: number }>>;
+    getProductPriceBoundsInCategory: (
+        categoryId: string,
+    ) => Promise<{ lowest: number; highest: number }>;
 };

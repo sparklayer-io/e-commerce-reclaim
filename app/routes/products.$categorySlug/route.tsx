@@ -2,12 +2,15 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { EcomApiErrorCodes, initializeEcomApiAnonymous } from '~/lib/ecom';
+import {
+    initializeEcomApiAnonymous,
+    productFiltersFromSearchParams,
+    productSortByFromSearchParams,
+} from '~/lib/ecom';
 import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { useAppliedProductFilters } from '~/lib/hooks';
 import { useProductSorting } from '~/lib/hooks/use-product-sorting';
 import { useProductsPageResults } from '~/lib/hooks/use-products-page-results';
-import { getProductsRouteData } from '~/lib/route-loaders';
 import { getErrorMessage } from '~/lib/utils';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
@@ -20,8 +23,29 @@ import { ProductSortingSelect } from '~/src/components/product-sorting-select/pr
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+    const url = new URL(request.url);
+    const { categorySlug } = params;
+
+    if (!categorySlug) {
+        throw new Response('Bad Request', { status: 400 });
+    }
+
     const api = await initializeEcomApiForRequest(request);
-    return getProductsRouteData(api, params.categorySlug, request.url);
+    const filters = productFiltersFromSearchParams(url.searchParams);
+    const sortBy = productSortByFromSearchParams(url.searchParams);
+    const category = await api.getCategoryBySlug(categorySlug);
+
+    if (!category) {
+        throw new Response('Category Not Found', { status: 404 });
+    }
+
+    const [categoryProducts, allCategories, productPriceBounds] = await Promise.all([
+        api.getProducts({ categoryId: category._id!, filters, sortBy }),
+        api.getAllCategories(),
+        api.getProductPriceBoundsInCategory(category._id!),
+    ]);
+
+    return { category, categoryProducts, allCategories, productPriceBounds };
 };
 
 const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
@@ -34,12 +58,7 @@ const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
 export const getStaticRoutes: GetStaticRoutes = async () => {
     const api = initializeEcomApiAnonymous();
     const categories = await api.getAllCategories();
-
-    if (categories.status === 'failure') {
-        throw categories.error;
-    }
-
-    return categories.body.map((category) => `/products/${category.slug}`);
+    return categories.map((category) => `/products/${category.slug}`);
 };
 
 export const handle = {
@@ -59,7 +78,7 @@ export default function ProductsPage() {
     const { sorting } = useProductSorting();
     const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts } =
         useProductsPageResults({
-            categorySlug: category.slug!,
+            categoryId: category._id!,
             filters: appliedFilters,
             sorting,
             resultsFromLoader,
@@ -170,7 +189,7 @@ export function ErrorBoundary() {
     let title = 'Error';
     let message = getErrorMessage(error);
 
-    if (isRouteErrorResponse(error) && error.data.code === EcomApiErrorCodes.CategoryNotFound) {
+    if (isRouteErrorResponse(error) && error.status === 404) {
         title = 'Category Not Found';
         message = "Unfortunately, the category page you're trying to open does not exist";
     }

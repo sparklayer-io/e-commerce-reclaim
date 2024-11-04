@@ -16,22 +16,20 @@ interface FeaturedProductsSectionProps {
 
 export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => {
     const { title, description, productCount = 4, categorySlug, className } = props;
-    const category = useCategoryDetails(categorySlug);
-    const products = useProducts({ categorySlug, limit: productCount });
+    const { data: category } = useCategoryDetails(categorySlug);
+    const { data: products } = useProducts({ categorySlug, limit: productCount });
 
     return (
         <div className={classNames(styles.root, className)}>
             <FadeIn className={styles.header} duration={1.8}>
-                <h3 className={styles.headerTitle}>
-                    {title ?? category.data?.name ?? categorySlug}
-                </h3>
+                <h3 className={styles.headerTitle}>{title ?? category?.name ?? categorySlug}</h3>
                 <div className={styles.headerDescription}>
-                    {description ?? category.data?.description}
+                    {description ?? category?.description}
                 </div>
             </FadeIn>
             <Reveal className={styles.productsRow} direction="down" duration={1.4}>
-                {products.data
-                    ? products.data.items.map((product) => (
+                {products
+                    ? products.items.map((product) => (
                           <ProductLink key={product._id} productSlug={product.slug!}>
                               <ProductCard
                                   name={product.name!}

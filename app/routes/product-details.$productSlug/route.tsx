@@ -28,13 +28,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export const getStaticRoutes: GetStaticRoutes = async () => {
     const api = initializeEcomApiAnonymous();
-    const products = await api.getProducts();
-
-    if (products.status === 'failure') {
-        throw products.error;
-    }
-
-    return products.body.items.map((product) => `/product-details/${product.slug}`);
+    const { items } = await api.getProducts();
+    return items.map((product) => `/product-details/${product.slug}`);
 };
 
 interface ProductDetailsLocationState {
