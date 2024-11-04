@@ -1,5 +1,6 @@
 import { Link } from '@remix-run/react';
 import classNames from 'classnames';
+import { type ReactNode } from 'react';
 import { useCart, useCheckout } from '~/lib/ecom';
 import { findLineItemPriceBreakdown, getErrorMessage } from '~/lib/utils';
 import { CartItem } from '~/src/components/cart/cart-item/cart-item';
@@ -10,9 +11,8 @@ import styles from './route.module.scss';
 
 export default function CartPage() {
     const {
-        cartData,
+        cart,
         cartTotals,
-        isCartLoading,
         isCartTotalsUpdating,
         updatingCartItemIds,
         removeItem,
@@ -25,27 +25,35 @@ export default function CartPage() {
         onError: (error) => alert(getErrorMessage(error)),
     });
 
-    if (!cartData && isCartLoading) return null;
-
-    if (!cartData?.lineItems.length)
+    if (cart.isLoading) {
         return (
-            <div className={styles.cart}>
-                <h1 className={styles.cartHeader}>My cart</h1>
-                <div className={styles.emptyCart}>
-                    <div className={styles.emptyCartMessage}>Cart is empty</div>
-                    <Link to="/" className={styles.continueBrowsingLink}>
-                        Continue Browsing
-                    </Link>
-                </div>
-            </div>
+            <CartFallback>
+                <Spinner size={50} />
+            </CartFallback>
         );
+    }
+
+    if (!cart.data) {
+        return <CartFallback>{getErrorMessage(cart.error)}</CartFallback>;
+    }
+
+    if (cart.data.lineItems.length === 0) {
+        return (
+            <CartFallback>
+                <div className={styles.cartFallbackTitle}>Cart is empty</div>
+                <Link to="/" className={styles.continueBrowsingLink}>
+                    Continue Browsing
+                </Link>
+            </CartFallback>
+        );
+    }
 
     return (
         <div className={styles.page}>
             <div className={styles.cart}>
                 <h1 className={styles.cartHeader}>My cart</h1>
                 <div className={styles.cartItems}>
-                    {cartData?.lineItems.map((item) => (
+                    {cart.data.lineItems.map((item) => (
                         <CartItem
                             key={item._id}
                             item={item}
@@ -62,7 +70,7 @@ export default function CartPage() {
             <div className={styles.summary}>
                 <h1 className={styles.summaryHeader}>Order summary</h1>
                 <div
-                    className={classNames(styles.summarySection, {
+                    className={classNames(styles.summaryContent, {
                         [styles.loading]: isCartTotalsUpdating,
                     })}
                 >
@@ -108,3 +116,12 @@ export default function CartPage() {
         </div>
     );
 }
+
+const CartFallback = ({ children }: { children: ReactNode }) => (
+    <div className={styles.page}>
+        <div className={styles.cart}>
+            <h1 className={styles.cartHeader}>My cart</h1>
+            <div className={styles.cartFallback}>{children}</div>
+        </div>
+    </div>
+);

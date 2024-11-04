@@ -76,7 +76,7 @@ export const useRemoveItemFromCart = () => {
 export const useCart = () => {
     const [updatingCartItemIds, setUpdatingCartItems] = useState<string[]>([]);
 
-    const { data: cartData, isLoading: isCartLoading } = useCartData();
+    const cart = useCartData();
     const { data: cartTotals, isValidating: isCartTotalsValidating } = useCartTotals();
 
     const { trigger: triggerUpdateItemQuantity } = useUpdateCartItemQuantity();
@@ -101,11 +101,10 @@ export const useCart = () => {
         triggerAddToCart({ id: productId, quantity, options });
 
     return {
-        cartData,
+        cart,
         cartTotals,
         updatingCartItemIds,
 
-        isCartLoading,
         isAddingToCart,
         isCartTotalsUpdating: updatingCartItemIds.length > 0 || isCartTotalsValidating,
 

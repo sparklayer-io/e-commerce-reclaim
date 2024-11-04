@@ -4,7 +4,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0 4%;
-    padding: 2%;
+    padding-bottom: 60px;
 }
 
 .cart {
@@ -23,12 +23,12 @@
     border-bottom: 1px solid rgba(23, 17, 13, 0.2);
 }
 
-.summarySection {
+.summaryContent {
     position: relative;
     padding: 14px 0;
 }
 
-.summarySection.loading {
+.summaryContent.loading {
     opacity: 0.4;
     pointer-events: none;
 }
@@ -71,18 +71,21 @@
     font: var(--paragraph3);
 }
 
-.emptyCart {
+/* Fallback for loading, error, and empty cart states */
+.cartFallback {
+    min-height: 300px;
+    display: grid;
+    place-content: center;
     text-align: center;
-    padding: 175px 0;
 }
 
-.emptyCartMessage {
+.cartFallbackTitle {
     font-size: 22px;
 }
 
 .continueBrowsingLink {
+    margin-top: 10px;
     text-decoration: underline;
-    cursor: pointer;
 }
 
 @media (max-width: $desktop-width) {

@@ -9,7 +9,7 @@ export const Cart = () => {
     const { isOpen, setIsOpen } = useCartOpen();
     const navigate = useNavigate();
     const {
-        cartData,
+        cart,
         cartTotals,
         isCartTotalsUpdating,
         updatingCartItemIds,
@@ -31,7 +31,7 @@ export const Cart = () => {
     return (
         <Drawer onClose={() => setIsOpen(false)} open={isOpen}>
             <CartView
-                cart={cartData}
+                cart={cart.data}
                 cartTotals={cartTotals}
                 onClose={() => setIsOpen(false)}
                 onCheckout={checkout}
