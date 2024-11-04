@@ -12,7 +12,7 @@ import {
     EcomApiFailureResponse,
     EcomApiSuccessResponse,
 } from './types';
-import { isNotFoundWixClientError, throwNormalizedWixClientError } from './wix-client-error';
+import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
 
 type WixApiClient = WixClient<
     undefined,
@@ -68,14 +68,12 @@ export function initializeEcomApiAnonymous() {
     return createEcomApi(client);
 }
 
-function createEcomApi(wixClient: WixApiClient): EcomApi {
-    return {
+const createEcomApi = (wixClient: WixApiClient): EcomApi =>
+    withNormalizedWixClientErrors({
         async getProducts({ categorySlug, skip = 0, limit = 100, filters, sortBy } = {}) {
             try {
                 const { collection } = categorySlug
-                    ? await wixClient.collections
-                          .getCollectionBySlug(categorySlug)
-                          .catch(throwNormalizedWixClientError)
+                    ? await wixClient.collections.getCollectionBySlug(categorySlug)
                     : {};
 
                 let query = wixClient.products.queryProducts();
@@ -92,12 +90,7 @@ function createEcomApi(wixClient: WixApiClient): EcomApi {
                     query = getSortedProductsQuery(query, sortBy);
                 }
 
-                const { items, totalCount = 0 } = await query
-                    .skip(skip)
-                    .limit(limit)
-                    .find()
-                    .catch(throwNormalizedWixClientError);
-
+                const { items, totalCount = 0 } = await query.skip(skip).limit(limit).find();
                 return successResponse({ items, totalCount });
             } catch (e) {
                 return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
@@ -256,7 +249,7 @@ function createEcomApi(wixClient: WixApiClient): EcomApi {
 
         async getOrder(id) {
             try {
-                return await wixClient.orders.getOrder(id).catch(throwNormalizedWixClientError);
+                return await wixClient.orders.getOrder(id);
             } catch (error) {
                 if (!isNotFoundWixClientError(error)) throw error;
             }
@@ -285,8 +278,32 @@ function createEcomApi(wixClient: WixApiClient): EcomApi {
                 return failureResponse(EcomApiErrorCodes.GetProductsFailure, getErrorMessage(e));
             }
         },
-    };
-}
+    });
+
+/**
+ * Wraps all methods of the EcomApi with a try-catch block that fixes broken
+ * error messages in WixClient errors and rethrows them.
+ */
+const withNormalizedWixClientErrors = (api: EcomApi): EcomApi => {
+    for (const key of Object.keys(api)) {
+        const original = Reflect.get(api, key);
+        if (typeof original !== 'function') continue;
+        Reflect.set(api, key, (...args: unknown[]) => {
+            try {
+                const result = Reflect.apply(original, api, args);
+                if (result instanceof Promise) {
+                    return result.catch((error) => {
+                        throw normalizeWixClientError(error);
+                    });
+                }
+                return result;
+            } catch (error) {
+                throw normalizeWixClientError(error);
+            }
+        });
+    }
+    return api;
+};
 
 function failureResponse(code: EcomApiErrorCodes, message: string): EcomApiFailureResponse {
     return {

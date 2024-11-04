@@ -79,13 +79,13 @@ export const isNotFoundWixClientError = (error: unknown): boolean => {
 };
 
 /**
- * Fixes the broken error message in a `WixClient` error and rethrows the error.
- * If it is not a `WixClient` error, rethrows it unchanged.
+ * Fixes the broken error message in a `WixClient` error. If it is not a
+ * `WixClient` error, returns it unchanged.
  * @see {@link getWixClientErrorMessage} for details.
  */
-export const throwNormalizedWixClientError = (error: unknown): never => {
+export const normalizeWixClientError = (error: unknown): unknown => {
     if (isWixClientError(error)) {
         error.message = getWixClientErrorMessage(error);
     }
-    throw error;
+    return error;
 };
