@@ -181,35 +181,19 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             }
         },
 
-        async checkout() {
-            let checkoutId;
-            try {
-                const result = await wixClient.currentCart.createCheckoutFromCurrentCart({
-                    channelType: currentCart.ChannelType.WEB,
-                });
-                checkoutId = result.checkoutId;
-            } catch (e) {
-                return failureResponse(EcomApiErrorCodes.CreateCheckoutFailure, getErrorMessage(e));
-            }
+        async checkout({ successUrl, cancelUrl }) {
+            const { checkoutId } = await wixClient.currentCart.createCheckoutFromCurrentCart({
+                channelType: currentCart.ChannelType.WEB,
+            });
 
-            try {
-                const { redirectSession } = await wixClient.redirects.createRedirectSession({
-                    ecomCheckout: { checkoutId },
-                    callbacks: {
-                        postFlowUrl: window.location.origin,
-                        thankYouPageUrl: `${window.location.origin}/thank-you`,
-                    },
-                });
-                if (!redirectSession?.fullUrl) {
-                    throw new Error('Missing redirect session url');
-                }
-                return successResponse({ checkoutUrl: redirectSession?.fullUrl });
-            } catch (e) {
-                return failureResponse(
-                    EcomApiErrorCodes.CreateCheckoutRedirectSessionFailure,
-                    getErrorMessage(e),
-                );
-            }
+            const { redirectSession } = await wixClient.redirects.createRedirectSession({
+                ecomCheckout: { checkoutId },
+                callbacks: { postFlowUrl: cancelUrl, thankYouPageUrl: successUrl },
+            });
+
+            const checkoutUrl = redirectSession?.fullUrl;
+            if (!checkoutUrl) throw new Error('Failed to retrieve checkout URL');
+            return { checkoutUrl };
         },
 
         async getAllCategories() {

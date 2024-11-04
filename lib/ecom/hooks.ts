@@ -118,7 +118,6 @@ export const useRemoveItemFromCart = () => {
 };
 
 export const useCart = () => {
-    const ecomApi = useEcomApi();
     const [updatingCartItemIds, setUpdatingCartItems] = useState<string[]>([]);
 
     const { data: cartData, isLoading: isCartLoading } = useCartData();
@@ -145,16 +144,6 @@ export const useCart = () => {
     const addToCart = (productId: string, quantity: number, options?: AddToCartOptions) =>
         triggerAddToCart({ id: productId, quantity, options });
 
-    const checkout = async () => {
-        const checkoutResponse = await ecomApi.checkout();
-
-        if (checkoutResponse.status === 'success') {
-            window.location.href = checkoutResponse.body.checkoutUrl;
-        } else {
-            alert('checkout is not configured');
-        }
-    };
-
     return {
         cartData,
         cartTotals,
@@ -167,8 +156,38 @@ export const useCart = () => {
         updateItemQuantity,
         removeItem,
         addToCart,
-        checkout,
     };
+};
+
+export interface CheckoutParams {
+    /** Redirect URL after successful checkout, e.g., 'Thank You' page. */
+    successUrl: string;
+    /** Redirect URL if checkout is cancelled, e.g., 'Browse Products' page. */
+    cancelUrl: string;
+    /** Callback to handle errors that occur when redirecting to checkout. */
+    onError: (error: unknown) => void;
+}
+
+export const useCheckout = ({ successUrl, cancelUrl, onError }: CheckoutParams) => {
+    const ecomApi = useEcomApi();
+    const [isCheckoutInProgress, setIsCheckoutInProgress] = useState(false);
+
+    const checkout = async () => {
+        setIsCheckoutInProgress(true);
+        try {
+            successUrl = new URL(successUrl, window.location.origin).href;
+            cancelUrl = new URL(cancelUrl, window.location.origin).href;
+            const { checkoutUrl } = await ecomApi.checkout({ successUrl, cancelUrl });
+            window.location.assign(checkoutUrl);
+        } catch (error) {
+            // Only reset on error. Success will redirect to checkout page.
+            setIsCheckoutInProgress(false);
+
+            onError(error);
+        }
+    };
+
+    return { checkout, isCheckoutInProgress };
 };
 
 export function useCategoryDetails(slug: string): SWRResponse<CollectionDetails> {

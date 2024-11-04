@@ -1,8 +1,9 @@
 import { useNavigate } from '@remix-run/react';
 import { useCartOpen } from '~/lib/cart-open-context';
-import { useCart } from '~/lib/ecom';
+import { useCart, useCheckout } from '~/lib/ecom';
 import { Drawer } from '~/src/components/drawer/drawer';
 import { CartView } from './cart-view/cart-view';
+import { getErrorMessage } from '~/lib/utils';
 
 export const Cart = () => {
     const { isOpen, setIsOpen } = useCartOpen();
@@ -12,10 +13,15 @@ export const Cart = () => {
         cartTotals,
         isCartTotalsUpdating,
         updatingCartItemIds,
-        checkout,
         removeItem,
         updateItemQuantity,
     } = useCart();
+
+    const { checkout, isCheckoutInProgress } = useCheckout({
+        successUrl: '/thank-you',
+        cancelUrl: '/products/all-products',
+        onError: (error) => alert(getErrorMessage(error)),
+    });
 
     const handleViewCart = () => {
         setIsOpen(false);
@@ -33,6 +39,7 @@ export const Cart = () => {
                 onItemRemove={removeItem}
                 onItemQuantityChange={updateItemQuantity}
                 isUpdating={isCartTotalsUpdating}
+                isCheckoutInProgress={isCheckoutInProgress}
                 updatingCartItemIds={updatingCartItemIds}
             />
         </Drawer>
