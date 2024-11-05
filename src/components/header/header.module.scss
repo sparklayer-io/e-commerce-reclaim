@@ -1,18 +1,11 @@
 @import '@styles/variables.scss';
 
-:root {
-    --headerTopBarHeight: 50px;
-    --headerNavigationHeight: 54px;
-    --headerHeight: calc(var(--headerTopBarHeight) + var(--headerNavigationHeight));
-}
-
 .root {
     padding: 0 var(--pagePaddingHoriz);
-    height: var(--headerHeight);
 }
 
 .topBar {
-    height: var(--headerTopBarHeight);
+    padding: 10px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -33,17 +26,10 @@
 }
 
 .navigation {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    height: var(--headerNavigationHeight);
     gap: 1rem;
-}
-
-.navigation .empty {
-    width: 160px;
-    flex-shrink: 1;
-    flex-grow: 0;
 }
 
 .menu {
@@ -51,16 +37,16 @@
 }
 
 .navigation .actions {
-    flex-shrink: 0;
-    width: 160px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
+    align-self: start;
+    height: 50px;
     padding: 0 8px;
+    gap: 30px;
 }
 
 .cart {
-    margin-left: 8px;
     transform: translateY(-2px);
 }
 
@@ -82,7 +68,6 @@
 
 .openMenuButton {
     display: none;
-    margin-left: 30px;
     cursor: pointer;
 }
 
@@ -91,12 +76,9 @@
         display: none;
     }
 
-    .empty {
-        display: none;
-    }
-
     .navigation {
-        justify-content: end;
+        grid-template-columns: auto 1fr;
+        align-items: center;
     }
 
     .openMenuButton {
@@ -105,10 +87,6 @@
 }
 
 @media (max-width: $tablet-width) {
-    :root {
-        --headerTopBarHeight: 80px;
-    }
-
     .topBar {
         flex-direction: column-reverse;
         align-items: start;

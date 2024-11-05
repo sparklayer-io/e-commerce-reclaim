@@ -38,7 +38,7 @@ export const Header = ({ className }: HeaderProps) => {
                 </div>
             </section>
             <section className={styles.navigation}>
-                <div className={styles.empty} />
+                <div />
                 <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
                     <button onClick={() => cartOpener.setIsOpen(true)}>

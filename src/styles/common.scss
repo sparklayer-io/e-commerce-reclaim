@@ -142,9 +142,8 @@
 /* Hero Banner ****************************************************************/
 
 .heroBanner {
-    --bannerHeight: calc(100vh - var(--headerHeight) - var(--pagePaddingHoriz));
     margin-bottom: var(--pagePaddingHoriz);
-    height: var(--bannerHeight);
+    height: 100vh;
     position: relative;
     color: var(--primary1);
     background: var(--black);
