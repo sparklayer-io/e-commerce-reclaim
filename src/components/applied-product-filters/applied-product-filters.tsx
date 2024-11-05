@@ -35,8 +35,8 @@ export const AppliedProductFilters = ({
         } else {
             return (
                 <span>
-                    {formatPrice(minPrice ?? minPriceInCategory, currency)}&ndash;
-                    {formatPrice(maxPrice ?? maxPriceInCategory, currency)}
+                    {formatPrice(Math.floor(minPrice ?? minPriceInCategory), currency)}&ndash;
+                    {formatPrice(Math.ceil(maxPrice ?? maxPriceInCategory), currency)}
                 </span>
             );
         }

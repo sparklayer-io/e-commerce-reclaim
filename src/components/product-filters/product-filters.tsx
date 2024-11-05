@@ -44,21 +44,17 @@ export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductF
                     content: (
                         <RangeSlider
                             className="rangeSlider"
-                            step="any"
-                            startValue={filters.minPrice ?? lowestPrice}
-                            endValue={filters.maxPrice ?? highestPrice}
+                            step={1}
+                            startValue={Math.floor(filters.minPrice ?? lowestPrice)}
+                            endValue={Math.ceil(filters.maxPrice ?? highestPrice)}
                             onStartValueChange={(value) => {
-                                handleFiltersChange({
-                                    minPrice: Math.max(Math.floor(value), lowestPrice),
-                                });
+                                handleFiltersChange({ minPrice: value });
                             }}
                             onEndValueChange={(value) => {
-                                handleFiltersChange({
-                                    maxPrice: Math.min(Math.ceil(value), highestPrice),
-                                });
+                                handleFiltersChange({ maxPrice: value });
                             }}
-                            minValue={lowestPrice}
-                            maxValue={highestPrice}
+                            minValue={Math.floor(lowestPrice)}
+                            maxValue={Math.ceil(highestPrice)}
                             formatValue={formatPriceValue}
                         />
                     ),
