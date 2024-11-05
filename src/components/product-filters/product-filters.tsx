@@ -8,6 +8,7 @@ import { RangeSlider } from '~/lib/components/range-slider/range-slider';
 import { formatPrice, mergeUrlSearchParams } from '~/lib/utils';
 import { useSearchParamsOptimistic } from '~/lib/hooks';
 import { Accordion } from '../accordion/accordion';
+import { MinusIcon, PlusIcon } from '../icons';
 
 interface ProductFiltersProps {
     lowestPrice: number;
@@ -35,9 +36,11 @@ export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductF
     return (
         <Accordion
             small
+            expandIcon={<PlusIcon width={20} />}
+            collapseIcon={<MinusIcon width={20} />}
             items={[
                 {
-                    title: 'Price',
+                    header: 'Price',
                     content: (
                         <RangeSlider
                             className="rangeSlider"

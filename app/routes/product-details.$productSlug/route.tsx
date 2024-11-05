@@ -10,6 +10,7 @@ import { Accordion } from '~/src/components/accordion/accordion';
 import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { ErrorPage } from '~/src/components/error-page/error-page';
+import { MinusIcon, PlusIcon } from '~/src/components/icons';
 import { ProductImages } from '~/src/components/product-images/product-images';
 import { ProductOption } from '~/src/components/product-option/product-option';
 import { ProductPrice } from '~/src/components/product-price/product-price';
@@ -156,8 +157,14 @@ export default function ProductDetailsPage() {
                         product.additionalInfoSections.length > 0 && (
                             <Accordion
                                 className={styles.additionalInfoSections}
+                                expandIcon={<PlusIcon width={22} />}
+                                collapseIcon={<MinusIcon width={22} />}
                                 items={product.additionalInfoSections.map((section) => ({
-                                    title: section.title!,
+                                    header: (
+                                        <div className={styles.additionalInfoSectionTitle}>
+                                            {section.title!}
+                                        </div>
+                                    ),
                                     content: section.description ? (
                                         <div
                                             dangerouslySetInnerHTML={{
