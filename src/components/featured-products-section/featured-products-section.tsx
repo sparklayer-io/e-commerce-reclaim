@@ -27,7 +27,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                     {description ?? category?.description}
                 </div>
             </FadeIn>
-            <Reveal className={styles.productsRow} direction="down" duration={1.4}>
+            <Reveal className={styles.products} direction="down" duration={1.4}>
                 {products
                     ? products.items.map((product) => (
                           <ProductLink key={product._id} productSlug={product.slug!}>

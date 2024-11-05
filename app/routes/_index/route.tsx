@@ -65,6 +65,7 @@ export default function HomePage() {
                 categorySlug="new-in"
                 title="New In"
                 description="Embrace a sustainable lifestyle with our newest drop-ins."
+                productCount={4}
             />
 
             <BackgroundParallax
@@ -93,6 +94,7 @@ export default function HomePage() {
                 categorySlug="best-sellers"
                 title="Best Sellers"
                 description="When quality is eco-friendly. Explore our top picks."
+                productCount={4}
             />
         </div>
     );

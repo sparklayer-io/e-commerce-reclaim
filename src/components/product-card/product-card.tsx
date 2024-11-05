@@ -28,7 +28,7 @@ export const ProductCard = ({
     inventoryStatus,
 }: ProductCardProps) => {
     return (
-        <div>
+        <div className={styles.productCard}>
             <div className={styles.imageWrapper}>
                 {imageUrl ? (
                     <img src={imageUrl} alt={name} className={styles.image} />
