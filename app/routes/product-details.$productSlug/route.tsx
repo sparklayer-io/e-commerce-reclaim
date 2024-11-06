@@ -1,15 +1,14 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { isRouteErrorResponse, useLoaderData, useNavigate, useRouteError } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
 import { initializeEcomApiAnonymous } from '~/lib/ecom';
 import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { useProductDetails } from '~/lib/hooks';
-import { getErrorMessage, removeQueryStringFromUrl } from '~/lib/utils';
+import { removeQueryStringFromUrl } from '~/lib/utils';
 import { Accordion } from '~/src/components/accordion/accordion';
 import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
-import { ErrorPage } from '~/src/components/error-page/error-page';
 import { MinusIcon, PlusIcon } from '~/src/components/icons';
 import { ProductImages } from '~/src/components/product-images/product-images';
 import { ProductOption } from '~/src/components/product-option/product-option';
@@ -186,24 +185,4 @@ export default function ProductDetailsPage() {
     );
 }
 
-export function ErrorBoundary() {
-    const error = useRouteError();
-    const navigate = useNavigate();
-
-    let title = 'Error';
-    let message = getErrorMessage(error);
-
-    if (isRouteErrorResponse(error) && error.status === 404) {
-        title = 'Product Not Found';
-        message = "Unfortunately a product page you trying to open doesn't exist";
-    }
-
-    return (
-        <ErrorPage
-            title={title}
-            message={message}
-            actionButtonText="Back to shopping"
-            onActionButtonClick={() => navigate('/products/all-products')}
-        />
-    );
-}
+export { ErrorBoundary } from '~/src/components/error-page/error-page';
