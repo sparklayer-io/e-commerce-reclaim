@@ -98,7 +98,10 @@ export const CartItem = ({
                     <div className={styles.priceBreakdown}>
                         {priceBreakdown?.lineItemPrice?.formattedConvertedAmount}
                     </div>
-                    <button className={styles.removeButton} onClick={onRemove}>
+                    <button
+                        className={classNames(styles.removeButton, 'iconButton')}
+                        onClick={onRemove}
+                    >
                         <TrashIcon />
                     </button>
                 </div>

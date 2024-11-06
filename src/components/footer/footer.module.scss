@@ -12,6 +12,11 @@
     margin-bottom: 50px;
 }
 
+.navList {
+    list-style-type: none;
+    padding: 0;
+}
+
 .navItem {
     display: block;
     font-family: var(--heading-font);

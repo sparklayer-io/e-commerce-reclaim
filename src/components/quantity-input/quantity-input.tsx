@@ -33,20 +33,28 @@ export const QuantityInput = ({
 
     return (
         <div className={classNames(styles.root, { [styles.disabled]: disabled }, className)}>
-            <button className={styles.button} onClick={decrement} disabled={value <= 1 || disabled}>
+            <button
+                className={classNames(styles.button, 'iconButton')}
+                onClick={decrement}
+                disabled={value <= 1 || disabled}
+            >
                 <MinusIcon className={styles.icon} />
             </button>
             <input
                 id={id}
                 type="text"
                 inputMode="numeric"
-                className={classNames(styles.input, className)}
+                className={classNames(styles.input, 'transparentInput', className)}
                 value={internalValue ?? value}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 disabled={disabled}
             />
-            <button className={styles.button} onClick={increment} disabled={disabled}>
+            <button
+                className={classNames(styles.button, 'iconButton')}
+                onClick={increment}
+                disabled={disabled}
+            >
                 <PlusIcon className={styles.icon} />
             </button>
         </div>

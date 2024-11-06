@@ -5,7 +5,7 @@ import styles from './site-wrapper.module.scss';
 
 export const SiteWrapper = ({ children }: React.PropsWithChildren) => {
     return (
-        <div className={styles.root}>
+        <div id="root" className={styles.root}>
             <Header />
             <main className={styles.main}>{children}</main>
             <Footer />

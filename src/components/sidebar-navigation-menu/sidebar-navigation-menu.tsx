@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useNavigation } from '@remix-run/react';
 import { Drawer } from '../drawer/drawer';
 import { CloseIcon } from '../icons';
@@ -23,7 +24,7 @@ export const SidebarNavigationMenu = ({ open, onClose }: SidebarNavigationMenuPr
     return (
         <Drawer open={open} onClose={onClose} drawerClassName={styles.drawer}>
             <NavigationMenu vertical className={styles.menu} />
-            <button className={styles.closeButton} onClick={onClose}>
+            <button className={classNames(styles.closeButton, 'iconButton')} onClick={onClose}>
                 <CloseIcon />
             </button>
         </Drawer>

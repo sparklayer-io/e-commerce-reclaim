@@ -1,3 +1,9 @@
+import '~/src/styles/reset.scss';
+import '~/src/styles/colors.scss';
+import '~/src/styles/typography.scss';
+import '~/src/styles/common.scss';
+import '~/src/styles/index.scss';
+
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import {
     Links,
@@ -13,12 +19,6 @@ import { EcomApiContextProvider } from '~/lib/ecom';
 import { commitSession, initializeEcomSession } from '~/lib/ecom/session';
 import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { SiteWrapper } from '~/src/components/site-wrapper/site-wrapper';
-
-import '~/src/styles/reset.scss';
-import '~/src/styles/colors.scss';
-import '~/src/styles/typography.scss';
-import '~/src/styles/common.scss';
-import '~/src/styles/index.scss';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const { wixEcomTokens, session, shouldUpdateSessionCookie } =

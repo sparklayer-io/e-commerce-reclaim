@@ -19,7 +19,7 @@ export const Footer = ({ className }: FooterProps) => {
         <footer className={classNames(styles.root, className)}>
             <FadeIn className={styles.navigation} duration={1.8}>
                 <nav>
-                    <ul>
+                    <ul className={styles.navList}>
                         <li>
                             <CategoryLink categorySlug="all-products" className={navItemStyle}>
                                 Shop All
@@ -60,7 +60,7 @@ export const Footer = ({ className }: FooterProps) => {
                         </li>
                     </ul>
                 </nav>
-                <ul>
+                <ul className={styles.navList}>
                     <li>
                         <NavLink to="/terms-and-conditions" className={navItemStyle}>
                             Terms & Conditions
@@ -82,7 +82,7 @@ export const Footer = ({ className }: FooterProps) => {
                         </NavLink>
                     </li>
                 </ul>
-                <ul>
+                <ul className={styles.navList}>
                     <li>
                         <Link
                             to="https://www.facebook.com/WixStudio"

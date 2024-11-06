@@ -33,7 +33,10 @@ export const CartItemOptions = ({
             ))}
 
             {options.length > visibleOptionsCount && (
-                <button className={styles.moreOptionsButton} onClick={toggleIsExpanded}>
+                <button
+                    className={classNames(styles.moreOptionsButton, 'linkButton')}
+                    onClick={toggleIsExpanded}
+                >
                     {isExpanded ? 'Less Details' : 'More Details'}
                     <DropdownIcon className={styles.moreOptionsIcon} />
                 </button>

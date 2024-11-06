@@ -6,6 +6,7 @@ import { EmptyProductsCategory } from '../empty-products-category/empty-products
 import { ProductCard } from '../product-card/product-card';
 import { ProductLink } from '../product-link/product-link';
 import styles from './product-grid.module.scss';
+import classNames from 'classnames';
 
 export interface ProductGridProps {
     /** list of products to show (either from API or serialized from loader) */
@@ -39,7 +40,10 @@ export const ProductGrid = React.memo<ProductGridProps>(function ProductGrid({
                 title="We couldn't find any matches"
                 subtitle="Try different filters or another category."
                 actionButton={
-                    <button className={styles.clearFiltersButton} onClick={onClickClearFilters}>
+                    <button
+                        className={classNames(styles.clearFiltersButton, 'linkButton')}
+                        onClick={onClickClearFilters}
+                    >
                         Clear Filters
                     </button>
                 }

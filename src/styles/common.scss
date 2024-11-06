@@ -90,6 +90,29 @@
     color: var(--primary1);
 }
 
+.linkButton {
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
+}
+.iconButton {
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Inputs ********************************************************************/
+
+.transparentInput {
+    border: none;
+    background: transparent;
+    color: inherit;
+}
+
 /* Icons **********************************************************************/
 
 .smallIcon {
@@ -116,6 +139,7 @@
 
 .textPage h2 {
     font-size: 24px;
+    font-weight: 400;
     text-transform: uppercase;
     margin: 36px 0 24px 0;
 }
@@ -282,7 +306,7 @@
 }
 
 .floatingCardTitle {
-    font-family: var(--heading-font);
+    font: var(--heading2);
     line-height: 1.2;
     font-size: max(26px, 3.1vw);
     text-transform: uppercase;
