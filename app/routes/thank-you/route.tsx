@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { type MetaFunction, useLoaderData } from '@remix-run/react';
 import { initializeEcomApiForRequest } from '~/lib/ecom/session';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { OrderSummary } from '~/src/components/order-summary/order-summary';
@@ -36,5 +36,19 @@ export default function ThankYouPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Thank You | ReClaim' },
+        {
+            name: 'description',
+            content: 'Thank You for your order',
+        },
+        {
+            property: 'robots',
+            content: 'noindex, nofollow',
+        },
+    ];
+};
 
 export { ErrorBoundary } from '~/src/components/error-page/error-page';

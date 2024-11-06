@@ -1,3 +1,5 @@
+import type { MetaFunction } from '@remix-run/react';
+
 export default function ShippingPolicyPage() {
     return (
         <div className="textPage">
@@ -40,3 +42,17 @@ export default function ShippingPolicyPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Shipping Policy | ReClaim' },
+        {
+            name: 'description',
+            content: 'Essential home products for sustainable living',
+        },
+        {
+            property: 'robots',
+            content: 'index, follow',
+        },
+    ];
+};

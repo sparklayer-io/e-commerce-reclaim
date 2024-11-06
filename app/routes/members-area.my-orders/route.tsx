@@ -1,3 +1,4 @@
+import type { MetaFunction } from '@remix-run/node';
 import styles from './route.module.scss';
 
 export default function MyOrdersPage() {
@@ -7,3 +8,17 @@ export default function MyOrdersPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'My Orders | ReClaim' },
+        {
+            name: 'description',
+            content: 'Essential home products for sustainable living',
+        },
+        {
+            property: 'robots',
+            content: 'noindex, nofollow',
+        },
+    ];
+};

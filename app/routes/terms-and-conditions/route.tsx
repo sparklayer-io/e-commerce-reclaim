@@ -1,3 +1,5 @@
+import { MetaFunction } from '@remix-run/react';
+
 export default function TermsAndConditionsPage() {
     return (
         <div className="textPage">
@@ -57,3 +59,17 @@ export default function TermsAndConditionsPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Terms and Conditions | ReClaim' },
+        {
+            name: 'description',
+            content: 'Essential home products for sustainable living',
+        },
+        {
+            property: 'robots',
+            content: 'index, follow',
+        },
+    ];
+};

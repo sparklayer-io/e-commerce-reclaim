@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { type MetaFunction, useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
 import { initializeEcomApiAnonymous } from '~/lib/ecom';
@@ -184,5 +184,34 @@ export default function ProductDetailsPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+    const title = `${data?.product.name ?? 'Product Details'} | ReClaim`;
+    const description = data?.product.description;
+
+    return [
+        { title },
+        {
+            name: 'description',
+            content: description,
+        },
+        {
+            property: 'robots',
+            content: 'index, follow',
+        },
+        {
+            property: 'og:title',
+            content: title,
+        },
+        {
+            property: 'og:description',
+            content: description,
+        },
+        {
+            property: 'og:image',
+            content: data?.product.media?.mainMedia?.image?.url ?? '/social-media-image.jpg',
+        },
+    ];
+};
 
 export { ErrorBoundary } from '~/src/components/error-page/error-page';

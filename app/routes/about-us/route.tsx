@@ -1,3 +1,4 @@
+import type { MetaFunction } from '@remix-run/react';
 import { FadeIn, Reveal } from '~/lib/components/visual-effects';
 import styles from './route.module.scss';
 
@@ -23,3 +24,17 @@ export default function AboutUsPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'About ReClaim' },
+        {
+            name: 'description',
+            content: 'Essential home products for sustainable living',
+        },
+        {
+            property: 'robots',
+            content: 'index, follow',
+        },
+    ];
+};

@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react';
+import { Link, type MetaFunction } from '@remix-run/react';
 import classNames from 'classnames';
 import { type ReactNode } from 'react';
 import { useCart, useCheckout } from '~/lib/ecom';
@@ -116,6 +116,20 @@ export default function CartPage() {
         </div>
     );
 }
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Cart | ReClaim' },
+        {
+            name: 'description',
+            content: 'Essential home products for sustainable living',
+        },
+        {
+            property: 'robots',
+            content: 'noindex, nofollow',
+        },
+    ];
+};
 
 const CartFallback = ({ children }: { children: ReactNode }) => (
     <div className={styles.page}>
