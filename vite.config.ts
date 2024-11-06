@@ -17,5 +17,8 @@ export default defineConfig({
             '@styles': path.resolve(__dirname, './src/styles/'),
         },
     },
+    optimizeDeps: {
+        include: ['@radix-ui/react-select'],
+    },
     css: { preprocessorOptions: { scss: { api: 'modern' } } },
 });
