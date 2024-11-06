@@ -48,7 +48,7 @@ export const ErrorBoundary = () => {
     // disappear. To prevent this, we force a full page load upon navigation
     // from the error boundary.
     useEffect(() => {
-        if (navigation.state === 'loading') {
+        if (import.meta.env.MODE === 'development' && navigation.state === 'loading') {
             const { pathname, search, hash } = navigation.location;
             window.location.assign(pathname + search + hash);
         }

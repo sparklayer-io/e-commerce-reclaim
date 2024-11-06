@@ -75,7 +75,7 @@ const getWixClientErrorCode = (error: WixClientError): number | string | undefin
 
 export const isNotFoundWixClientError = (error: unknown): boolean => {
     const code = isWixClientError(error) ? getWixClientErrorCode(error) : undefined;
-    return code === 404 || code === 'NOT_FOUND';
+    return code === 404 || (isString(code) && code.includes('NOT_FOUND'));
 };
 
 /**
