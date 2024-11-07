@@ -3,7 +3,7 @@ import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
-import { DEMO_STORE_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
+import { DEMO_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
 import { getFilteredProductsQuery } from './product-filters';
 import { getSortedProductsQuery } from './product-sorting';
 import { EcomApi, WixApiClient } from './types';
@@ -22,7 +22,7 @@ export function getWixClientId() {
               ? process.env
               : {};
 
-    return env.WIX_CLIENT_ID ?? DEMO_STORE_WIX_CLIENT_ID;
+    return env.WIX_CLIENT_ID ?? DEMO_WIX_CLIENT_ID;
 }
 
 export function createWixClient(tokens?: Tokens): WixApiClient {
