@@ -113,6 +113,29 @@
     color: inherit;
 }
 
+input.text-input {
+    border: none;
+    background: transparent;
+    color: var(--primary5);
+    padding: 8px 0;
+    border-bottom: solid 1px rgba(23, 17, 13, 0.4);
+    box-shadow: none;
+
+    &:disabled {
+        color: var(--primary4);
+        opacity: 0.5;
+    }
+
+    &:focus,
+    &:hover:not(:disabled) {
+        border-bottom-color: var(--primary5);
+    }
+
+    &::placeholder {
+        color: var(--primary4);
+    }
+}
+
 /* Icons **********************************************************************/
 
 .smallIcon {
