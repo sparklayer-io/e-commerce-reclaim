@@ -1,4 +1,5 @@
 import { cart, currentCart, orders } from '@wix/ecom';
+import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { IOAuthStrategy, OauthData, WixClient } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
@@ -12,6 +13,7 @@ export type CartItemDetails = cart.LineItem & cart.CartNonNullableFields['lineIt
 export type CartTotals = currentCart.EstimateTotalsResponse &
     currentCart.EstimateTotalsResponseNonNullableFields;
 export type OrderDetails = orders.Order & orders.OrderNonNullableFields;
+export type Member = members.Member & members.MemberNonNullableFields;
 
 export enum ProductFilter {
     minPrice = 'minPrice',
@@ -59,6 +61,7 @@ export type WixApiClient = WixClient<
         redirects: typeof redirects;
         collections: typeof collections;
         orders: typeof orders;
+        members: typeof members;
     }
 >;
 
@@ -96,4 +99,6 @@ export type EcomApi = {
         authUrl: string;
     }>;
     logout: (returnUrl: string) => Promise<{ logoutUrl: string }>;
+    isLoggedIn: () => boolean;
+    getUser: () => Promise<Member | undefined>;
 };

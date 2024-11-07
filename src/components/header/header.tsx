@@ -1,12 +1,13 @@
-import { useState } from 'react';
 import { Link } from '@remix-run/react';
 import classNames from 'classnames';
-import { useCartData } from '~/lib/ecom';
+import { useState } from 'react';
 import { useCartOpen } from '~/lib/cart-open-context';
+import { useCartData } from '~/lib/ecom';
 import { calculateCartItemsCount } from '~/lib/utils';
 import { CartIcon, MenuIcon } from '~/src/components/icons';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
+import { UserMenu } from '../user-menu/user-menu';
 
 import styles from './header.module.scss';
 
@@ -41,6 +42,8 @@ export const Header = ({ className }: HeaderProps) => {
                 <div />
                 <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
+                    <UserMenu />
+
                     <button
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}
