@@ -12,8 +12,12 @@
 }
 
 .orderNumber {
-    margin-bottom: 32px;
+    margin-bottom: 52px;
     font: var(--paragraph3);
+}
+
+.orderSummary {
+    max-width: 800px;
 }
 
 .link {

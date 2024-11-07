@@ -1,14 +1,15 @@
+import classNames from 'classnames';
 import { orders } from '@wix/ecom';
+import type { SerializeFrom } from '@remix-run/node';
 import { OrderItem } from './order-item/order-item';
 import styles from './order-summary.module.scss';
-import type { SerializeFrom } from '@remix-run/node';
-import classNames from 'classnames';
 
 export interface OrderSummaryProps {
+    className?: string;
     order: SerializeFrom<orders.Order & orders.OrderNonNullableFields>;
 }
 
-export const OrderSummary = ({ order }: OrderSummaryProps) => {
+export const OrderSummary = ({ order, className }: OrderSummaryProps) => {
     const { lineItems, priceSummary, shippingInfo, billingInfo, buyerNote } = order;
 
     const deliveryContact = shippingInfo?.logistics?.shippingDestination?.contactDetails;
@@ -19,7 +20,7 @@ export const OrderSummary = ({ order }: OrderSummaryProps) => {
     const billingAddress = billingInfo?.address;
 
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, className)}>
             <div className={styles.section}>
                 <div className={styles.orderItems}>
                     {lineItems.map((item) => (
@@ -68,6 +69,8 @@ export const OrderSummary = ({ order }: OrderSummaryProps) => {
                     </div>
                 </div>
             </div>
+
+            <hr className={classNames(styles.divider, styles.dashed)} />
 
             <div className={classNames(styles.section, styles.addressSection)}>
                 <div>

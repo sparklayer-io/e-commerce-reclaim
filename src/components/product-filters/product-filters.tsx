@@ -60,6 +60,7 @@ export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductF
                     ),
                 },
             ]}
+            initialOpenItemIndex={0}
         />
     );
 };

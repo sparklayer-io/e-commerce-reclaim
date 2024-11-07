@@ -12,6 +12,7 @@ interface AccordionItem {
 
 interface AccordionProps {
     items: AccordionItem[];
+    initialOpenItemIndex?: number;
     className?: string;
     small?: boolean;
     expandIcon?: React.ReactNode;
@@ -20,12 +21,13 @@ interface AccordionProps {
 
 export const Accordion = ({
     items,
+    initialOpenItemIndex,
     className,
     small = false,
     expandIcon,
     collapseIcon,
 }: AccordionProps) => {
-    const [openItemIndex, setOpenItemIndex] = useState<number | null>(0);
+    const [openItemIndex, setOpenItemIndex] = useState<number | null>(initialOpenItemIndex ?? null);
 
     return (
         <div className={classNames({ [styles.small]: small }, className)}>

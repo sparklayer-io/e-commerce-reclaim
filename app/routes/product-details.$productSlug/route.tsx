@@ -172,6 +172,7 @@ export default function ProductDetailsPage() {
                                         />
                                     ) : null,
                                 }))}
+                                initialOpenItemIndex={0}
                             />
                         )}
 

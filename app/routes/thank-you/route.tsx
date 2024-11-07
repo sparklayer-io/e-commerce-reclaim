@@ -26,7 +26,7 @@ export default function ThankYouPage() {
             {order && (
                 <>
                     <div className={styles.orderNumber}>Order number: {order.number}</div>
-                    <OrderSummary order={order} />
+                    <OrderSummary order={order} className={styles.orderSummary} />
                 </>
             )}
 

@@ -2,19 +2,15 @@
 
 .root {
     width: 100%;
-    max-width: 800px;
-}
-
-.section {
-    padding: 40px;
-    border: 1px solid var(--primary2);
 }
 
 .divider {
-    height: 1px;
-    background: var(--primary2);
-    border: none;
+    border-bottom: 1px solid var(--secondary1);
     margin: 20px 0;
+}
+
+.divider.dashed {
+    border-bottom-style: dashed;
 }
 
 .orderItems {
@@ -70,10 +66,6 @@
 }
 
 @media (max-width: $mobile-width) {
-    .section {
-        padding: 20px;
-    }
-
     .summary {
         grid-template-columns: 1fr;
     }

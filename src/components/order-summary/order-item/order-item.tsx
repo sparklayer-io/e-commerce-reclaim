@@ -30,7 +30,7 @@ export const OrderItem = ({ item }: OrderItemProps) => {
                 <div>
                     <div>{productName}</div>
                     <div className={styles.productDetails}>
-                        <div>{item.price?.formattedAmount}</div>
+                        <div>Price: {item.price?.formattedAmount}</div>
                         {item.descriptionLines?.map(({ name, colorInfo, plainText }, index) => {
                             const displayName = name?.translated ?? name?.original;
                             const colorName = colorInfo?.translated ?? colorInfo?.original;
