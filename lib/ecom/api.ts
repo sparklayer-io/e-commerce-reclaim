@@ -161,6 +161,14 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             }
         },
 
+        async getOrders() {
+            const searchOrdersResponse = await wixClient.orders.searchOrders();
+            return {
+                items: searchOrdersResponse.orders,
+                totalCount: searchOrdersResponse.metadata?.count ?? 0,
+            };
+        },
+
         async getProductPriceBoundsInCategory(categoryId: string) {
             const query = wixClient.products.queryProducts().hasSome('collectionIds', [categoryId]);
 
