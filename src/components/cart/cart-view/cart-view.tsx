@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Cart, CartTotals } from '~/lib/ecom';
 import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/lib/utils';
@@ -11,6 +12,8 @@ export interface CartViewProps {
     cart?: Cart;
     cartTotals?: CartTotals;
     updatingCartItemIds?: string[];
+    error?: string;
+    isLoading: boolean;
     isUpdating?: boolean;
     isCheckoutInProgress: boolean;
     onClose: () => void;
@@ -24,6 +27,8 @@ export const CartView = ({
     cart,
     cartTotals,
     updatingCartItemIds = [],
+    error,
+    isLoading,
     isUpdating = false,
     isCheckoutInProgress,
     onClose,
@@ -32,8 +37,19 @@ export const CartView = ({
     onItemQuantityChange,
     onItemRemove,
 }: CartViewProps) => {
-    const itemsCount = cart ? calculateCartItemsCount(cart) : 0;
+    if (isLoading) {
+        return (
+            <CartFallback>
+                <Spinner size={50} />
+            </CartFallback>
+        );
+    }
 
+    if (!cart) {
+        return <CartFallback>{error}</CartFallback>;
+    }
+
+    const itemsCount = calculateCartItemsCount(cart);
     return (
         <div className={styles.cart}>
             <div className={styles.header}>
@@ -45,7 +61,9 @@ export const CartView = ({
                 </button>
             </div>
 
-            {cart && cart.lineItems.length > 0 ? (
+            {cart.lineItems.length === 0 ? (
+                <CartFallback>Your cart is empty.</CartFallback>
+            ) : (
                 <>
                     <div className={styles.cartItems}>
                         {cart.lineItems.map((item) => (
@@ -99,9 +117,11 @@ export const CartView = ({
                         </div>
                     </div>
                 </>
-            ) : (
-                <div className={styles.emptyCartMessage}>Your cart is empty.</div>
             )}
         </div>
     );
 };
+
+const CartFallback = ({ children }: { children: ReactNode }) => (
+    <div className={styles.cartFallback}>{children}</div>
+);

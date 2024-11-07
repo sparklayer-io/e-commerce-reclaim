@@ -33,11 +33,13 @@ export const Cart = () => {
             <CartView
                 cart={cart.data}
                 cartTotals={cartTotals}
+                error={getErrorMessage(cart.error)}
                 onClose={() => setIsOpen(false)}
                 onCheckout={checkout}
                 onViewCart={handleViewCart}
                 onItemRemove={removeItem}
                 onItemQuantityChange={updateItemQuantity}
+                isLoading={cart.isLoading}
                 isUpdating={isCartTotalsUpdating}
                 isCheckoutInProgress={isCheckoutInProgress}
                 updatingCartItemIds={updatingCartItemIds}
