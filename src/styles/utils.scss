@@ -472,7 +472,7 @@
     --track-color: var(--secondary2);
     --selected-range-color: var(--primary5);
     --thumb-color: var(--primary5);
-    --thumb-focus-ring-color: #116dff;
+    --thumb-focus-ring-color: var(--focus-ring-color);
     font: var(--paragraph3);
 }
 
