@@ -21,6 +21,7 @@ import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { Cart } from '~/src/components/cart/cart';
 import { Footer } from '~/src/components/footer/footer';
 import { Header } from '~/src/components/header/header';
+import { Toaster } from '~/src/components/toaster/toaster';
 
 import styles from './root.module.scss';
 
@@ -87,6 +88,7 @@ export default function App() {
                     <Footer />
                 </div>
                 <Cart />
+                <Toaster />
             </CartOpenContextProvider>
         </EcomApiContextProvider>
     );
