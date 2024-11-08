@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 .page {
     padding-top: 100px;
     width: 100%;
@@ -11,7 +9,7 @@
     padding: 30px;
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .page {
         padding-top: 30px;
     }

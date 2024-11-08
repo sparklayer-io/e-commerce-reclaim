@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 .title {
     font: var(--heading5);
     font-size: 26px;
@@ -61,7 +59,7 @@
     text-decoration: underline;
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: 480px) {
     .orderListHeader {
         display: none;
     }

@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 .root {
     margin: 0 calc(-1 * var(--pagePaddingHoriz));
     padding: 75px var(--pagePaddingHoriz);
@@ -34,13 +32,13 @@
     width: 100%;
 }
 
-@media (max-width: $desktop-width) {
+@media (max-width: 1024px) {
     .headerDescription {
         font-size: 16px;
     }
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .root {
         padding-top: 40px;
         padding-bottom: 40px;

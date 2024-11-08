@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 .productGrid {
     --minCardSize: 404px;
     display: grid;
@@ -19,7 +17,7 @@
     color: rgba(23, 17, 13, 0.7);
 }
 
-@media (max-width: $desktop-width) {
+@media (max-width: 1024px) {
     .productGrid {
         --minCardSize: 250px;
     }

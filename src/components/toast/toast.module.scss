@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 .root {
     padding: 14px;
     width: 480px;
@@ -34,7 +32,7 @@
     color: var(--secondary4);
 }
 
-@media (max-width: $desktop-width) {
+@media (max-width: 1024px) {
     .root,
     .root.loading {
         width: 100%;

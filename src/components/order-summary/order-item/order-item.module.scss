@@ -1,5 +1,3 @@
-@import '~/src/styles/variables.scss';
-
 $imageSize: 100px;
 
 .root {
@@ -48,7 +46,7 @@ $imageSize: 100px;
     justify-content: space-between;
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: 480px) {
     .main {
         flex-direction: column;
     }

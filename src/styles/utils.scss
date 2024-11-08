@@ -2,8 +2,6 @@
  * Reusable utility classes.
  */
 
-@import './variables.scss';
-
 /* Headings *******************************************************************/
 
 .heading1 {
@@ -176,7 +174,7 @@
     margin-top: 24px;
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .textPage {
         margin-top: 24px;
         text-align: left;
@@ -356,7 +354,7 @@
     aspect-ratio: 2;
 }
 
-@media (max-width: $desktop-width) {
+@media (max-width: 1024px) {
     .floatingCard {
         width: 42%;
         aspect-ratio: 0.9;
@@ -368,7 +366,7 @@
     }
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .floatingCard {
         width: 80%;
         margin: 0 auto;
@@ -380,7 +378,7 @@
     }
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: 480px) {
     .floatingCardHeader,
     .floatingCardDescription {
         font: var(--paragraph3);
@@ -400,7 +398,7 @@
     flex: 1 1 0;
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .cardsSection {
         flex-direction: column;
         gap: 8px;
@@ -433,7 +431,7 @@
     border-bottom-color: var(--secondary3);
 }
 
-@media (max-width: $tablet-width) {
+@media (max-width: 768px) {
     .tab {
         padding: 14px 20px;
     }
