@@ -9,7 +9,7 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore .",
     "start": "netlify serve",
-    "typecheck": "tsc",
+    "typecheck": "tsc --check",
     "prettier:check": "prettier . -c"
   },
   "dependencies": {
