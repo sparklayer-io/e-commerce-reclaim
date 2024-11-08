@@ -9,12 +9,13 @@ import { CategoryLink } from '~/src/components/category-link/category-link';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductGrid } from '~/src/components/product-grid/product-grid';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-import { initializeEcomApiAnonymous, productSortByFromSearchParams } from '~/src/wix/ecom';
+import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import { useProductSorting } from '~/src/wix/hooks/use-product-sorting';
 import {
     productFiltersFromSearchParams,
+    productSortByFromSearchParams,
     useAppliedProductFilters,
+    useProductSorting,
     useProductsPageResults,
 } from '~/src/wix/products';
 
