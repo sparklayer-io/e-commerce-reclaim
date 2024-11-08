@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';
 import { FadeIn, Reveal } from '~/src/components/visual-effects';
-import { useCategoryDetails } from '~/src/wix/ecom';
+import { useCategoryDetails } from '~/src/wix/categories';
 import { useProducts } from '~/src/wix/products';
 
 import styles from './featured-products-section.module.scss';

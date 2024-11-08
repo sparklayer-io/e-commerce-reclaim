@@ -1,6 +1,5 @@
 import useSwr, { SWRResponse } from 'swr';
-import { useEcomApi } from './api-context';
-import { CollectionDetails } from './types';
+import { useEcomApi, type CollectionDetails } from '../ecom';
 
 export function useCategoryDetails(slug: string): SWRResponse<CollectionDetails | undefined> {
     const ecomApi = useEcomApi();
