@@ -19,7 +19,7 @@ export default createBoard({
                 <Kit.Section title="Inputs">
                     <Kit.Item>
                         <Variant name="Input">
-                            <input className="text-input" value="text input" onChange={() => {}} />
+                            <input className="textInput" value="Text input" onChange={() => {}} />
                         </Variant>
                         <Kit.Description>Input</Kit.Description>
                     </Kit.Item>
@@ -27,8 +27,8 @@ export default createBoard({
                     <Kit.Item>
                         <Variant name="Input Placeholder">
                             <input
-                                className="text-input"
-                                placeholder="input placeholder"
+                                className="textInput"
+                                placeholder="Placeholder"
                                 value=""
                                 onChange={() => {}}
                             />
@@ -40,8 +40,8 @@ export default createBoard({
                         <Variant name="Disabled Input">
                             <input
                                 disabled
-                                className="text-input"
-                                value="disabled input"
+                                className="textInput"
+                                value="Disabled input"
                                 onChange={() => {}}
                             />
                         </Variant>

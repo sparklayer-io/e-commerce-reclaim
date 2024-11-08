@@ -2,6 +2,10 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
+    /* Prevent elements with a z-index in .root from piercing through overlays
+       that appear later in the DOM. */
+    isolation: isolate;
 }
 
 .main {

@@ -1,3 +1,7 @@
+/**
+ * Global styles that are applied to the entire application.
+ */
+
 :root {
     font: var(--paragraph1);
     color: var(--primary5);
@@ -15,9 +19,4 @@ body {
     box-shadow:
         0 0 0 1px #ffffff,
         0 0 0 3px var(--colorD4);
-}
-
-#root {
-    /* create a stacking context for the app */
-    isolation: isolate;
 }
