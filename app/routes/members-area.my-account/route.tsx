@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Dialog, DialogDescription, DialogTitle } from '~/src/components/dialog/dialog';
 import { Spinner } from '~/src/components/spinner/spinner';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import { useAccountDetailsForm } from '~/src/wix/hooks';
+import { useAccountDetailsForm } from '~/src/wix/users';
 
 import styles from './route.module.scss';
 

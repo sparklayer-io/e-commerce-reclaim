@@ -1,13 +1,13 @@
 import { NavLink } from '@remix-run/react';
 import classNames from 'classnames';
-import { useUserInfo } from '~/src/wix/hooks';
-import { Avatar } from '../avatar/avatar';
+import { Avatar } from '~/src/components/avatar/avatar';
 import {
     DropdownMenu,
     DropdownMenuItem,
     DropdownMenuSeparator,
-} from '../dropdown-menu/dropdown-menu';
-import { DropdownIcon } from '../icons';
+} from '~/src/components/dropdown-menu/dropdown-menu';
+import { DropdownIcon } from '~/src/components/icons';
+import { useUserInfo } from '~/src/wix/users';
 
 import styles from './user-menu.module.scss';
 

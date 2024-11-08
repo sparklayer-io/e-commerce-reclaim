@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Member, useEcomApi } from '../ecom';
+import { type Member, useEcomApi } from '../ecom';
 
 export function useUserInfo() {
     const api = useEcomApi();
