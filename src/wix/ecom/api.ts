@@ -197,8 +197,26 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             return wixClient.auth.loggedIn();
         },
         async getUser() {
-            const response = await wixClient.members.getCurrentMember();
+            const response = await wixClient.members.getCurrentMember({
+                fieldsets: [members.Set.FULL],
+            });
             return response.member;
+        },
+        async updateUser(id: string, user: members.UpdateMember) {
+            // `updateMember` is not clearing contact phone number, so
+            // if phone should be empty we use separate function for this
+            if (!user.contact?.phones?.[0]) {
+                await wixClient.members.deleteMemberPhones(id);
+
+                if (user.contact?.phones) {
+                    user.contact.phones = [];
+                }
+            }
+
+            return wixClient.members.updateMember(id, user);
+        },
+        async sendPasswordResetEmail(email: string, redirectUrl: string) {
+            await wixClient.auth.sendPasswordResetEmail(email, redirectUrl);
         },
     });
 
