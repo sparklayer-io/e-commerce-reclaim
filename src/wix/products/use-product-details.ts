@@ -11,7 +11,7 @@ import {
     getSKU,
     isOutOfStock,
     selectedChoicesToVariantChoices,
-} from '../products';
+} from './product-details';
 
 export function useProductDetails(product: SerializeFrom<products.Product>) {
     const cartOpener = useCartOpen();

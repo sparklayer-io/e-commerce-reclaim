@@ -2,10 +2,6 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { type MetaFunction, useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
-import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import { useProductDetails } from '~/src/wix/hooks';
-import { removeQueryStringFromUrl } from '~/src/wix/utils';
 import { Accordion } from '~/src/components/accordion/accordion';
 import { BreadcrumbData, Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -15,6 +11,10 @@ import { ProductOption } from '~/src/components/product-option/product-option';
 import { ProductPrice } from '~/src/components/product-price/product-price';
 import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
 import { ShareProductLinks } from '~/src/components/share-product-links/share-product-links';
+import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
+import { useProductDetails } from '~/src/wix/products';
+import { removeQueryStringFromUrl } from '~/src/wix/utils';
 
 import styles from './route.module.scss';
 
