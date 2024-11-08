@@ -1,18 +1,19 @@
 /**
- * It's important to add an appropriate role and a keyboard support
- * for non-interactive HTML elements with click handlers, such as `<div onClick={handler}></div>`.
- * This function returns a basic set of attributes
- * to make the clickable element focusable and handle keyboard events.
+ * Returns a set of attributes to make a non-interactive HTML element such as
+ * a `<div>` clickable with both mouse and keyboard.
+ *
+ * @example
+ * <div {...getClickableElementAttributes(onClick)}>Click me</div>
  */
-export function getClickableElementAttributes(handler: () => void) {
-    return {
-        role: 'button',
-        tabIndex: 0,
-        onClick: handler,
-        onKeyUp: (event: React.KeyboardEvent) => {
-            if (event.code === 'Enter' || event.code === 'Space') {
-                handler();
-            }
-        },
-    };
-}
+export const getClickableElementAttributes = (
+    onClick: (event: React.MouseEvent | React.KeyboardEvent) => void,
+): React.HTMLAttributes<HTMLElement> => ({
+    role: 'button',
+    tabIndex: 0,
+    onClick,
+    onKeyUp: (event: React.KeyboardEvent) => {
+        if (event.code === 'Enter' || event.code === 'Space') {
+            onClick(event);
+        }
+    },
+});
