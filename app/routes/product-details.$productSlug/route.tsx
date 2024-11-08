@@ -11,10 +11,11 @@ import { ProductOption } from '~/src/components/product-option/product-option';
 import { ProductPrice } from '~/src/components/product-price/product-price';
 import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
 import { ShareProductLinks } from '~/src/components/share-product-links/share-product-links';
+import { toast } from '~/src/components/toast/toast';
 import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { useProductDetails } from '~/src/wix/products';
-import { removeQueryStringFromUrl } from '~/src/wix/utils';
+import { getErrorMessage, removeQueryStringFromUrl } from '~/src/wix/utils';
 
 import styles from './route.module.scss';
 
@@ -87,6 +88,8 @@ export default function ProductDetailsPage() {
 
     const breadcrumbs = useBreadcrumbs();
 
+    const handleError = (error: unknown) => toast.error(getErrorMessage(error));
+
     return (
         <div className={styles.page}>
             <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -146,7 +149,7 @@ export default function ProductDetailsPage() {
 
                     <button
                         className={classNames('button', 'primaryButton', styles.addToCartButton)}
-                        onClick={handleAddToCart}
+                        onClick={() => handleAddToCart().catch(handleError)}
                         disabled={outOfStock || isAddingToCart}
                     >
                         {outOfStock ? 'Out of stock' : 'Add to Cart'}

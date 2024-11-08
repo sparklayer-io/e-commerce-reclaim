@@ -81,14 +81,14 @@ export const useCart = () => {
 
     const updateItemQuantity = ({ id, quantity }: { id: string; quantity: number }) => {
         setUpdatingCartItems((prev) => [...prev, id]);
-        triggerUpdateItemQuantity({ id, quantity }).finally(() => {
+        return triggerUpdateItemQuantity({ id, quantity }).finally(() => {
             setUpdatingCartItems((prev) => prev.filter((itemId) => itemId !== id));
         });
     };
 
     const removeItem = (id: string) => {
         setUpdatingCartItems((prev) => [...prev, id]);
-        triggerRemoveItem(id).finally(() => {
+        return triggerRemoveItem(id).finally(() => {
             setUpdatingCartItems((prev) => prev.filter((itemId) => itemId !== id));
         });
     };
