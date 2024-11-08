@@ -65,6 +65,10 @@ export type WixApiClient = WixClient<
     }
 >;
 
+/**
+ * Provides access to Wix Headless eCommerce API.
+ * @see https://www.wix.com/studio/developers/headless
+ */
 export type EcomApi = {
     getWixClient(): WixApiClient;
     getProducts: (
