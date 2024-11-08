@@ -29,8 +29,6 @@
   },
   "resolve": {
     "alias": {
-      "@styles": "./src/styles",
-      "@styles/*": "./src/styles/*",
       "~/*": "./*",
       "node:fs": false,
       "node:fs/promises": false,
