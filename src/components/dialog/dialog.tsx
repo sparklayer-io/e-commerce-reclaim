@@ -6,7 +6,6 @@ import { CloseIcon } from '../icons';
 import styles from './dialog.module.scss';
 
 export interface DialogProps extends React.PropsWithChildren {
-    className?: string;
     open: boolean;
     onOpenChange: (open: boolean) => void;
     showCloseButton?: boolean;
