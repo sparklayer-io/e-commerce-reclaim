@@ -1,5 +1,5 @@
 import { products } from '@wix/stores';
-import { ProductSortBy } from './types';
+import { ProductSortBy } from '../ecom/types';
 
 export const SORT_BY_SEARCH_PARAM = 'sortBy';
 
