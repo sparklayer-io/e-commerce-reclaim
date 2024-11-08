@@ -1,11 +1,11 @@
 import { Link, type MetaFunction } from '@remix-run/react';
 import classNames from 'classnames';
 import { type ReactNode } from 'react';
-import { useCart, useCheckout } from '~/src/wix/ecom';
-import { findLineItemPriceBreakdown, getErrorMessage } from '~/src/wix/utils';
 import { CartItem } from '~/src/components/cart/cart-item/cart-item';
 import { LockIcon } from '~/src/components/icons';
 import { Spinner } from '~/src/components/spinner/spinner';
+import { findLineItemPriceBreakdown, useCart, useCheckout } from '~/src/wix/cart';
+import { getErrorMessage } from '~/src/wix/utils';
 
 import styles from './route.module.scss';
 

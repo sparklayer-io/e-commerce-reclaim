@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Cart, CartTotals } from '~/src/wix/ecom';
-import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/src/wix/utils';
+import { ReactNode } from 'react';
 import { CloseIcon, LockIcon } from '~/src/components/icons';
 import { Spinner } from '~/src/components/spinner/spinner';
+import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/src/wix/cart';
+import { type Cart, type CartTotals } from '~/src/wix/ecom';
 import { CartItem } from '../cart-item/cart-item';
 
 import styles from './cart-view.module.scss';
