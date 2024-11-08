@@ -1,6 +1,6 @@
 import { isRouteErrorResponse, useNavigate, useNavigation, useRouteError } from '@remix-run/react';
 import { FC, useEffect } from 'react';
-import { getErrorMessage } from '~/lib/utils';
+import { getErrorMessage } from '~/src/wix/utils';
 
 import styles from './error-page.module.scss';
 

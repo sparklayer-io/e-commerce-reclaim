@@ -1,7 +1,7 @@
 import { products } from '@wix/stores';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { getClickableElementAttributes } from '~/lib/utils';
+import { getClickableElementAttributes } from '~/src/wix/utils';
 import { ImagePlaceholderIcon } from '../icons';
 
 import styles from './product-images.module.scss';

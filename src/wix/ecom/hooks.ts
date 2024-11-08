@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useSwr, { Key, SWRResponse, mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { findItemIdInCart } from '~/lib/utils';
+import { findItemIdInCart } from '~/src/wix/utils';
 import { useEcomApi } from './api-context';
 import { AddToCartOptions, CollectionDetails, GetProductsOptions, Product } from './types';
 

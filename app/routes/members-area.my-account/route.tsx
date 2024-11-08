@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, redirect } from '@remix-run/node';
 import type { MetaFunction } from '@remix-run/react';
-import { initializeEcomApiForRequest } from '~/lib/ecom/session';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 
 import styles from './route.module.scss';
 

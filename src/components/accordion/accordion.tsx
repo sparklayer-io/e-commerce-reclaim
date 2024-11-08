@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import { getClickableElementAttributes } from '~/lib/utils';
+import { getClickableElementAttributes } from '~/src/wix/utils';
 import { DropdownIcon } from '../icons';
 
 import styles from './accordion.module.scss';

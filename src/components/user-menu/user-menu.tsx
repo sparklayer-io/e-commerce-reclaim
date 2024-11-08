@@ -1,6 +1,6 @@
 import { NavLink } from '@remix-run/react';
 import classNames from 'classnames';
-import { useUserInfo } from '~/lib/hooks';
+import { useUserInfo } from '~/src/wix/hooks';
 import { Avatar } from '../avatar/avatar';
 import {
     DropdownMenu,

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FadeIn, Reveal } from '~/src/components/visual-effects';
-import { useCategoryDetails, useProducts } from '~/lib/ecom';
+import { useCategoryDetails, useProducts } from '~/src/wix/ecom';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';
 

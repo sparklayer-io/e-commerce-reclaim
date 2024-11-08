@@ -14,9 +14,9 @@ import {
     ScrollRestoration,
     useLoaderData,
 } from '@remix-run/react';
-import { CartOpenContextProvider } from '~/lib/cart-open-context';
-import { EcomApiContextProvider } from '~/lib/ecom';
-import { commitSession, initializeEcomSession } from '~/lib/ecom/session';
+import { CartOpenContextProvider } from '~/src/wix/cart-open-context';
+import { EcomApiContextProvider } from '~/src/wix/ecom';
+import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { Cart } from '~/src/components/cart/cart';
 import { Footer } from '~/src/components/footer/footer';

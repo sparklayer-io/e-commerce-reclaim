@@ -1,5 +1,5 @@
 import { redirect, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
-import { initializeEcomApiForRequest } from '~/lib/ecom/session';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { useLoaderData } from '@remix-run/react';
 import { OrderSummary } from '~/src/components/order-summary/order-summary';
 import { Accordion } from '~/src/components/accordion/accordion';

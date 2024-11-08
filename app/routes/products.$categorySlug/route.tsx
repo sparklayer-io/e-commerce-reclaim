@@ -6,11 +6,11 @@ import {
     initializeEcomApiAnonymous,
     productFiltersFromSearchParams,
     productSortByFromSearchParams,
-} from '~/lib/ecom';
-import { initializeEcomApiForRequest } from '~/lib/ecom/session';
-import { useAppliedProductFilters } from '~/lib/hooks';
-import { useProductSorting } from '~/lib/hooks/use-product-sorting';
-import { useProductsPageResults } from '~/lib/hooks/use-products-page-results';
+} from '~/src/wix/ecom';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
+import { useAppliedProductFilters } from '~/src/wix/hooks';
+import { useProductSorting } from '~/src/wix/hooks/use-product-sorting';
+import { useProductsPageResults } from '~/src/wix/hooks/use-products-page-results';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';

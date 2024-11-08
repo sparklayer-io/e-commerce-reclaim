@@ -1,5 +1,5 @@
-import { productSortByFromSearchParams, SORT_BY_SEARCH_PARAM, ProductSortBy } from '~/lib/ecom';
-import { useSearchParamsOptimistic } from '~/lib/hooks';
+import { productSortByFromSearchParams, SORT_BY_SEARCH_PARAM, ProductSortBy } from '~/src/wix/ecom';
+import { useSearchParamsOptimistic } from '~/src/wix/hooks';
 import { Select, SelectItem } from '../select/select';
 
 import styles from './product-sorting-select.module.scss';

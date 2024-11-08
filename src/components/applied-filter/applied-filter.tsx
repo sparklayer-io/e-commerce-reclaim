@@ -1,4 +1,4 @@
-import { getClickableElementAttributes } from '~/lib/utils';
+import { getClickableElementAttributes } from '~/src/wix/utils';
 import { CloseIcon } from '../icons';
 
 import styles from './applied-filter.module.scss';

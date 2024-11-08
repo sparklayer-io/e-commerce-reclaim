@@ -1,9 +1,9 @@
 import { useNavigate } from '@remix-run/react';
-import { useCartOpen } from '~/lib/cart-open-context';
-import { useCart, useCheckout } from '~/lib/ecom';
+import { useCartOpen } from '~/src/wix/cart-open-context';
+import { useCart, useCheckout } from '~/src/wix/ecom';
 import { Drawer } from '~/src/components/drawer/drawer';
 import { CartView } from './cart-view/cart-view';
-import { getErrorMessage } from '~/lib/utils';
+import { getErrorMessage } from '~/src/wix/utils';
 
 export const Cart = () => {
     const { isOpen, setIsOpen } = useCartOpen();

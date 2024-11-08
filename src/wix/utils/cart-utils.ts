@@ -1,6 +1,6 @@
 import ecom from '@wix/ecom';
 import deepEqual from 'fast-deep-equal';
-import { AddToCartOptions, Cart, CartItem, CartTotals } from '~/lib/ecom';
+import { AddToCartOptions, Cart, CartItem, CartTotals } from '~/src/wix/ecom';
 
 export function findItemIdInCart(
     { lineItems }: Cart,

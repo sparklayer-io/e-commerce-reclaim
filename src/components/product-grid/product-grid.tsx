@@ -1,7 +1,7 @@
 import type { SerializeFrom } from '@remix-run/node';
 import React from 'react';
 import { FadeIn } from '~/src/components/visual-effects';
-import type { CollectionDetails, Product } from '~/lib/ecom';
+import type { CollectionDetails, Product } from '~/src/wix/ecom';
 import { EmptyProductsCategory } from '../empty-products-category/empty-products-category';
 import { ProductCard } from '../product-card/product-card';
 import { ProductLink } from '../product-link/product-link';

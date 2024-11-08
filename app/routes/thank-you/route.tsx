@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { type MetaFunction, useLoaderData } from '@remix-run/react';
-import { initializeEcomApiForRequest } from '~/lib/ecom/session';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { OrderSummary } from '~/src/components/order-summary/order-summary';
 

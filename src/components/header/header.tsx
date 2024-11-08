@@ -1,9 +1,9 @@
 import { Link } from '@remix-run/react';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { useCartOpen } from '~/lib/cart-open-context';
-import { useCartData } from '~/lib/ecom';
-import { calculateCartItemsCount } from '~/lib/utils';
+import { useCartOpen } from '~/src/wix/cart-open-context';
+import { useCartData } from '~/src/wix/ecom';
+import { calculateCartItemsCount } from '~/src/wix/utils';
 import { CartIcon, MenuIcon } from '~/src/components/icons';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';

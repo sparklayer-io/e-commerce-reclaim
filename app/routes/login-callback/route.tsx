@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, redirect } from '@remix-run/node';
-import { commitSession, getSession, initializeEcomApiForRequest } from '~/lib/ecom/session';
+import { commitSession, getSession, initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const session = await getSession(request.headers.get('Cookie'));

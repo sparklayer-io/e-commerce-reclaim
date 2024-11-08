@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import classNames from 'classnames';
-import { ProductFilter, IProductFilters } from '~/lib/ecom';
-import { formatPrice } from '~/lib/utils';
+import { ProductFilter, IProductFilters } from '~/src/wix/ecom';
+import { formatPrice } from '~/src/wix/utils';
 import { AppliedFilter } from '../applied-filter/applied-filter';
 
 import styles from './applied-product-filters.module.scss';

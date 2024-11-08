@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, redirect } from '@remix-run/node';
-import { destroySession, getSession, initializeEcomApiForRequest } from '~/lib/ecom/session';
+import { destroySession, getSession, initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const api = await initializeEcomApiForRequest(request);

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Cart, CartTotals } from '~/lib/ecom';
-import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/lib/utils';
+import { Cart, CartTotals } from '~/src/wix/ecom';
+import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/src/wix/utils';
 import { CloseIcon, LockIcon } from '~/src/components/icons';
 import { Spinner } from '~/src/components/spinner/spinner';
 import { CartItem } from '../cart-item/cart-item';
