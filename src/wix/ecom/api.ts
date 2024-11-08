@@ -195,6 +195,7 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             const highest = descendingPrice.items[0]?.priceData?.price ?? 0;
             return { lowest, highest };
         },
+
         async login(callbackUrl: string, returnUrl: string) {
             const oAuthData = wixClient.auth.generateOAuthData(callbackUrl, returnUrl);
 
@@ -204,18 +205,22 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
 
             return { oAuthData, authUrl };
         },
+
         async logout(returnUrl: string) {
             return wixClient.auth.logout(returnUrl);
         },
+
         isLoggedIn() {
             return wixClient.auth.loggedIn();
         },
+
         async getUser() {
             const response = await wixClient.members.getCurrentMember({
                 fieldsets: [members.Set.FULL],
             });
             return response.member;
         },
+
         async updateUser(id: string, user: members.UpdateMember) {
             // `updateMember` is not clearing contact phone number, so
             // if phone should be empty we use separate function for this
@@ -229,6 +234,7 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
 
             return wixClient.members.updateMember(id, user);
         },
+
         async sendPasswordResetEmail(email: string, redirectUrl: string) {
             await wixClient.auth.sendPasswordResetEmail(email, redirectUrl);
         },
