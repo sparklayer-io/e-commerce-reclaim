@@ -1,7 +1,7 @@
 import { SerializeFrom } from '@remix-run/node';
 import { products as wixStoresProducts } from '@wix/stores';
 import deepEqual from 'fast-deep-equal';
-import { Product } from '~/src/wix/ecom';
+import { Product } from '../ecom';
 
 export function isOutOfStock(
     product: Product | SerializeFrom<Product>,
