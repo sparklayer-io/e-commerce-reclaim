@@ -9,14 +9,15 @@ import { CategoryLink } from '~/src/components/category-link/category-link';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductGrid } from '~/src/components/product-grid/product-grid';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-import {
-    initializeEcomApiAnonymous,
-    productSortByFromSearchParams,
-} from '~/src/wix/ecom';
+import { initializeEcomApiAnonymous, productSortByFromSearchParams } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import { useAppliedProductFilters } from '~/src/wix/hooks';
 import { useProductSorting } from '~/src/wix/hooks/use-product-sorting';
-import { productFiltersFromSearchParams, useProductsPageResults } from '~/src/wix/products';
+import {
+    productFiltersFromSearchParams,
+    useAppliedProductFilters,
+    useProductsPageResults,
+} from '~/src/wix/products';
+
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
