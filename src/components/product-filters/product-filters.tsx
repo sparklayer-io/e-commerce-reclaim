@@ -1,13 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { RangeSlider } from '~/src/components/range-slider/range-slider';
 import { IProductFilters } from '~/src/wix/ecom';
-import { useSearchParamsOptimistic } from '~/src/wix/hooks';
 import {
     formatPrice,
     productFiltersFromSearchParams,
     searchParamsFromProductFilters,
 } from '~/src/wix/products';
-import { mergeUrlSearchParams } from '~/src/wix/utils';
+import { mergeUrlSearchParams, useSearchParamsOptimistic } from '~/src/wix/utils';
 import { Accordion } from '../accordion/accordion';
 import { MinusIcon, PlusIcon } from '../icons';
 

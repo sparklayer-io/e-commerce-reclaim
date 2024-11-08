@@ -1,6 +1,6 @@
 import { ProductSortBy } from '~/src/wix/ecom';
-import { useSearchParamsOptimistic } from '~/src/wix/hooks';
 import { productSortByFromSearchParams, SORT_BY_SEARCH_PARAM } from '~/src/wix/products';
+import { useSearchParamsOptimistic } from '~/src/wix/utils';
 import { Select, SelectItem } from '../select/select';
 
 import styles from './product-sorting-select.module.scss';
