@@ -4,7 +4,7 @@ import {
     productFiltersFromSearchParams,
     searchParamsFromProductFilters,
 } from '~/lib/ecom';
-import { RangeSlider } from '~/lib/components/range-slider/range-slider';
+import { RangeSlider } from '~/src/components/range-slider/range-slider';
 import { formatPrice, mergeUrlSearchParams } from '~/lib/utils';
 import { useSearchParamsOptimistic } from '~/lib/hooks';
 import { Accordion } from '../accordion/accordion';

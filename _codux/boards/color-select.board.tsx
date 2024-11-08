@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createBoard } from '@wixc3/react-board';
-import { ColorSelect, ColorSelectOption } from '~/lib/components/color-select/color-select';
+import { ColorSelect, ColorSelectOption } from '~/src/components/color-select/color-select';
 
 const options: ColorSelectOption[] = [
     { id: 'color1', color: 'white' },

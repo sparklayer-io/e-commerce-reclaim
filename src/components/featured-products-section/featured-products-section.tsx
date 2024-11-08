@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FadeIn, Reveal } from '~/lib/components/visual-effects';
+import { FadeIn, Reveal } from '~/src/components/visual-effects';
 import { useCategoryDetails, useProducts } from '~/lib/ecom';
 import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/product-card';
 import { ProductLink } from '~/src/components/product-link/product-link';

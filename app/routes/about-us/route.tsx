@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/react';
-import { FadeIn, Reveal } from '~/lib/components/visual-effects';
+import { FadeIn, Reveal } from '~/src/components/visual-effects';
 import styles from './route.module.scss';
 
 export default function AboutUsPage() {
