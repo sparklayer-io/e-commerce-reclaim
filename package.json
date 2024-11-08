@@ -8,7 +8,7 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore .",
-    "start": "netlify serve",
+    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc --noEmit",
     "prettier:check": "prettier . -c"
   },
