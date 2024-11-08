@@ -2,15 +2,6 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { type MetaFunction, useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import {
-    initializeEcomApiAnonymous,
-    productFiltersFromSearchParams,
-    productSortByFromSearchParams,
-} from '~/src/wix/ecom';
-import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import { useAppliedProductFilters } from '~/src/wix/hooks';
-import { useProductSorting } from '~/src/wix/hooks/use-product-sorting';
-import { useProductsPageResults } from '~/src/wix/products';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -18,6 +9,14 @@ import { CategoryLink } from '~/src/components/category-link/category-link';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductGrid } from '~/src/components/product-grid/product-grid';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
+import {
+    initializeEcomApiAnonymous,
+    productSortByFromSearchParams,
+} from '~/src/wix/ecom';
+import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
+import { useAppliedProductFilters } from '~/src/wix/hooks';
+import { useProductSorting } from '~/src/wix/hooks/use-product-sorting';
+import { productFiltersFromSearchParams, useProductsPageResults } from '~/src/wix/products';
 import styles from './route.module.scss';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {

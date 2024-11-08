@@ -4,7 +4,7 @@ import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import { DEMO_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
-import { getFilteredProductsQuery } from './product-filters';
+import { getFilteredProductsQuery } from '../products/product-filters';
 import { getSortedProductsQuery } from './product-sorting';
 import { EcomApi, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';

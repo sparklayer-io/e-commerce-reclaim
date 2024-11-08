@@ -1,5 +1,5 @@
 import { products } from '@wix/stores';
-import { IProductFilters, ProductFilter } from './types';
+import { IProductFilters, ProductFilter } from '../ecom/types';
 
 export function productFiltersFromSearchParams(params: URLSearchParams): IProductFilters {
     const minPrice = params.get(ProductFilter.minPrice);
