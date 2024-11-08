@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 0 0 12px;
-    background: var(--white);
+    background: #fff;
     border: 1px solid transparent;
     border-bottom-color: rgba(0, 0, 0, 0.4);
     color: var(--primary5);
@@ -23,7 +23,7 @@
 .trigger:hover,
 .trigger:focus,
 .trigger[data-state='open'] {
-    border-color: var(--black);
+    border-color: #000;
 }
 
 .trigger[data-placeholder] {
@@ -43,7 +43,7 @@
 .content {
     width: var(--radix-select-trigger-width);
     max-height: var(--radix-select-content-available-height);
-    background: var(--white);
+    background: #fff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
 

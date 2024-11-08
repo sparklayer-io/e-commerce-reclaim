@@ -196,7 +196,7 @@
     height: 100vh;
     position: relative;
     color: var(--primary1);
-    background: var(--black);
+    background: #000;
 }
 
 .heroBannerOverlay {
@@ -273,7 +273,7 @@
     display: grid;
     place-content: center;
     overflow: hidden;
-    background: var(--black);
+    background: #000;
 }
 
 .linkCardBackground {
@@ -321,7 +321,7 @@
 .floatingCardHeader {
     text-transform: uppercase;
     padding-bottom: 3px;
-    border-bottom: 1px solid var(--black);
+    border-bottom: 1px solid #000;
 }
 
 .floatingCardContent {

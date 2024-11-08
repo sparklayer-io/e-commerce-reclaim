@@ -1,7 +1,7 @@
 .root {
     padding: 14px;
     width: 480px;
-    color: var(--white);
+    color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: start;
@@ -10,17 +10,17 @@
 
 /** Toast type: success */
 .root.success {
-    background-color: var(--colorE4);
+    background-color: #767f53;
 }
 
 /** Toast type: error */
 .root.error {
-    background-color: var(--error);
+    background-color: #df3131;
 }
 
 /** Toast type: unspecified */
 .root.blank {
-    background-color: var(--colorC3);
+    background-color: #7d6283;
 }
 
 /** Toast type: loading */
@@ -28,8 +28,8 @@
     width: max-content;
     min-width: 150px;
     text-align: center;
-    background-color: var(--secondary1);
-    color: var(--secondary4);
+    background-color: #ced0c4;
+    color: #414434;
 }
 
 @media (max-width: 1024px) {
