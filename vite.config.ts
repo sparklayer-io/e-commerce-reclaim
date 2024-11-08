@@ -21,4 +21,15 @@ export default defineConfig({
         include: ['@radix-ui/react-select'],
     },
     css: { preprocessorOptions: { scss: { api: 'modern' } } },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.endsWith('.css') || id.endsWith('.scss')) {
+                        return 'styles';
+                    }
+                },
+            },
+        },
+    },
 });
