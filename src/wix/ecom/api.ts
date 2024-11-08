@@ -3,11 +3,25 @@ import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
-import { DEMO_WIX_CLIENT_ID, WIX_STORES_APP_ID } from './constants';
 import { getFilteredProductsQuery } from '../products/product-filters';
 import { getSortedProductsQuery } from '../products/product-sorting';
 import { EcomApi, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
+
+/**
+ * OAuth app client ID for a demo store, used to access a sample product catalog
+ * until you connect your own Wix store. Once connected, this client ID is
+ * ignored.
+ * https://help.codux.com/kb/en/article/connecting-your-app-to-wix-headless-services
+ */
+const DEMO_WIX_CLIENT_ID = '35a15d20-4732-4bb8-a8ef-194fd1166827';
+
+/**
+ * The Wix Stores App ID is the same for all websites integrating with Wix
+ * Stores. It is required for API calls such as adding products to the cart.
+ * https://dev.wix.com/docs/rest/business-solutions/stores/catalog/e-commerce-integration
+ */
+const WIX_STORES_APP_ID = '1380b703-ce81-ff05-f115-39571d94dfcd';
 
 export function getWixClientId() {
     /**
