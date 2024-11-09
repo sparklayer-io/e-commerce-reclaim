@@ -1,3 +1,7 @@
+:where(.progressBar) {
+    --color: #007bff;
+}
+
 .progressBar {
     position: fixed;
     top: 0;
@@ -5,7 +9,7 @@
     width: 0;
     height: 3px;
     pointer-events: none;
-    background-color: var(--navigation-progress-color, #007bff);
+    background-color: var(--color);
 }
 
 .progressBar.loading {
@@ -13,10 +17,11 @@
 }
 
 .progressBar.finished {
-    /** Combining the 'loading' and 'finished' animations allows for a smooth
-     * transition when removing the .loading class and adding .finished, as the
-     * browser retains the 'loading' animation's state, and the 'finished'
-     * animation uses that as the initial state.
+    /**
+     * By combining the 'loading' and 'finished' animations here, we ensure that
+     * when the .loading class is replaced with the .finished class, the browser
+     * retains the progress of the 'loading' animation, and uses as the starting
+     * point for the 'finished' animation.
      */
     animation:
         loadingAnimation 100s forwards,

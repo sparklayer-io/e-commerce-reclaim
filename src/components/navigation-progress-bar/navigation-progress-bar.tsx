@@ -2,9 +2,9 @@ import { useNavigation } from '@remix-run/react';
 import { FC, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 
-import styles from './navigation-progress.module.scss';
+import styles from './navigation-progress-bar.module.scss';
 
-export interface NavigationProgressProps {
+export interface NavigationProgressBarProps {
     className?: string;
 }
 
@@ -13,7 +13,7 @@ export interface NavigationProgressProps {
  * navigation. It provides visual feedback since browsers don't show a loading
  * indicator when pages load via client-side routing.
  */
-export const NavigationProgress: FC<NavigationProgressProps> = ({ className }) => {
+export const NavigationProgressBar: FC<NavigationProgressBarProps> = ({ className }) => {
     const progressBarRef = useRef<HTMLDivElement>(null);
     const navigation = useNavigation();
     const isLoading = navigation.state !== 'idle';

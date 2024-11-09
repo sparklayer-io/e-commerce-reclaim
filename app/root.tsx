@@ -18,7 +18,7 @@ import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { Cart } from '~/src/components/cart/cart';
 import { Footer } from '~/src/components/footer/footer';
 import { Header } from '~/src/components/header/header';
-import { NavigationProgress } from '~/src/components/navigation-progress/navigation-progress';
+import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 import { Toaster } from '~/src/components/toaster/toaster';
 import { CartOpenContextProvider } from '~/src/wix/cart';
 import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
@@ -82,7 +82,7 @@ export default function App() {
                     <Footer />
                 </div>
                 <Cart />
-                <NavigationProgress />
+                <NavigationProgressBar className={styles.navigationProgressBar} />
                 <Toaster />
             </CartOpenContextProvider>
         </EcomApiContextProvider>
