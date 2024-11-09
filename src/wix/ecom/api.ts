@@ -103,8 +103,14 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             return items.at(0);
         },
 
-        getCart() {
-            return wixClient.currentCart.getCurrentCart();
+        async getCart() {
+            try {
+                return await wixClient.currentCart.getCurrentCart();
+            } catch (error) {
+                // The cart object doesn't exist for new visitors until they add
+                // a product to the cart.
+                if (!isNotFoundWixClientError(error)) throw error;
+            }
         },
 
         getCartTotals() {

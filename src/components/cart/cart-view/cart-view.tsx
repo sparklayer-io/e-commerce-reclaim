@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { CloseIcon, LockIcon } from '~/src/components/icons';
 import { Spinner } from '~/src/components/spinner/spinner';
-import { calculateCartItemsCount, findLineItemPriceBreakdown } from '~/src/wix/cart';
+import { getCartItemCount, findLineItemPriceBreakdown } from '~/src/wix/cart';
 import { type Cart, type CartTotals } from '~/src/wix/ecom';
 import { CartItem } from '../cart-item/cart-item';
 
@@ -45,23 +45,24 @@ export const CartView = ({
         );
     }
 
-    if (!cart) {
+    if (error) {
         return <CartFallback>{error}</CartFallback>;
     }
 
-    const itemsCount = calculateCartItemsCount(cart);
+    const itemCount = cart ? getCartItemCount(cart) : 0;
+
     return (
         <div className={styles.cart}>
             <div className={styles.header}>
                 <span className="heading6">
-                    Cart ({itemsCount} {itemsCount === 1 ? 'item' : 'items'})
+                    Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})
                 </span>
                 <button className={classNames(styles.closeButton, 'iconButton')} onClick={onClose}>
                     <CloseIcon />
                 </button>
             </div>
 
-            {cart.lineItems.length === 0 ? (
+            {!cart || cart.lineItems.length === 0 ? (
                 <CartFallback>Your cart is empty.</CartFallback>
             ) : (
                 <>

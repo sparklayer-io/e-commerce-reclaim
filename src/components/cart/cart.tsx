@@ -39,7 +39,7 @@ export const Cart = () => {
             <CartView
                 cart={cart.data}
                 cartTotals={cartTotals}
-                error={getErrorMessage(cart.error)}
+                error={cart.error ? getErrorMessage(cart.error) : undefined}
                 onClose={() => setIsOpen(false)}
                 onCheckout={checkout}
                 onViewCart={handleViewCart}

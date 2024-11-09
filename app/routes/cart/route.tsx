@@ -36,11 +36,11 @@ export default function CartPage() {
         );
     }
 
-    if (!cart.data) {
+    if (cart.error) {
         return <CartFallback>{getErrorMessage(cart.error)}</CartFallback>;
     }
 
-    if (cart.data.lineItems.length === 0) {
+    if (!cart.data || cart.data.lineItems.length === 0) {
         return (
             <CartFallback>
                 <div className={styles.cartFallbackTitle}>Cart is empty</div>

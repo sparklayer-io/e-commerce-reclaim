@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { CartIcon, MenuIcon } from '~/src/components/icons';
-import { calculateCartItemsCount, useCartData, useCartOpen } from '~/src/wix/cart';
+import { getCartItemCount, useCartData, useCartOpen } from '~/src/wix/cart';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
 import { UserMenu } from '../user-menu/user-menu';
@@ -17,7 +17,7 @@ export const Header = ({ className }: HeaderProps) => {
     const cart = useCartData();
     const cartOpener = useCartOpen();
 
-    const cartItemsCount = cart.data ? calculateCartItemsCount(cart.data) : 0;
+    const cartItemCount = cart.data ? getCartItemCount(cart.data) : 0;
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export const Header = ({ className }: HeaderProps) => {
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}
                     >
-                        <CartIcon className={styles.cart} count={cartItemsCount} />
+                        <CartIcon className={styles.cart} count={cartItemCount} />
                     </button>
 
                     <button

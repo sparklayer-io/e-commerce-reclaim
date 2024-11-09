@@ -75,7 +75,7 @@ export type EcomApi = {
         options?: GetProductsOptions,
     ) => Promise<{ items: Product[]; totalCount: number }>;
     getProductBySlug: (slug: string) => Promise<Product | undefined>;
-    getCart: () => Promise<Cart>;
+    getCart: () => Promise<Cart | undefined>;
     getCartTotals: () => Promise<CartTotals>;
     updateCartItemQuantity: (id: string, quantity: number) => Promise<Cart>;
     addToCart: (id: string, quantity: number, options?: AddToCartOptions) => Promise<Cart>;

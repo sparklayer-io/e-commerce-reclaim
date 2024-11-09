@@ -21,7 +21,7 @@ export function findItemIdInCart(
     });
 }
 
-export function calculateCartItemsCount(cart: ecom.cart.Cart): number {
+export function getCartItemCount(cart: ecom.cart.Cart): number {
     return cart.lineItems?.reduce((total, item) => total + item.quantity!, 0) ?? 0;
 }
 
