@@ -1,7 +1,4 @@
 :root {
-    --error: #df3131;
-    --focus-ring-color: #5b4b34;
-
     --primary1: #fef9ec;
     --primary2: #ffefc7;
     --primary3: #dad3c1;
@@ -13,4 +10,12 @@
     --secondary3: #707365;
     --secondary4: #414434;
     --secondary5: #22241b;
+
+    --error: #df3131;
+
+    /** Focus ring that appears when an element is focused via keyboard. */
+    --focus-ring-color: #5b4b34;
+
+    /** Thin progress bar displayed at the top of the page when it's loading. */
+    --navigation-progress-color: #7d6283;
 }
