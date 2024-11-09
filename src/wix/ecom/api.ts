@@ -9,34 +9,35 @@ import { EcomApi, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
 
 /**
+ * The Wix Stores App ID is the same for all websites integrating with Wix
+ * Stores. It is required for API calls such as adding products to the cart.
+ * - https://dev.wix.com/docs/rest/business-solutions/stores/catalog/e-commerce-integration
+ */
+const WIX_STORES_APP_ID = '1380b703-ce81-ff05-f115-39571d94dfcd';
+
+/**
  * OAuth app client ID for a demo store, used to access a sample product catalog
  * until you connect your own Wix store. Once connected, this client ID is
  * ignored.
- * https://help.codux.com/kb/en/article/connecting-your-app-to-wix-headless-services
+ * - https://help.codux.com/kb/en/article/connecting-your-app-to-wix-headless-services
  */
 const DEMO_WIX_CLIENT_ID = '35a15d20-4732-4bb8-a8ef-194fd1166827';
 
 /**
- * The Wix Stores App ID is the same for all websites integrating with Wix
- * Stores. It is required for API calls such as adding products to the cart.
- * https://dev.wix.com/docs/rest/business-solutions/stores/catalog/e-commerce-integration
+ * OAuth app client ID for your Wix website to access Wix APIs. It is used on
+ * both the server side and client side, and it is passed from the server to the
+ * client by the root loader.
+ * - https://dev.wix.com/docs/go-headless/coding/java-script-sdk/visitors-and-members/create-a-client-with-oauth
+ * - https://dev.wix.com/docs/go-headless/getting-started/setup/authentication/create-an-oauth-app-for-visitors-and-members
  */
-const WIX_STORES_APP_ID = '1380b703-ce81-ff05-f115-39571d94dfcd';
+let WIX_CLIENT_ID = globalThis.process?.env?.WIX_CLIENT_ID ?? DEMO_WIX_CLIENT_ID;
 
 export function getWixClientId() {
-    /**
-     * this file is used on both sides: client and server,
-     * so we are trying to read WIX_CLIENT_ID from process.env on server side
-     * or from window.ENV (created by the root loader) on client side.
-     */
-    const env =
-        typeof window !== 'undefined' && window.ENV
-            ? window.ENV
-            : typeof process !== 'undefined'
-              ? process.env
-              : {};
+    return WIX_CLIENT_ID;
+}
 
-    return env.WIX_CLIENT_ID ?? DEMO_WIX_CLIENT_ID;
+export function setWixClientId(clientId: string) {
+    WIX_CLIENT_ID = clientId;
 }
 
 export function createWixClient(tokens?: Tokens): WixApiClient {

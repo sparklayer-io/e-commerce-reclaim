@@ -15,7 +15,7 @@ import {
     useLoaderData,
 } from '@remix-run/react';
 import { CartOpenContextProvider } from '~/src/wix/cart';
-import { EcomApiContextProvider } from '~/src/wix/ecom';
+import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { Cart } from '~/src/components/cart/cart';
@@ -29,21 +29,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const { wixSessionTokens, session, shouldUpdateSessionCookie } =
         await initializeEcomSession(request);
 
-    return json(
-        {
-            ENV: {
-                WIX_CLIENT_ID: process?.env?.WIX_CLIENT_ID,
-            },
-            wixSessionTokens,
-        },
-        shouldUpdateSessionCookie
-            ? {
-                  headers: {
-                      'Set-Cookie': await commitSession(session),
-                  },
-              }
-            : undefined,
-    );
+    const data = {
+        wixClientId: getWixClientId(),
+        wixSessionTokens,
+    };
+
+    const headers: HeadersInit = shouldUpdateSessionCookie
+        ? { 'Set-Cookie': await commitSession(session) }
+        : {};
+
+    return json(data, { headers });
 }
 
 const breadcrumbs: RouteBreadcrumbs = () => [{ title: 'Home', to: '/' }];
@@ -71,11 +66,9 @@ export function Layout({ children }: React.PropsWithChildren) {
 }
 
 export default function App() {
-    const { ENV, wixSessionTokens } = useLoaderData<typeof loader>();
+    const { wixClientId, wixSessionTokens } = useLoaderData<typeof loader>();
 
-    if (typeof window !== 'undefined' && typeof window.ENV === 'undefined') {
-        window.ENV = ENV;
-    }
+    setWixClientId(wixClientId);
 
     return (
         <EcomApiContextProvider tokens={wixSessionTokens}>
