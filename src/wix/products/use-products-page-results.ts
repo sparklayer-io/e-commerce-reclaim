@@ -1,7 +1,6 @@
 import { SerializeFrom } from '@remix-run/node';
 import { useEffect, useRef, useState } from 'react';
 import { IProductFilters, Product, ProductSortBy, useEcomApi } from '../ecom';
-import { getErrorMessage } from '../utils';
 
 export interface ProductsPageResults {
     items: (Product | SerializeFrom<Product>)[];
@@ -34,10 +33,12 @@ export function useProductsPageResults({
     // When the category or filters change, the loader fetches the first batch of new
     // results without a full-page reload, and we need to reset the list of results.
     useEffect(() => {
+        setError(undefined);
         setResults(resultsFromLoader);
     }, [resultsFromLoader]);
 
     const [isLoadingMoreProducts, setIsLoadingMoreProducts] = useState(false);
+    const [error, setError] = useState<unknown>();
 
     const ecomApi = useEcomApi();
 
@@ -54,13 +55,14 @@ export function useProductsPageResults({
             });
 
             if (resultsRef.current === resultsBeforeFetch) {
+                setError(undefined);
                 setResults((prev) => ({
                     totalCount: response.totalCount,
                     items: [...prev.items, ...response.items],
                 }));
             }
-        } catch (e) {
-            alert(getErrorMessage(e));
+        } catch (error) {
+            setError(error);
         } finally {
             setIsLoadingMoreProducts(false);
         }
@@ -71,5 +73,6 @@ export function useProductsPageResults({
         totalProducts: results.totalCount,
         isLoadingMoreProducts,
         loadMoreProducts,
+        error,
     };
 }

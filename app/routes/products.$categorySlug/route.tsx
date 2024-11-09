@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { type MetaFunction, useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
+import { useEffect } from 'react';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -9,6 +10,7 @@ import { CategoryLink } from '~/src/components/category-link/category-link';
 import { ProductFilters } from '~/src/components/product-filters/product-filters';
 import { ProductGrid } from '~/src/components/product-grid/product-grid';
 import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
+import { toast } from '~/src/components/toast/toast';
 import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import {
@@ -18,6 +20,7 @@ import {
     useProductSorting,
     useProductsPageResults,
 } from '~/src/wix/products';
+import { getErrorMessage } from '~/src/wix/utils';
 
 import styles from './route.module.scss';
 
@@ -74,8 +77,10 @@ export default function ProductsPage() {
 
     const { appliedFilters, someFiltersApplied, clearFilters, clearAllFilters } =
         useAppliedProductFilters();
+
     const { sorting } = useProductSorting();
-    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts } =
+
+    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts, error } =
         useProductsPageResults({
             categoryId: category._id!,
             filters: appliedFilters,
@@ -86,6 +91,10 @@ export default function ProductsPage() {
     const currency = products[0]?.priceData?.currency ?? 'USD';
 
     const breadcrumbs = useBreadcrumbs();
+
+    useEffect(() => {
+        if (error) toast.error(getErrorMessage(error));
+    }, [error]);
 
     return (
         <div className={styles.page}>
