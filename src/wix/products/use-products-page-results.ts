@@ -11,7 +11,7 @@ export interface UseProductsPageResultsArgs {
     categoryId: string;
     filters: IProductFilters;
     sorting: ProductSortBy;
-    resultsFromLoader: ProductsPageResults;
+    resultsFromLoader: Promise<ProductsPageResults>;
 }
 
 /**
@@ -26,7 +26,8 @@ export function useProductsPageResults({
     sorting,
     resultsFromLoader,
 }: UseProductsPageResultsArgs) {
-    const [results, setResults] = useState(resultsFromLoader);
+    const [status, setStatus] = useState<'loading' | 'loaded'>('loaded');
+    const [results, setResults] = useState<ProductsPageResults>();
     const resultsRef = useRef(results);
     resultsRef.current = results;
 
@@ -34,8 +35,16 @@ export function useProductsPageResults({
     // results without a full-page reload, and we need to reset the list of results.
     useEffect(() => {
         setError(undefined);
-        setResults(resultsFromLoader);
-    }, [resultsFromLoader]);
+        if (status !== 'loading') {
+            setStatus('loading');
+        }
+        resultsFromLoader
+            .then((resolvedProducs) => {
+                setStatus('loaded');
+                setResults(resolvedProducs);
+            })
+            .catch(reportError);
+    }, [resultsFromLoader, status]);
 
     const [isLoadingMoreProducts, setIsLoadingMoreProducts] = useState(false);
     const [error, setError] = useState<unknown>();
@@ -43,6 +52,9 @@ export function useProductsPageResults({
     const ecomApi = useEcomApi();
 
     const loadMoreProducts = async () => {
+        if (!results) {
+            return;
+        }
         const resultsBeforeFetch = resultsRef.current;
         setIsLoadingMoreProducts(true);
 
@@ -58,7 +70,7 @@ export function useProductsPageResults({
                 setError(undefined);
                 setResults((prev) => ({
                     totalCount: response.totalCount,
-                    items: [...prev.items, ...response.items],
+                    items: [...(prev?.items || []), ...response.items],
                 }));
             }
         } catch (error) {
@@ -69,8 +81,9 @@ export function useProductsPageResults({
     };
 
     return {
-        products: results.items,
-        totalProducts: results.totalCount,
+        productsStatus: status,
+        products: results?.items || [],
+        totalProducts: results?.totalCount ?? 0,
         isLoadingMoreProducts,
         loadMoreProducts,
         error,

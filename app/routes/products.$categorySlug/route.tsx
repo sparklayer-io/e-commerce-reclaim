@@ -1,8 +1,8 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { type MetaFunction, useLoaderData } from '@remix-run/react';
+import { Await, defer, type MetaFunction, useLoaderData } from '@remix-run/react';
 import type { GetStaticRoutes } from '@wixc3/define-remix-app';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
 import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
 import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
@@ -41,13 +41,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         throw new Response('Category Not Found', { status: 404 });
     }
 
-    const [categoryProducts, allCategories, productPriceBounds] = await Promise.all([
-        api.getProducts({ categoryId: category._id!, filters, sortBy }),
-        api.getAllCategories(),
-        api.getProductPriceBoundsInCategory(category._id!),
-    ]);
-
-    return { category, categoryProducts, allCategories, productPriceBounds };
+    return defer({
+        category,
+        categoryProducts: api.getProducts({ categoryId: category._id!, filters, sortBy }),
+        allCategories: api.getAllCategories(),
+        productPriceBounds: api.getProductPriceBoundsInCategory(category._id!),
+    });
 };
 
 const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
@@ -80,13 +79,19 @@ export default function ProductsPage() {
 
     const { sorting } = useProductSorting();
 
-    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts, error } =
-        useProductsPageResults({
-            categoryId: category._id!,
-            filters: appliedFilters,
-            sorting,
-            resultsFromLoader,
-        });
+    const {
+        productsStatus,
+        products,
+        totalProducts,
+        loadMoreProducts,
+        isLoadingMoreProducts,
+        error,
+    } = useProductsPageResults({
+        categoryId: category._id!,
+        filters: appliedFilters,
+        sorting,
+        resultsFromLoader,
+    });
 
     const currency = products[0]?.priceData?.currency ?? 'USD';
 
@@ -105,34 +110,49 @@ export default function ProductsPage() {
                     <nav>
                         <h2 className={styles.sidebarTitle}>Browse by</h2>
                         <ul className={styles.categoryList}>
-                            {allCategories.map((category) => (
-                                <li key={category._id} className={styles.categoryListItem}>
-                                    <CategoryLink
-                                        categorySlug={category.slug!}
-                                        className={({ isActive }) =>
-                                            classNames(styles.categoryLink, {
-                                                [styles.categoryLinkActive]: isActive,
-                                            })
-                                        }
-                                    >
-                                        {category.name}
-                                    </CategoryLink>
-                                </li>
-                            ))}
+                            <Suspense>
+                                <Await resolve={allCategories} key={category?._id}>
+                                    {(categories) =>
+                                        categories.map((category) => (
+                                            <li
+                                                key={category._id}
+                                                className={styles.categoryListItem}
+                                            >
+                                                <CategoryLink
+                                                    categorySlug={category.slug!}
+                                                    className={({ isActive }) =>
+                                                        classNames(styles.categoryLink, {
+                                                            [styles.categoryLinkActive]: isActive,
+                                                        })
+                                                    }
+                                                >
+                                                    {category.name}
+                                                </CategoryLink>
+                                            </li>
+                                        ))
+                                    }
+                                </Await>
+                            </Suspense>
                         </ul>
 
-                        {category.numberOfProducts !== 0 && (
+                        {category && category.numberOfProducts !== 0 && (
                             <div className={styles.filters}>
                                 <h2
                                     className={classNames(styles.sidebarTitle, styles.filtersTitle)}
                                 >
                                     Filters
                                 </h2>
-                                <ProductFilters
-                                    lowestPrice={productPriceBounds.lowest}
-                                    highestPrice={productPriceBounds.highest}
-                                    currency={currency}
-                                />
+                                <Suspense>
+                                    <Await resolve={productPriceBounds}>
+                                        {({ lowest, highest }) => (
+                                            <ProductFilters
+                                                lowestPrice={lowest}
+                                                highestPrice={highest}
+                                                currency={currency}
+                                            />
+                                        )}
+                                    </Await>
+                                </Suspense>
                             </div>
                         )}
                     </nav>
@@ -147,31 +167,39 @@ export default function ProductsPage() {
                     </div>
 
                     {someFiltersApplied && (
-                        <AppliedProductFilters
-                            className={styles.appliedFilters}
-                            appliedFilters={appliedFilters}
-                            onClearFilters={clearFilters}
-                            onClearAllFilters={clearAllFilters}
-                            currency={currency}
-                            minPriceInCategory={productPriceBounds.lowest}
-                            maxPriceInCategory={productPriceBounds.highest}
-                        />
+                        <Suspense>
+                            <Await resolve={productPriceBounds}>
+                                {({ lowest, highest }) => (
+                                    <AppliedProductFilters
+                                        className={styles.appliedFilters}
+                                        appliedFilters={appliedFilters}
+                                        onClearFilters={clearFilters}
+                                        onClearAllFilters={clearAllFilters}
+                                        currency={currency}
+                                        minPriceInCategory={lowest}
+                                        maxPriceInCategory={highest}
+                                    />
+                                )}
+                            </Await>
+                        </Suspense>
                     )}
 
                     <div className={styles.countAndSorting}>
-                        <p className={styles.productsCount}>
-                            {totalProducts} {totalProducts === 1 ? 'product' : 'products'}
-                        </p>
+                        {productsStatus === 'loaded'
+                            ? `${totalProducts} ${totalProducts === 1 ? 'product' : 'products'}`
+                            : `loading products...`}
 
                         <ProductSortingSelect />
                     </div>
 
-                    <ProductGrid
-                        products={products}
-                        category={category}
-                        filtersApplied={someFiltersApplied}
-                        onClickClearFilters={clearAllFilters}
-                    />
+                    {productsStatus === 'loaded' && (
+                        <ProductGrid
+                            products={products}
+                            category={category}
+                            filtersApplied={someFiltersApplied}
+                            onClickClearFilters={clearAllFilters}
+                        />
+                    )}
 
                     {products.length < totalProducts && (
                         <div className={styles.loadMoreWrapper}>
