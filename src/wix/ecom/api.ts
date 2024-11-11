@@ -30,14 +30,17 @@ const DEMO_WIX_CLIENT_ID = '35a15d20-4732-4bb8-a8ef-194fd1166827';
  * - https://dev.wix.com/docs/go-headless/coding/java-script-sdk/visitors-and-members/create-a-client-with-oauth
  * - https://dev.wix.com/docs/go-headless/getting-started/setup/authentication/create-an-oauth-app-for-visitors-and-members
  */
-let WIX_CLIENT_ID = globalThis.process?.env?.WIX_CLIENT_ID ?? DEMO_WIX_CLIENT_ID;
+let WIX_CLIENT_ID: string | undefined;
 
-export function getWixClientId() {
-    return WIX_CLIENT_ID;
+export function getWixClientId(): string {
+    if (typeof process !== 'undefined' && process.env.WIX_CLIENT_ID) {
+        return process.env.WIX_CLIENT_ID;
+    }
+    return WIX_CLIENT_ID ?? DEMO_WIX_CLIENT_ID;
 }
 
-export function setWixClientId(clientId: string) {
-    WIX_CLIENT_ID = clientId;
+export function setWixClientId(id: string): void {
+    WIX_CLIENT_ID = id;
 }
 
 export function createWixClient(tokens?: Tokens): WixApiClient {
