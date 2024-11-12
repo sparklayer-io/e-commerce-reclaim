@@ -5,7 +5,6 @@ import { CartIcon, MenuIcon } from '~/src/components/icons';
 import { getCartItemCount, useCartData, useCartOpen } from '~/src/wix/cart';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
-import { UserMenu } from '../user-menu/user-menu';
 
 import styles from './header.module.scss';
 
@@ -40,8 +39,6 @@ export const Header = ({ className }: HeaderProps) => {
                 <div />
                 <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
-                    <UserMenu />
-
                     <button
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}
