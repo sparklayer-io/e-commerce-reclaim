@@ -7,6 +7,7 @@ import { getFilteredProductsQuery } from '../products/product-filters';
 import { getSortedProductsQuery } from '../products/product-sorting';
 import { EcomApi, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
+import { Cache } from './cache';
 
 /**
  * The Wix Stores App ID is the same for all websites integrating with Wix
@@ -60,6 +61,8 @@ export function createWixClient(tokens?: Tokens): WixApiClient {
     });
 }
 
+const cache = new Cache();
+
 export function initializeEcomApiWithTokens(tokens: Tokens) {
     const client = createWixClient(tokens);
     return createEcomApi(client);
@@ -70,8 +73,8 @@ export function initializeEcomApiAnonymous() {
     return createEcomApi(client);
 }
 
-const createEcomApi = (wixClient: WixApiClient): EcomApi =>
-    withNormalizedWixClientErrors({
+const createEcomApi = (wixClient: WixApiClient): EcomApi => {
+    const api = withNormalizedWixClientErrors({
         getWixClient() {
             return wixClient;
         },
@@ -249,7 +252,22 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
             await wixClient.auth.sendPasswordResetEmail(email, redirectUrl);
         },
     });
-
+    api.getCategoryBySlug = cache.wrapWithCache(
+        (categorySlug) => `getCategoryBySlug?slug=${categorySlug}`,
+        api.getCategoryBySlug,
+    );
+    api.getProducts = cache.wrapWithCache(
+        ({ categoryId, filters, sortBy } = {}) =>
+            `getProducts?category=${categoryId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        api.getProducts,
+    );
+    api.getAllCategories = cache.wrapWithCache(() => `getAllCategories`, api.getAllCategories);
+    api.getProductPriceBoundsInCategory = cache.wrapWithCache(
+        (categoryId) => `getProductPriceBoundsInCategory?category=${categoryId}`,
+        api.getProductPriceBoundsInCategory,
+    );
+    return api;
+};
 /**
  * Wraps all methods of the EcomApi with a try-catch block that fixes broken
  * error messages in WixClient errors and rethrows them.
