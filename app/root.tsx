@@ -4,7 +4,7 @@ import '~/src/styles/typography.scss';
 import '~/src/styles/global.scss';
 import '~/src/styles/utils.scss';
 
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { data, type LoaderFunctionArgs } from '@remix-run/node';
 import {
     Links,
     Meta,
@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const { wixSessionTokens, session, shouldUpdateSessionCookie } =
         await initializeEcomSession(request);
 
-    const data = {
+    const payload = {
         wixClientId: getWixClientId(),
         wixSessionTokens,
     };
@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         ? { 'Set-Cookie': await commitSession(session) }
         : {};
 
-    return json(data, { headers });
+    return data(payload, { headers });
 }
 
 const breadcrumbs: RouteBreadcrumbs = () => [{ title: 'Home', to: '/' }];
