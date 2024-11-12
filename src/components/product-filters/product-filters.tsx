@@ -1,22 +1,22 @@
-import { useCallback, useMemo } from 'react';
-import { RangeSlider } from '~/src/components/range-slider/range-slider';
+import { useMemo } from 'react';
+import { Accordion } from '~/src/components/accordion/accordion';
+import { MinusIcon, PlusIcon } from '~/src/components/icons';
 import { IProductFilters } from '~/src/wix/ecom';
-import {
-    formatPrice,
-    productFiltersFromSearchParams,
-    searchParamsFromProductFilters,
-} from '~/src/wix/products';
+import { productFiltersFromSearchParams, searchParamsFromProductFilters } from '~/src/wix/products';
 import { mergeUrlSearchParams, useSearchParamsOptimistic } from '~/src/wix/utils';
-import { Accordion } from '../accordion/accordion';
-import { MinusIcon, PlusIcon } from '../icons';
+import { PriceFilter } from './price-filter';
 
 interface ProductFiltersProps {
-    lowestPrice: number;
-    highestPrice: number;
+    minAvailablePrice: number;
+    maxAvailablePrice: number;
     currency: string;
 }
 
-export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductFiltersProps) => {
+export const ProductFilters = ({
+    minAvailablePrice,
+    maxAvailablePrice,
+    currency,
+}: ProductFiltersProps) => {
     const [searchParams, setSearchParams] = useSearchParamsOptimistic();
 
     const filters = useMemo(() => productFiltersFromSearchParams(searchParams), [searchParams]);
@@ -28,11 +28,6 @@ export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductF
         });
     };
 
-    const formatPriceValue = useCallback(
-        (price: number) => formatPrice(price, currency),
-        [currency],
-    );
-
     return (
         <Accordion
             small
@@ -42,20 +37,13 @@ export const ProductFilters = ({ lowestPrice, highestPrice, currency }: ProductF
                 {
                     header: 'Price',
                     content: (
-                        <RangeSlider
-                            className="rangeSlider"
-                            step={1}
-                            startValue={Math.floor(filters.minPrice ?? lowestPrice)}
-                            endValue={Math.ceil(filters.maxPrice ?? highestPrice)}
-                            onStartValueChange={(value) => {
-                                handleFiltersChange({ minPrice: value });
-                            }}
-                            onEndValueChange={(value) => {
-                                handleFiltersChange({ maxPrice: value });
-                            }}
-                            minValue={Math.floor(lowestPrice)}
-                            maxValue={Math.ceil(highestPrice)}
-                            formatValue={formatPriceValue}
+                        <PriceFilter
+                            minAvailablePrice={minAvailablePrice}
+                            maxAvailablePrice={maxAvailablePrice}
+                            minSelectedPrice={filters.minPrice}
+                            maxSelectedPrice={filters.maxPrice}
+                            currency={currency}
+                            onChange={handleFiltersChange}
                         />
                     ),
                 },
