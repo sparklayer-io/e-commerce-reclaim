@@ -1,7 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Slider } from '../slider/slider';
 import { formatPrice } from '~/src/wix/products';
 import { useDebouncedCallback } from '~/src/wix/utils';
+import { alignRangeToNiceStep } from '~/src/wix/utils/align-range';
+import { Slider } from '../slider/slider';
 import styles from './price-filter.module.scss';
 
 export interface PriceFilterProps {
@@ -21,13 +22,15 @@ export const PriceFilter: FC<PriceFilterProps> = ({
     currency,
     onChange,
 }) => {
-    // Round available prices to the nearest whole number to ensure the slider
-    // thumbs can reach the track's start and end, as they move only in integer
-    // steps.
-    minAvailablePrice = Math.floor(minAvailablePrice);
-    maxAvailablePrice = Math.ceil(maxAvailablePrice);
-    minSelectedPrice ??= minAvailablePrice;
-    maxSelectedPrice ??= maxAvailablePrice;
+    const priceRange = maxAvailablePrice - minAvailablePrice;
+    const sliderRange = alignRangeToNiceStep({
+        min: minAvailablePrice,
+        max: maxAvailablePrice,
+        step: Math.max(priceRange / 100, 0.1),
+    });
+
+    minSelectedPrice ??= sliderRange.min;
+    maxSelectedPrice ??= sliderRange.max;
 
     const [value, setValue] = useState([minSelectedPrice, maxSelectedPrice]);
     useEffect(() => {
@@ -51,9 +54,9 @@ export const PriceFilter: FC<PriceFilterProps> = ({
         <div className={styles.root}>
             <Slider
                 className="slider"
-                min={minAvailablePrice}
-                max={maxAvailablePrice}
-                step={1}
+                min={sliderRange.min}
+                max={sliderRange.max}
+                step={sliderRange.step}
                 value={value}
                 onValueChange={setValue}
                 onValueCommit={handleValueCommit}
