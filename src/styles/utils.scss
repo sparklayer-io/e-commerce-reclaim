@@ -468,12 +468,11 @@
     white-space: nowrap;
 }
 
-.rangeSlider {
+.slider {
     --track-color: var(--secondary2);
-    --selected-range-color: var(--primary5);
+    --range-color: var(--primary5);
     --thumb-color: var(--primary5);
-    --thumb-focus-ring-color: var(--focus-ring-color);
-    font: var(--paragraph3);
+    --focus-ring-color: inherit;
 }
 
 .colorSelect {

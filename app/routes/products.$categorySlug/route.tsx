@@ -129,8 +129,8 @@ export default function ProductsPage() {
                                     Filters
                                 </h2>
                                 <ProductFilters
-                                    lowestPrice={productPriceBounds.lowest}
-                                    highestPrice={productPriceBounds.highest}
+                                    minAvailablePrice={productPriceBounds.lowest}
+                                    maxAvailablePrice={productPriceBounds.highest}
                                     currency={currency}
                                 />
                             </div>
