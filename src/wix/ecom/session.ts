@@ -35,31 +35,58 @@ export { commitSession, destroySession, getSession };
 
 export async function initializeEcomSession(request: Request) {
     const session = await getSession(request.headers.get('Cookie'));
-
     const sessionWixClientId = session.get('wixClientId');
     const wixClientId = getWixClientId();
 
     // Retrieve session tokens only if the OAuth client ID matches the one associated with the session;
     // otherwise, reset the session tokens due to client ID mismatch.
-    let wixSessionTokens =
+    const wixSessionTokens =
         sessionWixClientId === wixClientId ? session.get('wixSessionTokens') : undefined;
+
+    const validTokens = await getValidAuthTokens(wixSessionTokens);
+
     let shouldUpdateSessionCookie = false;
-
-    const client = createWixClient(wixSessionTokens);
-    if (wixSessionTokens === undefined) {
+    if (validTokens !== wixSessionTokens) {
         shouldUpdateSessionCookie = true;
-        wixSessionTokens = await client.auth.generateVisitorTokens();
-        session.set('wixSessionTokens', wixSessionTokens);
+        session.set('wixSessionTokens', validTokens);
+    }
 
-        // Store the OAuth client ID in the session to reset user session in case client id changed.
+    if (sessionWixClientId !== wixClientId) {
+        shouldUpdateSessionCookie = true;
         session.set('wixClientId', wixClientId);
     }
 
-    return { wixSessionTokens, session, shouldUpdateSessionCookie };
+    return { wixSessionTokens: validTokens, session, shouldUpdateSessionCookie };
 }
 
 export async function initializeEcomApiForRequest(request: Request) {
-    const { session } = await initializeEcomSession(request);
-    const tokens = session.get('wixSessionTokens');
-    return tokens ? initializeEcomApiWithTokens(tokens) : initializeEcomApiAnonymous();
+    const { wixSessionTokens } = await initializeEcomSession(request);
+    return wixSessionTokens
+        ? initializeEcomApiWithTokens(wixSessionTokens)
+        : initializeEcomApiAnonymous();
+}
+
+// renew token in one hour before expiration. the token lifetime is 4 hours
+const TOKEN_REFRESH_MARGIN_SECONDS = 60 * 60;
+
+async function getValidAuthTokens(sessionTokens: Tokens | undefined): Promise<Tokens> {
+    const client = createWixClient(sessionTokens);
+
+    if (sessionTokens === undefined) {
+        return await client.auth.generateVisitorTokens();
+    }
+
+    const currentTimeStampSeconds = Date.now() / 1000;
+    if (
+        currentTimeStampSeconds >
+        sessionTokens.accessToken.expiresAt - TOKEN_REFRESH_MARGIN_SECONDS
+    ) {
+        try {
+            return await client.auth.renewToken(sessionTokens.refreshToken);
+        } catch {
+            return await client.auth.generateVisitorTokens();
+        }
+    }
+
+    return sessionTokens;
 }
