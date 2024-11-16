@@ -3,9 +3,7 @@ import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
-import { getFilteredProductsQuery } from '../products/product-filters';
-import { getSortedProductsQuery } from '../products/product-sorting';
-import { EcomApi, WixApiClient } from './types';
+import { CollectionDetails, EcomApi, ProductFilter, ProductSortBy, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
 
 /**
@@ -70,40 +68,68 @@ export function initializeEcomApiAnonymous() {
     return createEcomApi(client);
 }
 
-const createEcomApi = (wixClient: WixApiClient): EcomApi =>
-    withNormalizedWixClientErrors({
+let cache:
+    | Promise<{
+          products: products.ProductsQueryResult;
+          collections: collections.CollectionsQueryResult;
+      }>
+    | undefined = undefined;
+let cacheLastUpdated = 0;
+
+const createEcomApi = (wixClient: WixApiClient): EcomApi => {
+    const api: EcomApi = {
         getWixClient() {
             return wixClient;
         },
+
         async getProducts(params = {}) {
+            const { products, collections } = await getCache();
+
             let collectionId = params.categoryId;
+            const minPrice = params.filters?.[ProductFilter.minPrice];
+            const maxPrice = params.filters?.[ProductFilter.maxPrice];
+
             if (!collectionId && params.categorySlug) {
-                const result = await wixClient.collections.getCollectionBySlug(params.categorySlug);
-                collectionId = result.collection!._id!;
+                collectionId =
+                    collections.items.find((c) => c.slug === params.categorySlug)?._id ?? undefined;
+                if (!collectionId) throw new Error(`Category ${params.categorySlug} not found`);
             }
 
-            let query = wixClient.products.queryProducts();
+            let { items } = products;
 
-            if (collectionId) query = query.hasSome('collectionIds', [collectionId]);
-            if (params.filters) query = getFilteredProductsQuery(query, params.filters);
-            if (params.sortBy) query = getSortedProductsQuery(query, params.sortBy);
+            if (collectionId !== undefined) {
+                items = items.filter((product) => product.collectionIds!.includes(collectionId));
+            }
 
-            const { items, totalCount = 0 } = await query
-                .skip(params.skip ?? 0)
-                .limit(params.limit ?? 100)
-                .find();
+            if (minPrice !== undefined) {
+                items = items.filter((product) => product.priceData!.price! >= minPrice);
+            }
 
+            if (maxPrice !== undefined) {
+                items = items.filter((product) => product.priceData!.price! <= maxPrice);
+            }
+
+            if (params.sortBy === ProductSortBy.priceAsc) {
+                items.sort((a, b) => a.priceData!.price! - b.priceData!.price!);
+            } else if (params.sortBy === ProductSortBy.priceDesc) {
+                items.sort((a, b) => b.priceData!.price! - a.priceData!.price!);
+            } else if (params.sortBy === ProductSortBy.nameAsc) {
+                items.sort((a, b) => a.name!.localeCompare(b.name!));
+            } else if (params.sortBy === ProductSortBy.nameDesc) {
+                items.sort((a, b) => b.name!.localeCompare(a.name!));
+            } else {
+                items.sort((a, b) => Number(b.numericId) - Number(a.numericId));
+            }
+
+            const totalCount = items.length;
+            if (params.skip) items = items.slice(params.skip);
+            if (params.limit) items = items.slice(0, params.limit);
             return { items, totalCount };
         },
 
         async getProductBySlug(productSlug) {
-            const { items } = await wixClient.products
-                .queryProducts()
-                .eq('slug', productSlug)
-                .limit(1)
-                .find();
-
-            return items.at(0);
+            const products = await this.getProducts();
+            return products.items.find((product) => product.slug === productSlug);
         },
 
         async getCart() {
@@ -164,17 +190,13 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         },
 
         async getAllCategories() {
-            const { items } = await wixClient.collections.queryCollections().find();
-            return items;
+            const { collections } = await getCache();
+            return collections.items;
         },
 
         async getCategoryBySlug(slug) {
-            try {
-                const { collection } = await wixClient.collections.getCollectionBySlug(slug);
-                return collection!;
-            } catch (error) {
-                if (!isNotFoundWixClientError(error)) throw error;
-            }
+            const { collections } = await getCache();
+            return collections.items.find((c) => c.slug === slug) as CollectionDetails | undefined;
         },
 
         async getOrder(id) {
@@ -194,15 +216,10 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         },
 
         async getProductPriceBoundsInCategory(categoryId: string) {
-            const query = wixClient.products.queryProducts().hasSome('collectionIds', [categoryId]);
-
-            const [ascendingPrice, descendingPrice] = await Promise.all([
-                query.ascending('price').limit(1).find(),
-                query.descending('price').limit(1).find(),
-            ]);
-
-            const lowest = ascendingPrice.items[0]?.priceData?.price ?? 0;
-            const highest = descendingPrice.items[0]?.priceData?.price ?? 0;
+            const { items } = await this.getProducts({ categoryId });
+            const prices = items.map((item) => item.priceData?.price ?? 0);
+            const lowest = Math.min(...prices);
+            const highest = Math.max(...prices);
             return { lowest, highest };
         },
 
@@ -248,13 +265,40 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         async sendPasswordResetEmail(email: string, redirectUrl: string) {
             await wixClient.auth.sendPasswordResetEmail(email, redirectUrl);
         },
-    });
+    };
+
+    const loadCache = () => {
+        return Promise.all([
+            wixClient.products.queryProducts().find(),
+            wixClient.collections.queryCollections().find(),
+        ]).then(([products, collections]) => ({ products, collections }));
+    };
+
+    const getCache = () => {
+        if (!cache) {
+            cacheLastUpdated = Date.now();
+            cache = loadCache().catch((error) => {
+                cache = undefined;
+                throw error;
+            });
+        } else if (Date.now() - cacheLastUpdated > 60_000) {
+            cacheLastUpdated = Date.now();
+            loadCache().then((result) => {
+                cache = Promise.resolve(result);
+            });
+        }
+        return cache;
+    };
+
+    normalizeWixClientErrors(api);
+    return api;
+};
 
 /**
  * Wraps all methods of the EcomApi with a try-catch block that fixes broken
  * error messages in WixClient errors and rethrows them.
  */
-const withNormalizedWixClientErrors = (api: EcomApi): EcomApi => {
+const normalizeWixClientErrors = (api: EcomApi): void => {
     for (const key of Object.keys(api)) {
         const original = Reflect.get(api, key);
         if (typeof original !== 'function') continue;
@@ -272,5 +316,4 @@ const withNormalizedWixClientErrors = (api: EcomApi): EcomApi => {
             }
         });
     }
-    return api;
 };
