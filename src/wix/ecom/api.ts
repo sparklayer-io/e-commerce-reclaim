@@ -5,6 +5,7 @@ import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import { getFilteredProductsQuery } from '../products/product-filters';
 import { getSortedProductsQuery } from '../products/product-sorting';
+import { MemoryCache } from '../utils/memory-cache';
 import { EcomApi, WixApiClient } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
 
@@ -70,11 +71,12 @@ export function initializeEcomApiAnonymous() {
     return createEcomApi(client);
 }
 
-const createEcomApi = (wixClient: WixApiClient): EcomApi =>
-    withNormalizedWixClientErrors({
+const createEcomApi = (wixClient: WixApiClient): EcomApi => {
+    const api: EcomApi = {
         getWixClient() {
             return wixClient;
         },
+
         async getProducts(params = {}) {
             let collectionId = params.categoryId;
             if (!collectionId && params.categorySlug) {
@@ -171,7 +173,7 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         async getCategoryBySlug(slug) {
             try {
                 const { collection } = await wixClient.collections.getCollectionBySlug(slug);
-                return collection!;
+                return collection;
             } catch (error) {
                 if (!isNotFoundWixClientError(error)) throw error;
             }
@@ -248,13 +250,18 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         async sendPasswordResetEmail(email: string, redirectUrl: string) {
             await wixClient.auth.sendPasswordResetEmail(email, redirectUrl);
         },
-    });
+    };
+
+    normalizeWixClientErrors(api);
+    cacheNonUserSpecificMethods(api);
+    return api;
+};
 
 /**
  * Wraps all methods of the EcomApi with a try-catch block that fixes broken
  * error messages in WixClient errors and rethrows them.
  */
-const withNormalizedWixClientErrors = (api: EcomApi): EcomApi => {
+const normalizeWixClientErrors = (api: EcomApi): void => {
     for (const key of Object.keys(api)) {
         const original = Reflect.get(api, key);
         if (typeof original !== 'function') continue;
@@ -272,5 +279,24 @@ const withNormalizedWixClientErrors = (api: EcomApi): EcomApi => {
             }
         });
     }
-    return api;
+};
+
+/**
+ * Wix REST API calls can be slow, e.g. 400ms for a list of categories. On pages
+ * like 'Browse Products' these delays add up, making short-term caching
+ * worthwhile. The cache is used on both the server and the client (when the
+ * client directly calls the Wix API). On the server, the cache is shared
+ * between visitors, so it is critical to cache only non-user-specific calls.
+ */
+const cache = new MemoryCache({
+    ttl: 60_000,
+    maxEntries: 100,
+    expiryCheckInterval: 10,
+});
+
+const cacheNonUserSpecificMethods = (api: EcomApi): void => {
+    cache.wrapMethod(api, 'getProducts');
+    cache.wrapMethod(api, 'getAllCategories');
+    cache.wrapMethod(api, 'getCategoryBySlug');
+    cache.wrapMethod(api, 'getProductPriceBoundsInCategory');
 };
