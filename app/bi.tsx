@@ -1,53 +1,51 @@
-import { useEffect } from 'react';
-import * as WixBiImport from '@codux-pond/analytics';
+import React, { useEffect, useMemo } from 'react';
+import {
+    WixBiAnalytics,
+    getDefaultTransports,
+    getVisitorId,
+    getViewerSessionId,
+} from '@codux-pond/analytics';
 import { useLocation } from '@remix-run/react';
 
-if (typeof window !== 'undefined') {
-    window.WixBi = WixBiImport;
+const WixBiContext = React.createContext<WixBiAnalytics | null>(null);
+
+export function useWixBi() {
+    const wbi = React.useContext(WixBiContext);
+    if (!wbi) {
+        throw new Error('Bi hooks must be used within a WixBiProvider');
+    }
+    return wbi;
 }
 
-declare global {
-    // eslint-disable-next-line no-var
-    var WixBi: typeof WixBiImport;
-    // eslint-disable-next-line no-var
-    var wixBiAnalytics: WixBiImport.WixBiAnalytics;
-    // eslint-disable-next-line no-var
-    var ENABLE_BI_IN_DEV: boolean;
-    // eslint-disable-next-line no-var
-    var reportInitialPageView: () => void;
-}
-
-export function BiScript(props: { metaSiteId: string; visitorId: string }) {
-    return <script dangerouslySetInnerHTML={{ __html: initBiScript(props) }} />;
-}
-
-function initBiScript({ metaSiteId, visitorId }: { metaSiteId: string; visitorId: string }) {
-    return `
-globalThis.onload = () =>{
-    const { WixBiAnalytics, beaconTransport } = globalThis.WixBi;
-    globalThis.ENABLE_BI_IN_DEV = true;
-    globalThis.wixBiAnalytics = new WixBiAnalytics(
-        [beaconTransport],
-        () => ({
-            metaSiteId: '${metaSiteId}',
-            visitorId: '${visitorId}',
-        }),
+export function WixBiProvider({
+    children,
+    metaSiteId,
+    visitorId = getVisitorId(),
+    viewerSessionId = getViewerSessionId(),
+}: {
+    children: React.ReactNode;
+    metaSiteId?: string;
+    visitorId?: string;
+    viewerSessionId?: string;
+}) {
+    const wixBi = useMemo(
+        () =>
+            new WixBiAnalytics(
+                () => ({
+                    metaSiteId,
+                    visitorId,
+                    viewerSessionId,
+                }),
+                () => {},
+                getDefaultTransports(),
+            ),
+        [metaSiteId, visitorId],
     );
-    globalThis.reportInitialPageView?.();
-}
-`;
+    useTrackPageView(wixBi);
+    return <WixBiContext.Provider value={wixBi}>{children}</WixBiContext.Provider>;
 }
 
-export function useTrackPageView() {
+export function useTrackPageView(wixBi: WixBiAnalytics) {
     const location = useLocation();
-    // const { ENV, wixEcomTokens } = useLoaderData<typeof loader>();
-    useEffect(() => {
-        async function reportPageView() {
-            globalThis.wixBiAnalytics.reportPageView({});
-        }
-        if (globalThis.wixBiAnalytics) {
-            reportPageView();
-        }
-        globalThis.reportInitialPageView = reportPageView;
-    }, [location]);
+    useEffect(() => wixBi.reportPageView(), [location, wixBi]);
 }

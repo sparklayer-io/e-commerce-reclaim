@@ -5,7 +5,7 @@ import '~/src/styles/global.scss';
 import '~/src/styles/utils.scss';
 import styles from './root.module.scss';
 
-import { BiScript, useTrackPageView } from './bi';
+import { WixBiProvider } from './bi';
 
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import {
@@ -24,7 +24,7 @@ import { Header } from '~/src/components/header/header';
 import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 import { Toaster } from '~/src/components/toaster/toaster';
 import { CartOpenContextProvider } from '~/src/wix/cart';
-import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
+import { EcomApiContextProvider, getMetaSiteId, getWixClientId, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -50,8 +50,6 @@ export const handle = {
 };
 
 export function Layout({ children }: React.PropsWithChildren) {
-    useTrackPageView();
-
     return (
         <html lang="en">
             <head>
@@ -59,10 +57,6 @@ export function Layout({ children }: React.PropsWithChildren) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
                 <Links />
-                <BiScript
-                    metaSiteId="dd6020ad-4b64-45e8-b515-06a92f90e213"
-                    visitorId="0b3b3b3b-4b4b-4b4b-3b3b-3b3b3b3b3b3b"
-                />
             </head>
             <body>
                 {children}
@@ -79,20 +73,22 @@ export default function App() {
     setWixClientId(wixClientId);
 
     return (
-        <EcomApiContextProvider tokens={wixSessionTokens}>
-            <CartOpenContextProvider>
-                <div className={styles.root}>
-                    <Header />
-                    <main className={styles.main}>
-                        <Outlet />
-                    </main>
-                    <Footer />
-                </div>
-                <Cart />
-                <NavigationProgressBar className={styles.navigationProgressBar} />
-                <Toaster />
-            </CartOpenContextProvider>
-        </EcomApiContextProvider>
+        <WixBiProvider metaSiteId={getMetaSiteId()}>
+            <EcomApiContextProvider tokens={wixSessionTokens}>
+                <CartOpenContextProvider>
+                    <div className={styles.root}>
+                        <Header />
+                        <main className={styles.main}>
+                            <Outlet />
+                        </main>
+                        <Footer />
+                    </div>
+                    <Cart />
+                    <NavigationProgressBar className={styles.navigationProgressBar} />
+                    <Toaster />
+                </CartOpenContextProvider>
+            </EcomApiContextProvider>
+        </WixBiProvider>
     );
 }
 

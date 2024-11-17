@@ -43,6 +43,13 @@ export function setWixClientId(id: string): void {
     WIX_CLIENT_ID = id;
 }
 
+export function getMetaSiteId(): string {
+    if (typeof process !== 'undefined' && (process.env.MS_ID || process.env.ms_id)) {
+        return (process.env.MS_ID || process.env.ms_id) as string;
+    }
+    throw new Error('Missing metaSiteId');
+}
+
 export function createWixClient(tokens?: Tokens): WixApiClient {
     return createClient({
         modules: {
