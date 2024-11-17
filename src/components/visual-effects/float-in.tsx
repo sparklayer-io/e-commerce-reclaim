@@ -1,4 +1,4 @@
-import { HTMLMotionProps, motion } from 'framer-motion';
+import { HTMLMotionProps, motion } from 'motion/react';
 import { FC } from 'react';
 import { cardinalDirectionVectors } from './common';
 
