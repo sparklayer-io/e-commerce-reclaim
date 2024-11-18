@@ -20,19 +20,21 @@ import { Footer } from '~/src/components/footer/footer';
 import { Header } from '~/src/components/header/header';
 import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 import { Toaster } from '~/src/components/toaster/toaster';
+import { AppContextProvider } from '~/src/wix/app-context';
 import { CartOpenContextProvider } from '~/src/wix/cart';
 import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 
 import styles from './root.module.scss';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
     const { wixSessionTokens, session, shouldUpdateSessionCookie } =
         await initializeEcomSession(request);
 
     const data = {
         wixClientId: getWixClientId(),
         wixSessionTokens,
+        defineAppMode: context?.defineAppMode as boolean | undefined,
     };
 
     const headers: HeadersInit = shouldUpdateSessionCookie
@@ -67,25 +69,27 @@ export function Layout({ children }: React.PropsWithChildren) {
 }
 
 export default function App() {
-    const { wixClientId, wixSessionTokens } = useLoaderData<typeof loader>();
+    const { wixClientId, wixSessionTokens, defineAppMode = false } = useLoaderData<typeof loader>();
 
     setWixClientId(wixClientId);
 
     return (
-        <EcomApiContextProvider tokens={wixSessionTokens}>
-            <CartOpenContextProvider>
-                <div className={styles.root}>
-                    <Header />
-                    <main className={styles.main}>
-                        <Outlet />
-                    </main>
-                    <Footer />
-                </div>
-                <Cart />
-                <NavigationProgressBar className={styles.navigationProgressBar} />
-                <Toaster />
-            </CartOpenContextProvider>
-        </EcomApiContextProvider>
+        <AppContextProvider defineAppMode={defineAppMode}>
+            <EcomApiContextProvider tokens={wixSessionTokens}>
+                <CartOpenContextProvider>
+                    <div className={styles.root}>
+                        <Header />
+                        <main className={styles.main}>
+                            <Outlet />
+                        </main>
+                        <Footer />
+                    </div>
+                    <Cart />
+                    <NavigationProgressBar className={styles.navigationProgressBar} />
+                    <Toaster />
+                </CartOpenContextProvider>
+            </EcomApiContextProvider>
+        </AppContextProvider>
     );
 }
 

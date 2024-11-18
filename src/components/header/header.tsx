@@ -2,6 +2,7 @@ import { Link } from '@remix-run/react';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { CartIcon, MenuIcon } from '~/src/components/icons';
+import { useAppContext } from '~/src/wix/app-context';
 import { getCartItemCount, useCartData, useCartOpen } from '~/src/wix/cart';
 import { NavigationMenu } from '../navigation-menu/navigation-menu';
 import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
@@ -16,6 +17,7 @@ export interface HeaderProps {
 export const Header = ({ className }: HeaderProps) => {
     const cart = useCartData();
     const cartOpener = useCartOpen();
+    const appContext = useAppContext();
 
     const cartItemCount = cart.data ? getCartItemCount(cart.data) : 0;
 
@@ -40,8 +42,7 @@ export const Header = ({ className }: HeaderProps) => {
                 <div />
                 <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
-                    <UserMenu />
-
+                    {!appContext.defineAppMode && <UserMenu />}
                     <button
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}

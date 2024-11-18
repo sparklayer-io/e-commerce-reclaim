@@ -4,10 +4,15 @@ import { useLoaderData } from '@remix-run/react';
 import { OrderSummary } from '~/src/components/order-summary/order-summary';
 import { Accordion } from '~/src/components/accordion/accordion';
 import { CategoryLink } from '~/src/components/category-link/category-link';
+import { mockLoaderData } from './mock-loader-data';
 
 import styles from './route.module.scss';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+    if (context.defineAppMode) {
+        return mockLoaderData;
+    }
+
     const api = await initializeEcomApiForRequest(request);
     if (!api.isLoggedIn()) {
         return redirect('/login');

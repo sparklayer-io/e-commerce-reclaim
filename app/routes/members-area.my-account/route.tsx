@@ -5,11 +5,16 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { Dialog, DialogDescription, DialogTitle } from '~/src/components/dialog/dialog';
 import { Spinner } from '~/src/components/spinner/spinner';
+import { useAppContext } from '~/src/wix/app-context';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
+import { mockLoaderData } from './mock-loader-data';
 
 import styles from './route.module.scss';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+    if (context.defineAppMode) {
+        return mockLoaderData;
+    }
     const api = await initializeEcomApiForRequest(request);
     if (!api.isLoggedIn()) {
         return redirect('/login');
