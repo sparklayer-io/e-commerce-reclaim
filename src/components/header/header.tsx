@@ -42,7 +42,7 @@ export const Header = ({ className }: HeaderProps) => {
                 <div />
                 <NavigationMenu className={styles.menu} />
                 <div className={styles.actions}>
-                    {!appContext.defineAppMode && <UserMenu />}
+                    <UserMenu loginDisabled={appContext.defineAppMode} />
                     <button
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}

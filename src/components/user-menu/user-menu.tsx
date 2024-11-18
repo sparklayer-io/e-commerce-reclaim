@@ -1,4 +1,4 @@
-import { NavLink } from '@remix-run/react';
+import { NavLink, useNavigate } from '@remix-run/react';
 import classNames from 'classnames';
 import { Avatar } from '~/src/components/avatar/avatar';
 import {
@@ -11,15 +11,28 @@ import { useUserInfo } from '~/src/wix/users';
 
 import styles from './user-menu.module.scss';
 
-export const UserMenu = () => {
+export interface UserMenuProps {
+    loginDisabled?: boolean;
+}
+
+export const UserMenu = ({ loginDisabled }: UserMenuProps) => {
     const { isLoggedIn, user } = useUserInfo();
+    const navigate = useNavigate();
 
     if (!isLoggedIn) {
+        const handleLoginClick = () => {
+            if (loginDisabled) {
+                alert('Functionality is not supported in the define app mode');
+            } else {
+                navigate('/login');
+            }
+        };
+
         return (
-            <NavLink className={classNames(styles.link, styles.root)} to={'/login'}>
+            <div className={classNames(styles.link, styles.root)} onClick={handleLoginClick}>
                 <Avatar imageSrc={undefined} />
                 Log In
-            </NavLink>
+            </div>
         );
     }
 

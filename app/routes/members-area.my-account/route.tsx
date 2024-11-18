@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { Dialog, DialogDescription, DialogTitle } from '~/src/components/dialog/dialog';
 import { Spinner } from '~/src/components/spinner/spinner';
-import { useAppContext } from '~/src/wix/app-context';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { mockLoaderData } from './mock-loader-data';
 
