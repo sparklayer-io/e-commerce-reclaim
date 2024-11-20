@@ -89,13 +89,6 @@ export default function CartPage() {
                                 : cartTotals?.priceSummary?.shipping?.formattedConvertedAmount}
                         </span>
                     </div>
-                    {cartTotals?.shippingInfo?.region && (
-                        <div className={styles.summaryRow}>
-                            <span className={styles.shippingInfo}>
-                                {cartTotals.shippingInfo.region.name}
-                            </span>
-                        </div>
-                    )}
                     <div className={classNames(styles.summaryRow, styles.summaryTotal)}>
                         <span>Total</span>
                         <span>{cartTotals?.priceSummary?.total?.formattedConvertedAmount}</span>
