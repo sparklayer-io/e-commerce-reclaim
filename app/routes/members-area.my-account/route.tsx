@@ -9,6 +9,7 @@ import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { mockLoaderData } from './mock-loader-data';
 
 import styles from './route.module.scss';
+import { useAppContext } from '~/src/wix/app-context';
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
     if (context.defineAppMode) {
@@ -25,6 +26,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
 export default function MyAccountPage() {
     const { user } = useLoaderData<typeof loader>();
+    const appContext = useAppContext();
 
     const initialUserDetailsFormData = {
         firstName: user?.contact?.firstName ?? '',
@@ -54,6 +56,20 @@ export default function MyAccountPage() {
 
     const isResettingPassword =
         navigation.state === 'submitting' && navigation.formAction === resetPasswordFormAction;
+
+    const handleUserDetailsFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        if (appContext.defineAppMode) {
+            e.preventDefault();
+            alert("Updating user details can't be done through Codux");
+        }
+    };
+
+    const handleResetPasswordFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        if (appContext.defineAppMode) {
+            e.preventDefault();
+            alert("Resetting password can't be done through Codux");
+        }
+    };
 
     return (
         <div>
@@ -96,6 +112,7 @@ export default function MyAccountPage() {
                     method="post"
                     action={userDetailsFormAction}
                     className={styles.userDetailsForm}
+                    onSubmit={handleUserDetailsFormSubmit}
                 >
                     <input type="hidden" name="userId" value={user?._id ?? undefined} />
 
@@ -179,6 +196,7 @@ export default function MyAccountPage() {
                     method="post"
                     action={resetPasswordFormAction}
                     className={styles.loginInfoSection}
+                    onSubmit={handleResetPasswordFormSubmit}
                 >
                     <div>
                         <div>Login email:</div>

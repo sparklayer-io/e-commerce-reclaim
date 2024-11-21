@@ -8,21 +8,19 @@ import {
 } from '~/src/components/dropdown-menu/dropdown-menu';
 import { DropdownIcon } from '~/src/components/icons';
 import { useUserInfo } from '~/src/wix/users';
+import { useAppContext } from '~/src/wix/app-context';
 
 import styles from './user-menu.module.scss';
 
-export interface UserMenuProps {
-    loginDisabled?: boolean;
-}
-
-export const UserMenu = ({ loginDisabled }: UserMenuProps) => {
+export const UserMenu = () => {
     const { isLoggedIn, user } = useUserInfo();
     const navigate = useNavigate();
+    const appContext = useAppContext();
 
     if (!isLoggedIn) {
         const handleLoginClick = () => {
-            if (loginDisabled) {
-                alert('Functionality is not supported in the define app mode');
+            if (appContext.defineAppMode) {
+                alert("Logging in can't be done in Codux");
             } else {
                 navigate('/login');
             }
