@@ -28,7 +28,7 @@
     width: 150px;
 }
 
-.form {
+.userDetailsForm {
     font: var(--paragraph3);
     margin: 30px 0;
     display: grid;
@@ -68,7 +68,7 @@
         align-items: center;
     }
 
-    .form {
+    .userDetailsForm {
         grid-template-columns: 1fr;
     }
 }
