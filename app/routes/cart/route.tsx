@@ -81,14 +81,16 @@ export default function CartPage() {
                         <span>Subtotal</span>
                         <span>{cartTotals?.priceSummary?.subtotal?.formattedConvertedAmount}</span>
                     </div>
-                    <div className={styles.summaryRow}>
-                        <span>Delivery</span>
-                        <span>
-                            {Number(cartTotals?.priceSummary?.shipping?.amount) === 0
-                                ? 'FREE'
-                                : cartTotals?.priceSummary?.shipping?.formattedConvertedAmount}
-                        </span>
-                    </div>
+                    {cartTotals?.shippingInfo?.region && (
+                        <div className={styles.summaryRow}>
+                            <span>Delivery</span>
+                            <span>
+                                {Number(cartTotals?.priceSummary?.shipping?.amount) === 0
+                                    ? 'FREE'
+                                    : cartTotals?.priceSummary?.shipping?.formattedConvertedAmount}
+                            </span>
+                        </div>
+                    )}
                     <div className={classNames(styles.summaryRow, styles.summaryTotal)}>
                         <span>Total</span>
                         <span>{cartTotals?.priceSummary?.total?.formattedConvertedAmount}</span>
