@@ -44,7 +44,7 @@ export default function CartPage() {
         return (
             <CartFallback>
                 <div className={styles.cartFallbackTitle}>Cart is empty</div>
-                <Link to="/" className={styles.continueBrowsingLink}>
+                <Link to="/" className={classNames(styles.continueBrowsingLink, styles.link)}>
                     Continue Browsing
                 </Link>
             </CartFallback>

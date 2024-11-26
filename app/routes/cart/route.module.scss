@@ -80,6 +80,7 @@
 
 .cartFallbackTitle {
     font-size: 22px;
+    font: var(--heading6);
 }
 
 .continueBrowsingLink {
@@ -99,4 +100,7 @@
     .summaryContent {
         margin-top: 30px;
     }
+}
+.link {
+    font: var(--paragraph2);
 }
