@@ -16,18 +16,24 @@
     font-size: 22px;
     font-weight: 400;
     margin-bottom: 8px;
+    font: var(--heading6);
 }
 
 .subtitle {
-    font: var(--heading2);
-    font-size: 60px;
     max-width: 600px;
     margin-bottom: 6%;
+    font-weight: 400;
+    line-height: 1.1;
+    font-family: 'Marcellus', serif;
+    font-style: normal;
+    font-variant: normal;
+    font-stretch: normal;
+    font: var(--heading2);
 }
 
 .description {
-    font-size: 22px;
     max-width: 80%;
+    font: var(--paragraph1);
 }
 
 .image {
@@ -43,12 +49,19 @@
     }
 
     .subtitle {
-        font: var(--heading3);
         max-width: unset;
+        font-weight: 400;
+        line-height: 1.2;
+        font-family: 'Marcellus', serif;
+        font-style: normal;
+        font-variant: normal;
+        font-stretch: normal;
+        font: var(--heading3);
     }
 
     .description {
         font-size: 18px;
+        font: var(--paragraph1);
     }
 }
 
@@ -67,6 +80,6 @@
 
     .description {
         max-width: unset;
-        font-size: 14px;
+        font: var(--paragraph2);
     }
 }
