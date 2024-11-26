@@ -13,8 +13,7 @@
 }
 
 .logo {
-    font: var(--heading3);
-    font-size: 26px;
+    font: var(--heading4);
 }
 
 .advertisingText {
@@ -93,6 +92,6 @@
         flex-direction: column-reverse;
         align-items: start;
         justify-content: center;
-        font-size: 13px;
+        font: var(--paragraph3);
     }
 }
