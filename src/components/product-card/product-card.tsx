@@ -1,22 +1,22 @@
-import { products } from '@wix/stores';
+import { productsV3 as products } from '@wix/stores';
 import styles from './product-card.module.scss';
 import { ProductPrice } from '../product-price/product-price';
 import { ImagePlaceholderIcon } from '../icons';
 
-interface ProductCardProps {
+export interface ProductCardProps {
     name: string;
     imageUrl?: string;
     /**
      * Product price formatted with the currency.
      */
-    price?: string;
+    price?: string | null;
     /**
      * Discounted product price formatted with the currency.
      * It is displayed if it's not equal to the main price.
      */
-    discountedPrice?: string;
+    discountedPrice?: string | null;
     ribbon?: string;
-    inventoryStatus?: products.InventoryStatus;
+    inventoryStatus?: products.InventoryAvailabilityStatus;
 }
 
 export const ProductCard = ({
@@ -41,7 +41,7 @@ export const ProductCard = ({
 
             <div className={styles.name}>{name}</div>
 
-            {inventoryStatus === products.InventoryStatus.OUT_OF_STOCK ? (
+            {inventoryStatus === products.InventoryAvailabilityStatus.OUT_OF_STOCK ? (
                 <div className={styles.outOfStock}>Out of stock</div>
             ) : (
                 <ProductPrice

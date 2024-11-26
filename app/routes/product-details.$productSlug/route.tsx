@@ -155,29 +155,28 @@ export default function ProductDetailsPage() {
                         {outOfStock ? 'Out of stock' : 'Add to Cart'}
                     </button>
 
-                    {product.additionalInfoSections &&
-                        product.additionalInfoSections.length > 0 && (
-                            <Accordion
-                                className={styles.additionalInfoSections}
-                                expandIcon={<PlusIcon width={22} />}
-                                collapseIcon={<MinusIcon width={22} />}
-                                items={product.additionalInfoSections.map((section) => ({
-                                    header: (
-                                        <div className={styles.additionalInfoSectionTitle}>
-                                            {section.title!}
-                                        </div>
-                                    ),
-                                    content: section.description ? (
-                                        <div
-                                            dangerouslySetInnerHTML={{
-                                                __html: section.description,
-                                            }}
-                                        />
-                                    ) : null,
-                                }))}
-                                initialOpenItemIndex={0}
-                            />
-                        )}
+                    {product.infoSections.length > 0 && (
+                        <Accordion
+                            className={styles.additionalInfoSections}
+                            expandIcon={<PlusIcon width={22} />}
+                            collapseIcon={<MinusIcon width={22} />}
+                            items={product.infoSections.map((section) => ({
+                                header: (
+                                    <div className={styles.additionalInfoSectionTitle}>
+                                        {section.title!}
+                                    </div>
+                                ),
+                                content: section.description ? (
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: section.description,
+                                        }}
+                                    />
+                                ) : null,
+                            }))}
+                            initialOpenItemIndex={0}
+                        />
+                    )}
 
                     <ShareProductLinks
                         className={styles.socialLinks}
@@ -213,7 +212,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
         },
         {
             property: 'og:image',
-            content: data?.product.media?.mainMedia?.image?.url ?? '/social-media-image.jpg',
+            content: data?.product.media?.main?.url ?? '/social-media-image.jpg',
         },
     ];
 };

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import styles from './product-price.module.scss';
 
-interface ProductPriceProps {
-    price?: string;
-    discountedPrice?: string;
+export interface ProductPriceProps {
+    price?: string | null;
+    discountedPrice?: string | null;
     className?: string;
 }
 

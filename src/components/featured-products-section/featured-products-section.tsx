@@ -7,7 +7,7 @@ import { useProducts } from '~/src/wix/products';
 
 import styles from './featured-products-section.module.scss';
 
-interface FeaturedProductsSectionProps {
+export interface FeaturedProductsSectionProps {
     categorySlug: string;
     title?: string;
     description?: JSX.Element | string;
@@ -34,10 +34,10 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                           <ProductLink key={product._id} productSlug={product.slug!}>
                               <ProductCard
                                   name={product.name!}
-                                  imageUrl={product.media?.mainMedia?.image?.url}
-                                  price={product.priceData?.formatted?.price}
-                                  discountedPrice={product.priceData?.formatted?.discountedPrice}
-                                  ribbon={product.ribbon ?? undefined}
+                                  imageUrl={product.media?.main?.url}
+                                  price={product.minVariantPriceInfo?.basePrice?.amount}
+                                  discountedPrice={product.minVariantPriceInfo?.salePrice?.amount}
+                                  ribbon={product.ribbon?.name ?? undefined}
                               />
                           </ProductLink>
                       ))

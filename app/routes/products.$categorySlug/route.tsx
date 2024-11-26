@@ -88,7 +88,7 @@ export default function ProductsPage() {
             resultsFromLoader,
         });
 
-    const currency = products[0]?.priceData?.currency ?? 'USD';
+    const currency = products[0]?.currency ?? 'USD';
 
     const breadcrumbs = useBreadcrumbs();
 

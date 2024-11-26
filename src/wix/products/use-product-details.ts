@@ -1,8 +1,7 @@
 import type { SerializeFrom } from '@remix-run/node';
-import { products } from '@wix/stores';
 import { useCallback, useState } from 'react';
 import { useCart, useCartOpen } from '../cart';
-import { AddToCartOptions } from '../ecom';
+import { AddToCartOptions, type Product } from '../ecom';
 import {
     getMedia,
     getPriceData,
@@ -12,16 +11,20 @@ import {
     isOutOfStock,
     selectedChoicesToVariantChoices,
 } from './product-details';
+import type { productsV3 } from '@wix/stores';
 
-export function useProductDetails(product: SerializeFrom<products.Product>) {
+export function useProductDetails(product: Product | SerializeFrom<Product>) {
     const cartOpener = useCartOpen();
     const { addToCart, isAddingToCart } = useCart();
 
     const getInitialSelectedChoices = () => {
-        const result: Record<string, products.Choice | undefined> = {};
-        for (const option of product.productOptions ?? []) {
+        const result: Record<string, productsV3.ConnectedOptionChoice | undefined> = {};
+        for (const option of product.options ?? []) {
             if (option.name) {
-                result[option.name] = option?.choices?.length === 1 ? option.choices[0] : undefined;
+                result[option.name] =
+                    option.choicesSettings?.choices?.length === 1
+                        ? option.choicesSettings?.choices[0]
+                        : undefined;
             }
         }
 
@@ -46,7 +49,7 @@ export function useProductDetails(product: SerializeFrom<products.Product>) {
         const selectedVariant = getSelectedVariant(product, selectedChoices);
 
         const options: AddToCartOptions =
-            product.manageVariants && selectedVariant?._id
+            product.variantsInfo?.variants && selectedVariant?._id
                 ? { variantId: selectedVariant._id }
                 : { options: selectedChoicesToVariantChoices(product, selectedChoices) };
 
@@ -54,7 +57,7 @@ export function useProductDetails(product: SerializeFrom<products.Product>) {
         cartOpener.setIsOpen(true);
     }, [addToCart, cartOpener, product, quantity, selectedChoices]);
 
-    const handleOptionChange = useCallback((optionName: string, newChoice: products.Choice) => {
+    const handleOptionChange = useCallback((optionName: string, newChoice: Choice) => {
         setQuantity(1);
         setSelectedChoices((prev) => ({
             ...prev,

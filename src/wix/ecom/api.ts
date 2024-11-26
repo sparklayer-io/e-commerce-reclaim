@@ -2,10 +2,8 @@ import { currentCart, orders } from '@wix/ecom';
 import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { createClient, OAuthStrategy, Tokens } from '@wix/sdk';
-import { collections, products } from '@wix/stores';
-import { getFilteredProductsQuery } from '../products/product-filters';
-import { getSortedProductsQuery } from '../products/product-sorting';
-import { EcomApi, WixApiClient } from './types';
+import { collections, productsV3 as products } from '@wix/stores';
+import { EcomApi, WixApiClient, type Product } from './types';
 import { isNotFoundWixClientError, normalizeWixClientError } from './wix-client-error';
 
 /**
@@ -82,16 +80,47 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
                 collectionId = result.collection!._id!;
             }
 
-            let query = wixClient.products.queryProducts();
+            const filter: products.CommonCursorSearch['filter'] = {};
+            const sort: products.CommonCursorSearch['sort'] = [
+                {
+                    fieldName: 'variantsInfo.variants[0].price.basePrice.amount',
+                    order: products.WixCommonSortOrder.DESC,
+                },
+            ];
+            if (collectionId) {
+                filter['directCategoryIdsInfo.categoryIds'] = { $in: [collectionId] };
+            }
+            if (params.filters) {
+                if (params.filters.minPrice) {
+                    filter['variantsInfo.variants[0].price.basePrice.amount'] = {
+                        $gte: params.filters.minPrice,
+                    };
+                }
+                if (params.filters.maxPrice) {
+                    filter['variantsInfo.variants[0].price.basePrice.amount'] = {
+                        $lte: params.filters.maxPrice,
+                    };
+                }
+            }
 
-            if (collectionId) query = query.hasSome('collectionIds', [collectionId]);
-            if (params.filters) query = getFilteredProductsQuery(query, params.filters);
-            if (params.sortBy) query = getSortedProductsQuery(query, params.sortBy);
+            const { products: items, pagingMetadata = {} } =
+                await wixClient.products.searchProducts({
+                    search: {
+                        filter,
+                        sort,
+                    },
+                });
+            const totalCount = pagingMetadata.count ?? 0;
+            // let query = wixClient.products.queryProducts();
 
-            const { items, totalCount = 0 } = await query
-                .skip(params.skip ?? 0)
-                .limit(params.limit ?? 100)
-                .find();
+            // if (collectionId) query = query.hasSome('collectionIds', [collectionId]);
+            // if (params.filters) query = getFilteredProductsQuery(query, params.filters);
+            // if (params.sortBy) query = getSortedProductsQuery(query, params.sortBy);
+
+            // const { items, totalCount = 0 } = await query
+            //     .skip(params.skip ?? 0)
+            //     .limit(params.limit ?? 100)
+            //     .find();
 
             return { items, totalCount };
         },
@@ -103,7 +132,7 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
                 .limit(1)
                 .find();
 
-            return items.at(0);
+            return items.at(0) as Product | undefined;
         },
 
         async getCart() {
@@ -194,16 +223,33 @@ const createEcomApi = (wixClient: WixApiClient): EcomApi =>
         },
 
         async getProductPriceBoundsInCategory(categoryId: string) {
-            const query = wixClient.products.queryProducts().hasSome('collectionIds', [categoryId]);
-
             const [ascendingPrice, descendingPrice] = await Promise.all([
-                query.ascending('price').limit(1).find(),
-                query.descending('price').limit(1).find(),
+                wixClient.products.searchProducts({
+                    search: {
+                        filter: { 'directCategoryIdsInfo.categoryIds': { $in: [categoryId] } },
+                        sort: [
+                            {
+                                fieldName: 'variantsInfo.variants[0].price.basePrice.amount',
+                                order: products.WixCommonSortOrder.ASC,
+                            },
+                        ],
+                    },
+                }),
+                wixClient.products.searchProducts({
+                    search: {
+                        filter: { 'directCategoryIdsInfo.categoryIds': { $in: [categoryId] } },
+                        sort: [
+                            {
+                                fieldName: 'variantsInfo.variants[0].price.basePrice.amount',
+                                order: products.WixCommonSortOrder.DESC,
+                            },
+                        ],
+                    },
+                }),
             ]);
-
-            const lowest = ascendingPrice.items[0]?.priceData?.price ?? 0;
-            const highest = descendingPrice.items[0]?.priceData?.price ?? 0;
-            return { lowest, highest };
+            const lowest = ascendingPrice.products[0]?.basePriceRange?.minValue ?? 0;
+            const highest = descendingPrice.products[0]?.basePriceRange?.maxValue ?? 0;
+            return { lowest: Number(lowest), highest: Number(highest) };
         },
 
         async login(callbackUrl: string, returnUrl: string) {

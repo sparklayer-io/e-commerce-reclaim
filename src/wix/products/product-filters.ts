@@ -1,4 +1,4 @@
-import { products } from '@wix/stores';
+import { productsV3 as products } from '@wix/stores';
 import { IProductFilters, ProductFilter } from '../ecom/types';
 
 export function productFiltersFromSearchParams(params: URLSearchParams): IProductFilters {

@@ -2,9 +2,9 @@ import { cart, currentCart, orders } from '@wix/ecom';
 import { members } from '@wix/members';
 import { redirects } from '@wix/redirects';
 import { IOAuthStrategy, OauthData, WixClient } from '@wix/sdk';
-import { collections, products } from '@wix/stores';
+import { collections, productsV3 as products } from '@wix/stores';
 
-export type Product = products.Product;
+export type Product = products.V3Product & products.V3ProductNonNullableFields;
 export type Collection = collections.Collection;
 export type CollectionDetails = collections.Collection & collections.CollectionNonNullableFields;
 export type Cart = currentCart.Cart & currentCart.CartNonNullableFields;

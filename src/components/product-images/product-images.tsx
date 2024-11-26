@@ -1,27 +1,26 @@
-import { products } from '@wix/stores';
+import { productsV3 as products } from '@wix/stores';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { getClickableElementAttributes } from '~/src/wix/utils';
 import { ImagePlaceholderIcon } from '../icons';
-
 import styles from './product-images.module.scss';
 
-interface ProductImagesProps {
+export interface ProductImagesProps {
     media?: products.Media;
 }
 
 export const ProductImages = ({ media }: ProductImagesProps) => {
-    const [selectedImage, setSelectedImage] = useState<products.MediaItem | undefined>(
-        media?.mainMedia,
+    const [selectedImage, setSelectedImage] = useState<products.ProductMedia | undefined>(
+        media?.main,
     );
 
     // The media can change when another product variant was selected and it has
     // a different set of media items. In this case make sure the selected image is refreshed.
     useEffect(() => {
-        setSelectedImage(media?.mainMedia);
+        setSelectedImage(media?.main);
     }, [media]);
 
-    const imageItems = media?.items?.filter((item) => item.image !== undefined);
+    const imageItems = media?.itemsInfo?.items?.filter((item) => item.image !== undefined);
 
     return (
         <div>
@@ -29,8 +28,8 @@ export const ProductImages = ({ media }: ProductImagesProps) => {
                 {selectedImage && selectedImage.image ? (
                     <img
                         className={styles.mainImage}
-                        src={selectedImage.image.url}
-                        alt={selectedImage.image.altText ?? ''}
+                        src={selectedImage.url}
+                        alt={selectedImage.altText ?? ''}
                     />
                 ) : (
                     <ImagePlaceholderIcon className={styles.imagePlaceholderIcon} />
@@ -49,8 +48,8 @@ export const ProductImages = ({ media }: ProductImagesProps) => {
                         >
                             <img
                                 className={styles.thumbnailImage}
-                                src={item.image!.url}
-                                alt={item.image!.altText ?? ''}
+                                src={item.url}
+                                alt={item.altText ?? ''}
                             />
                         </div>
                     ))}

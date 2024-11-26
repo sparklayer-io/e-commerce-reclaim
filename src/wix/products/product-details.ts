@@ -1,41 +1,43 @@
 import { SerializeFrom } from '@remix-run/node';
-import { products as wixStoresProducts } from '@wix/stores';
+import { productsV3 as products, type productsV3 } from '@wix/stores';
 import deepEqual from 'fast-deep-equal';
 import { Product } from '../ecom';
 
 export function isOutOfStock(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined> = {},
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined> = {},
 ): boolean {
-    if (product.manageVariants) {
+    if (product.directCategoryIdsInfo?.categoryIds) {
         const selectedVariant = getSelectedVariant(product, selectedChoices);
         if (selectedVariant !== undefined) {
-            return selectedVariant?.stock?.inStock === false;
+            return selectedVariant?.inventoryStatus?.inStock === false;
         }
     }
 
-    return product.stock?.inventoryStatus === wixStoresProducts.InventoryStatus.OUT_OF_STOCK;
+    return (
+        product.inventory?.availabilityStatus === products.InventoryAvailabilityStatus.OUT_OF_STOCK
+    );
 }
 
 export function getPriceData(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined> = {},
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined> = {},
 ): Product['priceData'] {
-    if (product.manageVariants) {
+    if (product.variantsInfo?.variants) {
         const selectedVariant = getSelectedVariant(product, selectedChoices);
-        return selectedVariant?.variant?.priceData ?? product.priceData;
+        return selectedVariant?.price?.basePrice?.amount;
     }
 
-    return product.priceData;
+    return product.basePriceRange;
 }
 
 export function getSKU(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined>,
-): Product['sku'] {
-    if (product.manageVariants) {
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined>,
+): productsV3.Variant['sku'] {
+    if (product.variantsInfo?.variants) {
         const selectedVariant = getSelectedVariant(product, selectedChoices);
-        return selectedVariant?.variant?.sku ?? product.sku;
+        return selectedVariant?.sku ?? product.sku;
     }
 
     return product.sku;
@@ -43,16 +45,18 @@ export function getSKU(
 
 export function getSelectedVariant(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined>,
-): wixStoresProducts.Variant | undefined {
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined>,
+): products.Variant | undefined {
     const selectedChoiceValues = selectedChoicesToVariantChoices(product, selectedChoices);
-    return product.variants?.find((variant) => deepEqual(variant.choices, selectedChoiceValues));
+    return product.variantsInfo?.variants?.find((variant) =>
+        deepEqual(variant.choices, selectedChoiceValues),
+    );
 }
 
 function getMatchingVariants(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined>,
-): wixStoresProducts.Variant[] {
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined>,
+): products.Variant[] {
     const selectedChoiceValues = selectedChoicesToVariantChoices(product, selectedChoices);
 
     for (const optionName of Object.keys(selectedChoiceValues)) {
@@ -62,7 +66,7 @@ function getMatchingVariants(
     }
 
     return (
-        product.variants?.filter((variant) =>
+        product.variantsInfo?.variants?.filter((variant) =>
             deepEqual(variant.choices, {
                 ...variant.choices,
                 ...selectedChoiceValues,
@@ -72,12 +76,14 @@ function getMatchingVariants(
 }
 
 export const getChoiceValue = (
-    optionType: wixStoresProducts.OptionType,
-    choice: wixStoresProducts.Choice,
+    optionType: products.ProductOptionRenderType,
+    choice: products.ConnectedOptionChoice,
 ): string | undefined => {
     // for color options, `description` field contains color name and `value` field contains hex color representation
     // e-commerce SDK for some actions (adding to cart for example) expects color name as selected color value
-    return optionType === wixStoresProducts.OptionType.color ? choice.description : choice.value;
+    return optionType === products.ProductOptionRenderType.SWATCH_CHOICES
+        ? choice.colorCode
+        : (choice.name ?? undefined);
 };
 
 // selected choices is a map of option names to selected choice objects - {'Size': {value: 'Large', visible: true...}}
@@ -85,7 +91,7 @@ export const getChoiceValue = (
 // the name 'variant choices' is used because the same data structure is used for the Variant['choices'] property provided by SDK
 export const selectedChoicesToVariantChoices = (
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined> = {},
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined> = {},
 ): Record<string, string | undefined> => {
     const result: Record<string, string | undefined> = {};
     for (const [optionName, choice] of Object.entries(selectedChoices)) {
@@ -94,10 +100,10 @@ export const selectedChoicesToVariantChoices = (
             continue;
         }
 
-        const option = product.productOptions?.find((option) => option.name === optionName);
-        if (!option?.optionType) continue;
+        const option = product.options?.find((option) => option.name === optionName);
+        if (!option?.optionRenderType) continue;
 
-        result[optionName] = getChoiceValue(option.optionType, choice);
+        result[optionName] = getChoiceValue(option.optionRenderType, choice);
     }
 
     return result;
@@ -105,12 +111,12 @@ export const selectedChoicesToVariantChoices = (
 
 export function getMedia(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined> = {},
-): wixStoresProducts.Media | undefined {
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined> = {},
+): products.Media | undefined {
     const selectedChoiceWithMedia = Object.values(selectedChoices).find(
-        (c) => c?.media?.mainMedia !== undefined,
+        (c) => !!c?.linkedMedia?.length,
     );
-    return selectedChoiceWithMedia?.media ?? product.media;
+    return selectedChoiceWithMedia?.linkedMedia?.[0] ?? product.media;
 }
 
 /**
@@ -119,12 +125,12 @@ export function getMedia(
  */
 export function getProductOptions(
     product: Product | SerializeFrom<Product>,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined>,
-): wixStoresProducts.ProductOption[] | undefined {
-    return product.productOptions?.map((option) => {
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined>,
+): products.ConnectedOptionChoice[] | undefined {
+    return product.options?.map((option) => {
         return {
             ...option,
-            choices: option.choices?.map((choice) => ({
+            choices: option.choicesSettings?.choices?.map((choice) => ({
                 ...choice,
                 ...getChoiceAvailabilityInfo(choice, option, selectedChoices, product),
             })),
@@ -133,12 +139,12 @@ export function getProductOptions(
 }
 
 function getChoiceAvailabilityInfo(
-    choice: wixStoresProducts.Choice,
-    option: wixStoresProducts.ProductOption,
-    selectedChoices: Record<string, wixStoresProducts.Choice | undefined>,
+    choice: products.ConnectedOptionChoice,
+    option: products.ConnectedOption,
+    selectedChoices: Record<string, products.ConnectedOptionChoice | undefined>,
     product: Product | SerializeFrom<Product>,
-): Pick<wixStoresProducts.Choice, 'visible' | 'inStock'> {
-    if (!product.manageVariants || !option.name || !option.optionType) {
+): Pick<products.ConnectedOptionChoice, 'visible' | 'inStock'> {
+    if (!product.variantsInfo?.variants || !option.name || !option.optionRenderType) {
         return {
             visible: choice.visible,
             inStock: choice.inStock,
@@ -152,9 +158,9 @@ function getChoiceAvailabilityInfo(
     });
 
     return {
-        visible: matchingVariants.some((variant) => variant.variant?.visible),
+        visible: matchingVariants.some((variant) => variant?.visible),
         inStock: matchingVariants.some(
-            (variant) => variant.variant?.visible && variant.stock?.inStock,
+            (variant) => variant.visible && variant.inventoryStatus?.inStock,
         ),
     };
 }
