@@ -14,13 +14,11 @@
 
 .headerTitle {
     font: var(--heading3);
-    font-size: 3vw;
 }
 
 .headerDescription {
     width: 83%;
-    font: var(--paragraph1);
-    font-size: 20px;
+    font: var(--heading6);
     text-wrap: balance;
 }
 
@@ -34,7 +32,7 @@
 
 @media (max-width: 1024px) {
     .headerDescription {
-        font-size: 16px;
+        font:var(--paragraph2);
     }
 }
 
@@ -46,17 +44,17 @@
 
     .header {
         display: block;
-        font-size: 30px;
+        font: var(--heading4);
         margin-bottom: 40px;
     }
 
     .headerTitle {
-        font-size: 30px;
+        font: var(--heading4);
         margin-bottom: 16px;
     }
 
     .headerDescription {
-        font-size: 14px;
+        font:var(--paragraph3);
     }
 
     .products {
