@@ -11,7 +11,7 @@ export default createBoard({
                         <h1 className="heading1">Heading 1</h1>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading1:</b> Marcellus / 80px / 1
+                        <b>--heading1:</b>Marcellus (400) / 80px / 1
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -19,7 +19,7 @@ export default createBoard({
                         <h2 className="heading2">Heading 2</h2>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading2:</b> Marcellus / 55px / 1.1
+                        <b>--heading2:</b>Marcellus (400) / 55px / 1.1
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -27,7 +27,7 @@ export default createBoard({
                         <h3 className="heading3">Heading 3</h3>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading3:</b> Marcellus / 42px / 1.2
+                        <b>--heading3:</b>Marcellus (400) / 42px / 1.2
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -35,7 +35,7 @@ export default createBoard({
                         <h4 className="heading4">Heading 4</h4>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading4:</b> Marcellus / 40px / 1.2
+                        <b>--heading4:</b>Marcellus (400) / 30px / 1.2
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -43,7 +43,7 @@ export default createBoard({
                         <h5 className="heading5">Heading 5</h5>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading5:</b> Marcellus / 20px / 1.3
+                        <b>--heading5:</b>Marcellus (400) / 20px / 1.3
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -51,7 +51,7 @@ export default createBoard({
                         <h6 className="heading6">Heading 6</h6>
                     </Variant>
                     <Kit.Description>
-                        <b>--heading6:</b> Figtree (400) / 20px / 1.4
+                        <b>--heading6:</b>Figtree (400) / 20px / 1.4
                     </Kit.Description>
                 </Kit.Item>
             </Kit.Section>
@@ -64,7 +64,7 @@ export default createBoard({
                         </div>
                     </Variant>
                     <Kit.Description>
-                        <b>--paragraph1:</b> Figtree (400) / 16px / 1.5
+                        <b>--paragraph1:</b>Figtree (400) / 18px / 1.4
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -74,7 +74,7 @@ export default createBoard({
                         </div>
                     </Variant>
                     <Kit.Description>
-                        <b>--paragraph2:</b> Figtree (400) / 15px / 1.6
+                        <b>--paragraph2:</b>Figtree (400) / 16px / 1.4
                     </Kit.Description>
                 </Kit.Item>
                 <Kit.Item>
@@ -84,7 +84,7 @@ export default createBoard({
                         </div>
                     </Variant>
                     <Kit.Description>
-                        <b>--paragraph3:</b> Figtree (400) / 14px / 1.6
+                        <b>--paragraph3:</b>Figtree (400) / 14px / 1.6
                     </Kit.Description>
                 </Kit.Item>
             </Kit.Section>
