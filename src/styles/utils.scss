@@ -307,7 +307,7 @@
 
 @container (max-width: 300px) {
     .linkCardTitle {
-        font-size: 30px;
+        font:var(--heading4);
     }
 }
 
@@ -338,7 +338,6 @@
 
 .floatingCardTitle {
     font: var(--heading2);
-    line-height: 1.2;
     font-size: max(26px, 3.1vw);
     text-transform: uppercase;
     flex-grow: 1;
