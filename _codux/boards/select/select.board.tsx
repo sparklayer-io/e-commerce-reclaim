@@ -10,7 +10,12 @@ export default createBoard({
         const [value, setValue] = useState('');
         return (
             <div className={styles.container}>
-                <Select value={value} onValueChange={setValue} placeholder="Choose a pet">
+                <Select
+                    value={value}
+                    onValueChange={setValue}
+                    placeholder="Choose a pet"
+                    className={styles.select}
+                >
                     <SelectItem value="dog">Dog</SelectItem>
                     <SelectItem value="cat">Cat</SelectItem>
                     <SelectItem value="hamster">Hamster</SelectItem>

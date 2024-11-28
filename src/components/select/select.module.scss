@@ -28,6 +28,12 @@
 
 .trigger[data-placeholder] {
     color: var(--secondary3);
+    &:hover {
+        border-top: 0px solid rgb(0, 0, 0);
+        border-right: 0px solid rgb(0, 0, 0);
+        border-left: 0px solid rgb(0, 0, 0);
+        border-bottom: 2px solid rgb(0, 0, 0);
+    }
 }
 
 .triggerIcon {
@@ -58,6 +64,7 @@
     padding: 8px 12px;
     color: var(--primary5);
     cursor: pointer;
+    background-color: var(--primary1);
 }
 
 .item:focus-visible {
