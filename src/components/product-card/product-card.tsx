@@ -5,6 +5,7 @@ import { ImagePlaceholderIcon } from '../icons';
 
 interface ProductCardProps {
     name: string;
+    /** @format media-url */
     imageUrl?: string;
     /**
      * Product price formatted with the currency.

@@ -11,6 +11,7 @@ export interface BackgroundParallaxProps extends HTMLAttributes<HTMLDivElement> 
      *   the viewport, similar to `background-attachment: fixed`.
      */
     parallaxStrength?: number;
+    /** @format media-url */
     backgroundImageUrl?: string;
 }
 

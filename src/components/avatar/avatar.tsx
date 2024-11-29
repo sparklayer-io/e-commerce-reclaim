@@ -5,6 +5,7 @@ import styles from './avatar.module.scss';
 
 export interface AvatarProps {
     className?: string;
+    /** @format media-url */
     imageSrc: string | undefined;
 }
 
