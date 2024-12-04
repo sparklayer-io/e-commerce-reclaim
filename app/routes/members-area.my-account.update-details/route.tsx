@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, redirect, TypedResponse } from '@remix-run/node';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -24,4 +24,16 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     return redirect('/members-area/my-account');
+}
+
+// will be called if app is run in Codux because updating user details
+// requires user to be logged in but it's currently can't be done through Codux
+export async function coduxAction(): ReturnType<typeof action> {
+    // using redirect helper here causes warning during build process
+    return new Response(null, {
+        status: 302,
+        headers: {
+            Location: '/members-area/my-account',
+        },
+    }) as TypedResponse<never>;
 }

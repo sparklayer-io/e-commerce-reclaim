@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { LoaderFunctionArgs, redirect, TypedResponse } from '@remix-run/node';
 import { commitSession, getSession, initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -20,4 +20,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
             'Set-Cookie': await commitSession(session),
         },
     });
+}
+
+// will be called if app is run in Codux because logging in currently can't be done through Codux
+export async function coduxLoader(): ReturnType<typeof loader> {
+    // using redirect helper here causes warning during build process
+    return new Response(null, {
+        status: 302,
+        headers: {
+            Location: '/',
+        },
+    }) as TypedResponse<never>;
 }

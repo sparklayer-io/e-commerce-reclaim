@@ -1,15 +1,20 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { LoaderFunctionArgs, redirect, TypedResponse } from '@remix-run/node';
 import type { MetaFunction } from '@remix-run/react';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { Member } from '~/src/wix/ecom';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { Dialog, DialogDescription, DialogTitle } from '~/src/components/dialog/dialog';
 import { Spinner } from '~/src/components/spinner/spinner';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
+import { loaderMockData } from './loader-mock-data';
 
 import styles from './route.module.scss';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export type LoaderResponseData = { user: Member | undefined };
+export type LoaderResponse = Promise<TypedResponse<never> | LoaderResponseData>;
+
+export async function loader({ request }: LoaderFunctionArgs): LoaderResponse {
     const api = await initializeEcomApiForRequest(request);
     if (!api.isLoggedIn()) {
         return redirect('/login');
@@ -17,6 +22,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const user = await api.getUser();
     return { user };
+}
+
+// will be called if app is run in Codux because fetching user details requires
+// user to be logged in but it's currently can't be done through Codux
+export async function coduxLoader(): ReturnType<typeof loader> {
+    return loaderMockData;
 }
 
 export default function MyAccountPage() {
