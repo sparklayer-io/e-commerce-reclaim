@@ -140,8 +140,10 @@ export default function ProductsPage() {
 
                 <div className={styles.main}>
                     <div className={styles.categoryHeader}>
-                        <h1 className={styles.categoryName}>{category.name}</h1>
-                        {category.description && (
+                        <h1 className={styles.categoryName}>
+                            {appliedFilters.search ? `"${appliedFilters.search}"` : category.name}
+                        </h1>
+                        {category.description && !appliedFilters.search && (
                             <p className={styles.categoryDescription}>{category.description}</p>
                         )}
                     </div>

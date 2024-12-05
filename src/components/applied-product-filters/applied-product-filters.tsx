@@ -27,7 +27,7 @@ export const AppliedProductFilters = ({
     maxPriceInCategory,
     className,
 }: AppliedProductFiltersProps) => {
-    const { minPrice, maxPrice } = appliedFilters;
+    const { search, minPrice, maxPrice } = appliedFilters;
 
     const priceFilter = useMemo<JSX.Element | null>(() => {
         if (minPrice === undefined && maxPrice === undefined) {
@@ -44,6 +44,15 @@ export const AppliedProductFilters = ({
 
     return (
         <div className={classNames(styles.root, className)}>
+            {search && (
+                <AppliedFilter
+                    onClick={() => {
+                        onClearFilters([ProductFilter.search]);
+                    }}
+                >
+                    {search}
+                </AppliedFilter>
+            )}
             {priceFilter && (
                 <AppliedFilter
                     onClick={() => {

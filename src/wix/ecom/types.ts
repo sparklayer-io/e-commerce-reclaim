@@ -18,6 +18,7 @@ export type Member = members.Member & members.MemberNonNullableFields;
 export enum ProductFilter {
     minPrice = 'minPrice',
     maxPrice = 'maxPrice',
+    search = 'search',
 }
 
 export interface IProductFilters {
@@ -29,6 +30,11 @@ export interface IProductFilters {
      * Only products with a price less than or equal to this value will be included.
      */
     [ProductFilter.maxPrice]?: number;
+
+    /**
+     * Only products with a title containing this value will be included.
+     */
+    [ProductFilter.search]?: string;
 }
 
 export enum ProductSortBy {

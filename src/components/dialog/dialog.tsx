@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { CloseIcon } from '../icons';
+import { CrossIcon } from '../icons';
 
 import styles from './dialog.module.scss';
 
@@ -36,7 +36,7 @@ export const Dialog = ({
                             className={classNames('iconButton', styles.closeButton)}
                             aria-label="Close dialog"
                         >
-                            <CloseIcon width={24} height={24} />
+                            <CrossIcon width={24} height={24} />
                         </button>
                     </RadixDialog.Close>
                 )}

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Toast as ToastData, toast, resolveValue } from 'react-hot-toast';
-import { CloseIcon } from '~/src/components/icons';
+import { CrossIcon } from '~/src/components/icons';
 
 import styles from './toast.module.scss';
 
@@ -33,7 +33,7 @@ export const Toast = ({ toast }: { toast: ToastData }) => {
             <div className={styles.message}>{resolveValue(toast.message, toast)}</div>
             {toast.type === 'loading' ? null : (
                 <button className={styles.closeButton} onClick={() => dismissToast(toast.id)}>
-                    <CloseIcon />
+                    <CrossIcon />
                 </button>
             )}
         </div>

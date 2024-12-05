@@ -1,5 +1,5 @@
 import { getClickableElementAttributes } from '~/src/wix/utils';
-import { CloseIcon } from '../icons';
+import { CrossIcon } from '../icons';
 
 import styles from './applied-filter.module.scss';
 
@@ -12,7 +12,7 @@ export const AppliedFilter = ({ children, onClick }: AppliedFilterProps) => {
     return (
         <div className={styles.root} {...getClickableElementAttributes(onClick)}>
             {children}
-            <CloseIcon width={12} height={12} />
+            <CrossIcon width={12} height={12} />
         </div>
     );
 };

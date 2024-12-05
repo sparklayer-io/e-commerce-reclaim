@@ -1,0 +1,32 @@
+.form {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    width: 100%;
+}
+
+.input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-size: 0.9em;
+
+    &:focus-visible {
+        box-shadow: none;
+    }
+}
+
+.searchIcon {
+    width: 1em;
+    height: 1em;
+}
+
+.clearIcon {
+    cursor: pointer;
+    width: 0.6em;
+    height: 0.6em;
+}
+
+.input:placeholder-shown + .clearIcon {
+    display: none;
+}

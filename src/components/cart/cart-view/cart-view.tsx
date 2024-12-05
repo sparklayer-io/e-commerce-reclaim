@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { ReactNode } from 'react';
-import { CloseIcon, LockIcon } from '~/src/components/icons';
+import { CrossIcon, LockIcon } from '~/src/components/icons';
 import { Spinner } from '~/src/components/spinner/spinner';
 import { getCartItemCount, findLineItemPriceBreakdown } from '~/src/wix/cart';
 import { type Cart, type CartTotals } from '~/src/wix/ecom';
@@ -58,7 +58,7 @@ export const CartView = ({
                     Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})
                 </span>
                 <button className={classNames(styles.closeButton, 'iconButton')} onClick={onClose}>
-                    <CloseIcon />
+                    <CrossIcon />
                 </button>
             </div>
 
