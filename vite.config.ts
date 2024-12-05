@@ -22,7 +22,7 @@ export default defineConfig({
         alias: { '~': __dirname },
     },
     optimizeDeps: {
-        include: ['@radix-ui/react-select'],
+        include: ['@radix-ui/react-select', '@radix-ui/react-slider'],
     },
     css: { preprocessorOptions: { scss: { api: 'modern' } } },
     build: {
