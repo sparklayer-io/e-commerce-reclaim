@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createBoard } from '@wixc3/react-board';
 import { ColorSelect, ColorSelectOption } from '~/src/components/color-select/color-select';
+import styles from './color-select.board.module.scss';
 
 const options: ColorSelectOption[] = [
     { id: 'color1', color: 'white' },
@@ -15,7 +16,7 @@ export default createBoard({
     Board: () => {
         const [colorId, setColorId] = useState('');
         return (
-            <div style={{ padding: '24px' }}>
+            <div className={styles.container}>
                 <ColorSelect
                     className="colorSelect"
                     options={options}
@@ -26,7 +27,7 @@ export default createBoard({
         );
     },
     environmentProps: {
-        windowWidth: 400,
+        windowWidth: 320,
         windowHeight: 100,
     },
 });
