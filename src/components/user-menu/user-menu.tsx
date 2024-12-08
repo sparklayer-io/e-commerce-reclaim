@@ -1,5 +1,4 @@
 import { NavLink } from '@remix-run/react';
-import classNames from 'classnames';
 import { Avatar } from '~/src/components/avatar/avatar';
 import {
     DropdownMenu,
@@ -16,7 +15,7 @@ export const UserMenu = () => {
 
     if (!isLoggedIn) {
         return (
-            <NavLink className={classNames(styles.link, styles.root)} to={'/login'}>
+            <NavLink className={styles.root} to={'/login'}>
                 <Avatar imageSrc={undefined} />
                 Log In
             </NavLink>

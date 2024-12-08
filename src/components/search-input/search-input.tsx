@@ -1,5 +1,5 @@
 import { Form } from '@remix-run/react';
-import React, { useCallback, useId } from 'react';
+import { type FC, type FormEventHandler, useState } from 'react';
 import { CrossSmallIcon, SearchIcon } from '../icons';
 import styles from './search-input.module.scss';
 
@@ -9,42 +9,33 @@ export interface SearchInputProps {
     onSearchSubmit?: (value: string) => void;
 }
 
-export const SearchInput = React.memo<SearchInputProps>(function SearchInput({
+export const SearchInput: FC<SearchInputProps> = ({
     className,
-    defaultValue,
+    defaultValue = '',
     onSearchSubmit,
-}) {
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    // input is uncontrolled, so we clear it manually
-    const onClickClear = useCallback(() => (inputRef.current!.value = ''), []);
+}) => {
+    const [value, setValue] = useState(defaultValue);
 
-    const onSubmit: React.EventHandler<React.FormEvent<HTMLFormElement>> = (event) => {
+    const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const search = formData.get('search');
-        if (typeof search === 'string' && search.trim() !== '') {
-            onSearchSubmit?.(search);
-        }
+        if (value.trim()) onSearchSubmit?.(value);
     };
-    const inputId = useId();
 
     return (
-        <label className={className} htmlFor={inputId}>
-            <Form className={styles.form} role="search" onSubmit={onSubmit}>
-                <SearchIcon className={styles.searchIcon} width={14} />
+        <Form className={className} role="search" onSubmit={handleSubmit}>
+            <label className={styles.label}>
+                <SearchIcon className={styles.searchIcon} />
                 <input
-                    id={inputId}
-                    ref={inputRef}
                     className={styles.input}
                     type="text"
-                    name="search"
                     spellCheck="false"
-                    defaultValue={defaultValue}
                     placeholder="Search"
                     minLength={2}
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
                 />
-                <CrossSmallIcon className={styles.clearIcon} onClick={onClickClear} />
-            </Form>
-        </label>
+                <CrossSmallIcon className={styles.clearIcon} onClick={() => setValue('')} />
+            </label>
+        </Form>
     );
-});
+};
