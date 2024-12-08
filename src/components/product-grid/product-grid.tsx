@@ -1,12 +1,12 @@
 import type { SerializeFrom } from '@remix-run/node';
+import classNames from 'classnames';
 import React from 'react';
-import { FadeIn } from '~/src/components/visual-effects';
 import type { CollectionDetails, Product } from '~/src/wix/ecom';
+import { getProductImageUrl } from '~/src/wix/products';
 import { EmptyProductsCategory } from '../empty-products-category/empty-products-category';
 import { ProductCard } from '../product-card/product-card';
 import { ProductLink } from '../product-link/product-link';
 import styles from './product-grid.module.scss';
-import classNames from 'classnames';
 
 export interface ProductGridProps {
     /** list of products to show (either from API or serialized from loader) */
@@ -54,27 +54,26 @@ export const ProductGrid = React.memo<ProductGridProps>(function ProductGrid({
     return (
         <div className={styles.productGrid}>
             {products.map((product) => (
-                <FadeIn key={product._id} duration={0.9}>
-                    <ProductLink
-                        className={styles.productLink}
-                        productSlug={product.slug!}
-                        state={{
-                            fromCategory: {
-                                name: category.name,
-                                slug: category.slug,
-                            },
-                        }}
-                    >
-                        <ProductCard
-                            name={product.name!}
-                            imageUrl={product.media?.mainMedia?.image?.url}
-                            price={product.priceData?.formatted?.price}
-                            discountedPrice={product.priceData?.formatted?.discountedPrice}
-                            ribbon={product.ribbon ?? undefined}
-                            inventoryStatus={product.stock?.inventoryStatus}
-                        />
-                    </ProductLink>
-                </FadeIn>
+                <ProductLink
+                    key={product._id}
+                    className={styles.productLink}
+                    productSlug={product.slug!}
+                    state={{
+                        fromCategory: {
+                            name: category.name,
+                            slug: category.slug,
+                        },
+                    }}
+                >
+                    <ProductCard
+                        name={product.name!}
+                        imageUrl={getProductImageUrl(product, { minWidth: 540, minHeight: 720 })}
+                        price={product.priceData?.formatted?.price}
+                        discountedPrice={product.priceData?.formatted?.discountedPrice}
+                        ribbon={product.ribbon ?? undefined}
+                        inventoryStatus={product.stock?.inventoryStatus}
+                    />
+                </ProductLink>
             ))}
         </div>
     );

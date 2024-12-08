@@ -1,12 +1,17 @@
 .productGrid {
-    --minCardSize: 404px;
+    /* The max width must be at least 3/2 of the min width to prevent gaps when
+     * transitioning from 3 to 2 items per row. */
+    --minColumnWidth: 350px;
+    --maxColumnWidth: 540px;
+
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--minCardSize), 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--minColumnWidth), 1fr));
     gap: 20px 4px;
 }
 
 .productLink {
     display: block;
+    max-width: var(--maxColumnWidth);
 }
 
 .clearFiltersButton {
@@ -19,6 +24,7 @@
 
 @media (max-width: 1024px) {
     .productGrid {
-        --minCardSize: 250px;
+        --minColumnWidth: 250px;
+        --maxColumnWidth: 500px;
     }
 }

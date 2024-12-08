@@ -2,6 +2,7 @@ import { SerializeFrom } from '@remix-run/node';
 import { products as wixStoresProducts } from '@wix/stores';
 import deepEqual from 'fast-deep-equal';
 import { Product } from '../ecom';
+import { getWixImageUrl, WixImageTransformOptions } from '../utils/media';
 
 export function isOutOfStock(
     product: Product | SerializeFrom<Product>,
@@ -168,4 +169,19 @@ export function formatPrice(price: number, currency: string): string {
     });
 
     return formatter.format(price);
+}
+
+export function getProductImageUrl(
+    item: wixStoresProducts.MediaItem | Product | SerializeFrom<Product>,
+    options: WixImageTransformOptions,
+): string | undefined {
+    if ('media' in item && item.media?.mainMedia) {
+        item = item.media.mainMedia;
+    }
+
+    if ('image' in item) {
+        const id = item._id!;
+        const image = item.image!;
+        return getWixImageUrl({ id, width: image.width!, height: image.height! }, options);
+    }
 }

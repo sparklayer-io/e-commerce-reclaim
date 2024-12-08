@@ -3,8 +3,7 @@ import { ProductCard, ProductCardSkeleton } from '~/src/components/product-card/
 import { ProductLink } from '~/src/components/product-link/product-link';
 import { FadeIn, Reveal } from '~/src/components/visual-effects';
 import { useCategoryDetails } from '~/src/wix/categories';
-import { useProducts } from '~/src/wix/products';
-
+import { getProductImageUrl, useProducts } from '~/src/wix/products';
 import styles from './featured-products-section.module.scss';
 
 interface FeaturedProductsSectionProps {
@@ -34,7 +33,7 @@ export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => 
                           <ProductLink key={product._id} productSlug={product.slug!}>
                               <ProductCard
                                   name={product.name!}
-                                  imageUrl={product.media?.mainMedia?.image?.url}
+                                  imageUrl={getProductImageUrl(product, { minHeight: 700 })}
                                   price={product.priceData?.formatted?.price}
                                   discountedPrice={product.priceData?.formatted?.discountedPrice}
                                   ribbon={product.ribbon ?? undefined}
