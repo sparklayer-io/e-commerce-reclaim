@@ -11,6 +11,7 @@ import { ProductOption } from '~/src/components/product-option/product-option';
 import { ProductPrice } from '~/src/components/product-price/product-price';
 import { QuantityInput } from '~/src/components/quantity-input/quantity-input';
 import { ShareProductLinks } from '~/src/components/share-product-links/share-product-links';
+import { SparkPDP } from '~/src/components/spark-pdp/spark-pdp';
 import { toast } from '~/src/components/toast/toast';
 import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
@@ -99,6 +100,7 @@ export default function ProductDetailsPage() {
 
                 <div>
                     <h1 className={styles.productName}>{product.name}</h1>
+                    <SparkPDP parentId={product._id!} />
                     {sku && <p className={styles.sku}>SKU: {sku}</p>}
 
                     {priceData && (
