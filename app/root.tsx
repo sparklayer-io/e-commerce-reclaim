@@ -20,6 +20,7 @@ import { Footer } from '~/src/components/footer/footer';
 import { Header } from '~/src/components/header/header';
 import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 import { Toaster } from '~/src/components/toaster/toaster';
+import { SparkLayer } from '~/src/sparklayer/sparklayer';
 import { CartOpenContextProvider } from '~/src/wix/cart';
 import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
@@ -56,6 +57,14 @@ export function Layout({ children }: React.PropsWithChildren) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
                 <Links />
+                <SparkLayer
+                    customer=""
+                    authenticationMetafield=""
+                    options={{}}
+                    onLogout=""
+                    siteId="ecommercereclaim"
+                    siteEnv="live"
+                />
             </head>
             <body>
                 {children}
