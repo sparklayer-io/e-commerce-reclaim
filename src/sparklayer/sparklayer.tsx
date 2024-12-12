@@ -77,7 +77,7 @@ const defaultStyles = `
 
 const defaultOptions = {
     platform: 'wix',
-    siteId: 'tomcodux',
+    siteId: 'ecommercereclaim',
     sparkDomain: 'https://app.dev.sparklayer.io',
 
     // CSS selector for cart button usually located in header

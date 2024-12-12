@@ -62,7 +62,7 @@ export function Layout({ children }: React.PropsWithChildren) {
                     authenticationMetafield=""
                     options={{}}
                     onLogout=""
-                    siteId="e-commerce-reclaim"
+                    siteId="ecommercereclaim"
                     siteEnv="live"
                 />
             </head>
