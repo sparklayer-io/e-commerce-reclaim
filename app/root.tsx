@@ -74,16 +74,18 @@ export default function App() {
     return (
         <EcomApiContextProvider tokens={wixSessionTokens}>
             <CartOpenContextProvider>
-                <div className={styles.root}>
-                    <Header />
-                    <main className={styles.main}>
-                        <Outlet />
-                    </main>
-                    <Footer />
+                <div>
+                    <div className={styles.root}>
+                        <Header />
+                        <main className={styles.main}>
+                            <Outlet />
+                        </main>
+                        <Footer />
+                    </div>
+                    <Cart />
+                    <NavigationProgressBar className={styles.navigationProgressBar} />
+                    <Toaster />
                 </div>
-                <Cart />
-                <NavigationProgressBar className={styles.navigationProgressBar} />
-                <Toaster />
             </CartOpenContextProvider>
         </EcomApiContextProvider>
     );
