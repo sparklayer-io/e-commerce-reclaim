@@ -173,7 +173,7 @@ export function formatPrice(price: number, currency: string): string {
 
 export function getProductImageUrl(
     item: wixStoresProducts.MediaItem | Product | SerializeFrom<Product>,
-    options: WixImageTransformOptions,
+    options: WixImageTransformOptions = {},
 ): string | undefined {
     if ('media' in item && item.media?.mainMedia) {
         item = item.media.mainMedia;

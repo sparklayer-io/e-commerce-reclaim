@@ -47,3 +47,8 @@ export const getWixImageUrl = (image: WixImage, options: WixImageTransformOption
     // crops the image instead of fitting it.
     return `https://static.wixstatic.com/media/${id}/v1/fit/w_${size},h_${size},q_${quality}/${id}`;
 };
+
+export const getWixImageIdFromUrl = (url: string): string | undefined => {
+    if (!url.startsWith('https://static.wixstatic.com/media/')) return;
+    return new URL(url).pathname.split('/').at(2);
+};
