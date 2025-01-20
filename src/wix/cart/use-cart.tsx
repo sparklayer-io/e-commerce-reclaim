@@ -10,7 +10,11 @@ const useCartTotals = () => {
     const ecomApi = useEcomApi();
     const cart = useCartData();
     useEffect(() => void mutate('cart-totals'), [cart.data]);
-    return useSwr('cart-totals', () => ecomApi.getCartTotals());
+    return useSwr('cart-totals', () => {
+        if (cart.data) {
+            return ecomApi.getCartTotals();
+        }
+    });
 };
 
 interface AddToCartArgs {
