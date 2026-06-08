@@ -77,7 +77,7 @@ const defaultStyles = `
 
 const defaultOptions = {
     platform: 'wix',
-    siteId: 'ecommercereclaim',
+    siteId: 'wixcodux',
     sparkDomain: 'https://app.dev.sparklayer.io',
 
     // CSS selector for cart button usually located in header
@@ -145,10 +145,7 @@ export function SparkLayer({
         <script
             id="spark-script"
             async
-            // type="text/javascript"
-            type="module"
-            //  src={`https://dev.sparkcdn.io/sparkjs/${siteId}/${siteEnv}`}
-            src="http://localhost:8005/spark.ts"
+            src={`https://dev.sparkcdn.io/sparkjs/${siteId}/${siteEnv}`}
             onLoad={() => setSparkLoaded(true)}
         />
     )

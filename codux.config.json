@@ -1,62 +1,70 @@
 {
-  "$schema": "https://wixplosives.github.io/codux-config-schema/codux.config.schema.json",
-  "boardGlobalSetup": "./_codux/boards-global-setup.ts",
-  "componentsDiscovery": {
-    "include": ["src/**"],
-    "exclude": ["_codux/component-templates/**"]
-  },
-  "boardsPath": "_codux/boards",
-  "newComponent": {
-    "componentsPath": "src/components",
-    "templatesPath": "_codux/component-templates"
-  },
-  "newBoard": {
-    "templatesPath": "_codux/board-templates"
-  },
-  "safeRender": {
-    "maxInstancesPerComponent": 1000
-  },
-  "scripts": {
-    "install": {
-      "title": "Install",
-      "description": "Run install",
-      "command": "npm i",
-      "trigger": ["checkout", "pull", "setup"]
+    "$schema": "https://wixplosives.github.io/codux-config-schema/codux.config.schema.json",
+    "boardGlobalSetup": "./_codux/boards-global-setup.ts",
+    "componentsDiscovery": {
+        "include": [
+            "src/**"
+        ],
+        "exclude": [
+            "_codux/component-templates/**"
+        ]
+    },
+    "boardsPath": "_codux/boards",
+    "newComponent": {
+        "componentsPath": "src/components",
+        "templatesPath": "_codux/component-templates"
+    },
+    "newBoard": {
+        "templatesPath": "_codux/board-templates"
+    },
+    "safeRender": {
+        "maxInstancesPerComponent": 1000
+    },
+    "scripts": {
+        "install": {
+            "title": "Install",
+            "description": "Run install",
+            "command": "npm i",
+            "trigger": [
+                "checkout",
+                "pull",
+                "setup"
+            ]
+        }
+    },
+    "styling": {
+        "solution": "scss modules"
+    },
+    "styleFilesConfig": {
+        "commonStyleFilePattern": "**/styles/**"
+    },
+    "resolve": {
+        "alias": {
+            "~/*": "./*",
+            "node:fs": false,
+            "node:fs/promises": false,
+            "node:path": false,
+            "node:crypto": false,
+            "crypto": false,
+            "node:stream": false,
+            "stream": false,
+            "node:os": false,
+            "node:util": false,
+            "node:events": false,
+            "node:url": false,
+            "node:buffer": false,
+            "node:assert": false
+        }
+    },
+    "svgLoader": "both",
+    "previewConfiguration": {
+        "environmentVariables": {},
+        "envFile": ".env"
+    },
+    "externalProviders": {
+        "wix": {
+            "projectId": "14abc1ba-9445-4265-9e10-48263b095686",
+            "metaSiteId": "eade0c4d-f79a-4dfe-9c1f-30bbd52b6b6e"
+        }
     }
-  },
-  "styling": {
-    "solution": "scss modules"
-  },
-  "styleFilesConfig": {
-    "commonStyleFilePattern": "**/styles/**"
-  },
-  "resolve": {
-    "alias": {
-      "~/*": "./*",
-      "node:fs": false,
-      "node:fs/promises": false,
-      "node:path": false,
-      "node:crypto": false,
-      "crypto": false,
-      "node:stream": false,
-      "stream": false,
-      "node:os": false,
-      "node:util": false,
-      "node:events": false,
-      "node:url": false,
-      "node:buffer": false,
-      "node:assert": false
-    }
-  },
-  "svgLoader": "both",
-  "previewConfiguration": {
-    "environmentVariables": {},
-    "envFile": ".env"
-  },
-  "externalProviders": {
-    "wix": {
-      "projectId": "09a23480-747d-46cc-bc9b-1e7685c2feea",
-      "metaSiteId": "265c0683-b6fe-4a76-96ee-d5368c6529de"
-    }
-  }
 }

@@ -1,27 +1,58 @@
 import { LoaderFunctionArgs, redirect, TypedResponse } from '@remix-run/node';
 import type { MetaFunction } from '@remix-run/react';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
-import { Member } from '~/src/wix/ecom';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { Dialog, DialogDescription, DialogTitle } from '~/src/components/dialog/dialog';
 import { Spinner } from '~/src/components/spinner/spinner';
+import { Member } from '~/src/wix/ecom';
 import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
 import { loaderMockData } from './loader-mock-data';
 
 import styles from './route.module.scss';
 
-export type LoaderResponseData = { user: Member | undefined };
+export type LoaderResponseData = { user: Member | undefined, token: string | undefined }
 export type LoaderResponse = Promise<TypedResponse<never> | LoaderResponseData>;
 
 export async function loader({ request }: LoaderFunctionArgs): LoaderResponse {
+    // eslint-disable-next-line no-console
+    console.log('HTTP_PROXY', process.env.HTTP_PROXY);
+
     const api = await initializeEcomApiForRequest(request);
     if (!api.isLoggedIn()) {
         return redirect('/login');
     }
 
     const user = await api.getUser();
-    return { user };
+
+    const originalFetch = globalThis.fetch;
+
+    globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+        const headers = init?.headers instanceof Headers
+            ? Object.fromEntries(init.headers.entries())
+            : init?.headers;
+
+        console.log('[fetch] Request:', request);
+
+        return originalFetch(input, init);
+    };
+
+    // const response = await api.getWixClient().fetchWithAuth('https://03bf7894-a496-4460-b500-af40b7038e79.wix-app.run/functions/spark-current-member?siteId=wixcodux&siteEnv=live')
+    const response = await api.getWixClient().fetchWithAuth('https://9da4afbf-fe40-444f-9554-aadcd186caf8.wix-app.run/functions/spark-current-member?siteId=wixcodux&siteEnv=live')
+
+    // eslint-disable-next-line no-console
+    // console.log(`response: ${response.status}, ${response.statusText}`, response);
+
+    if (!response.ok) {
+        // eslint-disable-next-line no-console
+        console.error('SparkLayer: Contact is not a B2B customer');
+
+        return { user, token: undefined };
+    }
+
+    const token = await response.text();
+
+    return { user, token };
 }
 
 // will be called if app is run in Codux because fetching user details requires
@@ -31,7 +62,18 @@ export async function coduxLoader(): ReturnType<typeof loader> {
 }
 
 export default function MyAccountPage() {
-    const { user } = useLoaderData<typeof loader>();
+    const { user, token } = useLoaderData<typeof loader>();
+
+    if (token) {
+        // eslint-disable-next-line no-console
+        console.log('token is defined', token);
+        // @ts-expect-error sparkWixToken is not defined on window
+        window.sparkWixToken = token;
+    } else {
+        // eslint-disable-next-line no-console
+        console.log('token is not defined');
+    }
+
 
     const initialUserDetailsFormData = {
         firstName: user?.contact?.firstName ?? '',
